@@ -98,12 +98,16 @@ def load_audio_files(filenames: str | list[str]) -> list[AudioInfo]:
 
 
 @dataclass
-class SteadyLevelInfo:
+class SteadyLevelSegment:
     start_second: float
     end_second: float
     start_sample: int
     end_sample: int
-    average_level_db: float
+    peak_amplitude: float
+    mean_amplitude: float
+    peak_dbfs: float
+    rms_dbfs: float
+    avg_log_mel_db : float
 
 
 def find_steady_levels(
@@ -111,7 +115,7 @@ def find_steady_levels(
     sample_rate,
     min_duration=2.0,
     threshold_db=0.2
-) -> list[SteadyLevelInfo]:
+) -> list[SteadyLevelSegment]:
     """
     Identify areas of a floating point audio samples where the audio level is
     steady for a specified duration.
@@ -132,7 +136,7 @@ def find_steady_levels(
 
     log_mel_spectrogram = librosa.amplitude_to_db(magnitude_spectrogram, ref=np.max)
 
-    steady_segments: list[SteadyLevelInfo] = []
+    steady_segments: list[SteadyLevelSegment] = []
     current_segment_start = None
     current_level_sum = 0
     current_segment_samples = 0
@@ -142,15 +146,22 @@ def find_steady_levels(
     def capture_steady_level():
         start_time = librosa.frames_to_time(current_segment_start, sr=sample_rate)
         end_time = librosa.frames_to_time(current_segment_start + current_segment_samples, sr=sample_rate)
-        average_level = current_level_sum / current_segment_samples
+        start_sample=int(start_time * sample_rate)
+        end_sample=int(end_time * sample_rate)
+        seg_samples = samples[start_sample:end_sample]
+        seg_samples_abs = np.abs(seg_samples)
 
         steady_segments.append(
-            SteadyLevelInfo(
+            SteadyLevelSegment(
                 start_second=start_time,
                 end_second=end_time,
-                start_sample=int(start_time * sample_rate),
-                end_sample=int(end_time * sample_rate),
-                average_level_db=average_level,
+                start_sample=start_sample,
+                end_sample=end_sample,
+                peak_amplitude=np.max(np.abs(seg_samples)),
+                mean_amplitude=np.mean(np.abs(seg_samples)),
+                peak_dbfs=20 * np.log10(np.max(seg_samples_abs)),
+                rms_dbfs=20 * np.log10(np.sqrt(np.mean(seg_samples_abs**2))),
+                avg_log_mel_db=current_level_sum / current_segment_samples,
             )
         )
 
@@ -180,13 +191,18 @@ def find_steady_levels(
         capture_steady_level()
 
     if not steady_segments:
+        samples_abs = np.abs(samples)
         steady_segments.append(
-            SteadyLevelInfo(
+            SteadyLevelSegment(
                 start_second=0.0,
                 end_second=librosa.get_duration(y=samples, sr=sample_rate),
                 start_sample=0,
                 end_sample=len(samples),
-                average_level_db=np.mean(log_mel_spectrogram),
+                peak_amplitude=np.max(samples_abs),
+                mean_amplitude=np.mean(samples_abs),
+                peak_dbfs=20 * np.log10(np.max(samples_abs)),
+                rms_dbfs=20 * np.log10(np.sqrt(np.mean(samples_abs**2))),
+                avg_log_mel_db=np.mean(log_mel_spectrogram),
             )
         )
 
@@ -199,7 +215,7 @@ def get_audio_segments(
     trunc_segments: int = None,
     threshold_db: float = None,
     min_segment_seconds: float = None,
-) -> list[SteadyLevelInfo]:
+) -> list[SteadyLevelSegment]:
     segments = find_steady_levels(
         samples=samples,
         sample_rate=sample_rate,
@@ -267,7 +283,7 @@ def create_audio_figure_subplots(
         if len(audio) == 0:
             raise ValueError("No audio to process.")
 
-        segments = None
+        segments: list[SteadyLevelSegment] = None
         if trunc_segments is not None:
             segments, audio = get_audio_segments(
                 samples=audio,
@@ -330,7 +346,7 @@ def create_audio_figure_subplots(
         if segments is not None and i == 0:
             level_annot_inf = []
             for level, segment in enumerate(segments):
-                y_value = np.max(np.abs(audio[segment.start_sample:segment.end_sample]))
+                y_value = segment.peak_amplitude
                 segment_dbfs = 20*np.log10(y_value)
                 level_annot_inf.append(
                     (
@@ -338,7 +354,7 @@ def create_audio_figure_subplots(
                         segment.start_second,
                         y_value,
                         65,
-                        segment.start_second - 2,
+                        segment.start_second - 1,
                         y_value + 0.1,
                     )
                 )
@@ -409,10 +425,12 @@ def handle_levels(args):
             "StartSecondSrc",
             "EndSecond",
             "EndSecondSrc",
-            "dB",
-            "dBFS",
-            "Amplitude",
+            "Peak_dBFS",
+            "RMS_dBFS",
+            "Peak_Amplitude",
+            "Mean_Amplitude",
             "SampleRate",
+            "AvgLogMel_dB",
             "Filename",
         ])
 
@@ -444,43 +462,36 @@ def handle_levels(args):
             print(f"Target samples duration: {total_seconds}s")
             print(f"Target samples start: {start_second}s")
 
-        # for reference, delete whenever:
-        # def x_label_fmt_func(secs, pos):
-        #     real_time = f"{int((start_second + secs) // 60)}:{int((start_second + secs) % 60):02d}"
-        #     targ_time = f"{int(secs // 60)}:{int(secs % 60):02d}"
-        #     return f"{real_time}\n({targ_time})"
-        # ax.set_title(f"{i}: {os.path.basename(ai.fn)}   (bits/sample={ai.bitdepth} rate={ai.sr})")
-        # ax.yaxis.set_major_formatter(StrMethodFormatter("{x:+.3f}"))
-        # ax.yaxis.set_minor_formatter(StrMethodFormatter("{x:+.3f}"))
-
-        segment: SteadyLevelInfo
-        for level, segment in enumerate(segments):
-            segment_amplitude = np.max(np.abs(audio[segment.start_sample:segment.end_sample]))
-            segment_dbfs = 20*np.log10(segment_amplitude)
+        seg: SteadyLevelSegment
+        for level, seg in enumerate(segments):
             if args.csv:
                 csv_writer.writerow([
                     f"{level}",
-                    f"{segment.start_second}",
-                    f"{start_second + segment.start_second}",
-                    f"{segment.end_second}",
-                    f"{start_second + segment.end_second}",
-                    f"{segment.average_level_db}",
-                    f"{segment_dbfs}",
-                    f"{segment_amplitude}",
+                    f"{seg.start_second}",
+                    f"{start_second + seg.start_second}",
+                    f"{seg.end_second}",
+                    f"{start_second + seg.end_second}",
+                    f"{seg.peak_dbfs}",
+                    f"{seg.rms_dbfs}",
+                    f"{seg.peak_amplitude}",
+                    f"{seg.mean_amplitude}",
                     f"{ai.sr}",
+                    f"{seg.avg_log_mel_db }",
                     f"{os.path.basename(ai.fn)}",
                 ])
             else:
                 print(
                     f"Seg#={level} "
-                    f"StartSec={segment.start_second:.3f} "
-                    f"StartSecSrc={start_second + segment.start_second:.3f} "
-                    f"EndSec={segment.end_second:.3f} "
-                    f"EndSecSrc={start_second + segment.end_second:.3f} "
-                    f"dB={segment.average_level_db:.6f} "
-                    f"dBFS={segment_dbfs} "
-                    f"Amplitude={segment_amplitude:.6f} "
+                    f"StartSec={seg.start_second:.3f} "
+                    f"StartSecSrc={start_second + seg.start_second:.3f} "
+                    f"EndSec={seg.end_second:.3f} "
+                    f"EndSecSrc={start_second + seg.end_second:.3f} "
+                    f"Peak_dBFS={seg.peak_dbfs} "
+                    f"RMS_dBFS={seg.rms_dbfs} "
+                    f"Peak_Amplitude={seg.peak_amplitude:.6f} "
+                    f"Mean_Amplitude={seg.peak_amplitude:.6f} "
                     f"SR={ai.sr} "
+                    f"AvgLogMel_dB={seg.avg_log_mel_db :.6f} "
                     f"FN={os.path.basename(ai.fn)}"
                 )
 
