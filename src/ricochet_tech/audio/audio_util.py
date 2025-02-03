@@ -55,8 +55,10 @@ def wait_debugger():
 _LOAD_NON_FLOAT_AS_INT = True
 
 
-def load_24bit_pcm_with_pydub(file_path):
+def load_24bit_pcm_with_pydub(file_path, mono: bool):
     audio = AudioSegment.from_wav(file_path)
+    if mono and audio.channels > 1:
+        audio.set_channels(1)
     audio = audio.set_frame_rate(audio.frame_rate).set_channels(audio.channels)  # Ensure correct sample rate and channels
     samples = np.array(audio.get_array_of_samples())
     return samples, audio.frame_rate
@@ -81,9 +83,9 @@ def load_audio_files(filenames: str | list[str]) -> list[AudioInfo]:
         if _LOAD_NON_FLOAT_AS_INT and mdata.bitdepth == 24:
             #data, sr = sf.read(fn, dtype='int32')
             #data = data.reshape(-1, 3)  # Reshape into 24-bit samples
-            data, sr = load_24bit_pcm_with_pydub(fn)
+            data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
         else:
-            data, sr = librosa.load(fn, mono=False, sr=None)
+            data, sr = librosa.load(fn, mono=True, sr=None)
         audio_info.append(
             AudioInfo(
                 data=data,
@@ -390,6 +392,9 @@ def create_audio_figure_subplots(
 
 def plot_audio_files(args):
     audio_info = load_audio_files(filenames=args.filename)
+    if args.boost_factor != 1.0:
+        for ai in audio_info:
+            ai.data *= args.boost_factor
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
         start_at_seconds=args.start_at,
@@ -401,6 +406,9 @@ def plot_audio_files(args):
 
 def plot_audio_file_levels(args):
     audio_info = load_audio_files(filenames=args.filename)
+    if args.boost_factor != 1.0:
+        for ai in audio_info:
+            ai.data *= args.boost_factor
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
         start_at_seconds=args.start_at,
@@ -435,6 +443,9 @@ def handle_levels(args):
         ])
 
     audio_info = load_audio_files(filenames=args.filename)
+    if args.boost_factor != 1.0:
+        for ai in audio_info:
+            ai.data *= args.boost_factor
     for i, ai in enumerate(audio_info):
         audio, start_trim_count, _ = get_target_samples(
             audio_info=ai,
@@ -700,23 +711,27 @@ def show_ranges(args):
 
 
 def main(argv=None):
+
     parser = argparse.ArgumentParser(
         prog='audio_util',
         description='Audio Utility v0.01',
     )
+
     parser_common_filenames = argparse.ArgumentParser(add_help=False)
     parser_common_filenames.add_argument(
         "filename",
         nargs="+",
         help="One or more audio filenames."
     )
-    parser.add_argument(
-        "-v",
-        "--verbosity",
-        action="count",
-        help="""increase verbosity with each usage (i.e., -vv is more verbose than -v).
-    """,
+
+    parser_common_samples = argparse.ArgumentParser(add_help=False)
+    parser_common_samples.add_argument(
+        "--boost-factor",
+        help="The amount by which to boost the .wav samples.",
+        type=float,
+        default=1.0,
     )
+
     subparsers = parser.add_subparsers(
         title="Subcommands",
         description="Subcommands description",
@@ -783,7 +798,11 @@ def main(argv=None):
     plot_samples = plot_subcmd.add_parser(
         name="samples",
         help=f"Plot the audio file samples.",
-        parents=[parser_common_filenames, parser_common_start_stop],
+        parents=[
+            parser_common_filenames,
+            parser_common_samples,
+            parser_common_start_stop,
+        ],
     )
     plot_samples.set_defaults(func=plot_audio_files)
 
@@ -792,6 +811,7 @@ def main(argv=None):
         help=f"Plot the audio file samples with level annotations.",
         parents=[
             parser_common_filenames,
+            parser_common_samples,
             parser_common_start_stop,
             parser_common_find_levels,
         ],
@@ -804,6 +824,7 @@ def main(argv=None):
         parents=[
             parser_common_filenames,
             parser_common_csv,
+            parser_common_samples,
             parser_common_start_stop,
             parser_common_find_levels,
         ],
@@ -831,17 +852,6 @@ def main(argv=None):
         default=inc_types[0],
         type=str,
     )
-    # subparser_range.add_argument(
-    #     "-c", "--csv",
-    #     action=argparse.BooleanOptionalAction,
-    #     default=False,
-    #     help="Output a CSV to either the terminal or a specified file."
-    # )
-    # subparser_range.add_argument(
-    #     "-o",
-    #     default=None,
-    #     help="Output CSV file name.",
-    # )
     subparser_range.set_defaults(func=show_ranges)
 
     args = parser.parse_args()
