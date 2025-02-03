@@ -1,6 +1,7 @@
 import csv
 from ctypes import c_float
 from enum import Enum
+import glob
 import math
 import os
 from dataclasses import dataclass
@@ -78,24 +79,29 @@ def load_audio_files(filenames: str | list[str]) -> list[AudioInfo]:
     if isinstance(filenames, str):
         filenames = list[filenames]
     audio_info: list[AudioInfo] = []
-    for fn in filenames:
-        mdata = tinytag.TinyTag.get(fn)
-        if _LOAD_NON_FLOAT_AS_INT and mdata.bitdepth == 24:
-            #data, sr = sf.read(fn, dtype='int32')
-            #data = data.reshape(-1, 3)  # Reshape into 24-bit samples
-            data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
-        else:
-            data, sr = librosa.load(fn, mono=True, sr=None)
-        audio_info.append(
-            AudioInfo(
-                data=data,
-                sr=sr,
-                duration=mdata.duration,
-                bitdepth=mdata.bitdepth,
-                channels=mdata.channels,
-                fn=fn,
+    for spec in filenames:
+        found_files = glob.glob(spec)
+        for fn in found_files:
+            if not os.path.isfile(fn):
+                print(f"WARNING: Skipping non-file: {fn}")
+                continue
+            mdata = tinytag.TinyTag.get(fn)
+            if _LOAD_NON_FLOAT_AS_INT and mdata.bitdepth == 24:
+                #data, sr = sf.read(fn, dtype='int32')
+                #data = data.reshape(-1, 3)  # Reshape into 24-bit samples
+                data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
+            else:
+                data, sr = librosa.load(fn, mono=True, sr=None)
+            audio_info.append(
+                AudioInfo(
+                    data=data,
+                    sr=sr,
+                    duration=mdata.duration,
+                    bitdepth=mdata.bitdepth,
+                    channels=mdata.channels,
+                    fn=fn,
+                )
             )
-        )
     return audio_info
 
 
