@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <algorithm>
 
 const int out_precision = 9;
 
@@ -34,6 +35,11 @@ union fltu {
 		unsigned int sign : 1;
 	} p;
 	int32_t raw;
+
+	int get_exp() const
+	{
+		return std::max((signed int)p.biased_exp - 127, -126);
+	}
 
 	operator float() const
 	{
@@ -101,14 +107,14 @@ const std::string get_fltu_log_str(const char* msg, int msg_padding, const fltu&
 	os << " ";
 	os << "("
 		<< "sign=" << u.p.sign
-		<< " biased_exp=" << u.p.biased_exp << " exp=" << ((signed int)u.p.biased_exp - 127)
+		<< " bexp=" << u.p.biased_exp << " exp=" << u.get_exp()
 		<< " man=0x" << std::hex << std::setw(6) << std::setfill('0') << u.p.man
 		<< " raw=0x" << std::hex << std::setw(8) << std::setfill('0') << u.raw
 		<< ")"
 		<< " "
 		<< "("
-		<< "24bit=" << std::dec << float_to_24bit(u.f) << " "
-		<< "0x" << std::hex << std::setw(6) << std::setfill('0') << (float_to_24bit(u.f) & 0xFFFFFF)
+		<< "24bit: " << "0x" << std::hex << std::setw(6) << std::setfill('0') << (float_to_24bit(u.f) & 0xFFFFFF)
+		<< " dec=" << std::dec << float_to_24bit(u.f)
 		<< ")";
 	return os.str();
 }
@@ -123,13 +129,12 @@ const std::string get_fltu_log_str(const fltu& u)
 
 void output_float_ranges()
 {
-	auto fr = get_float_ranges();
 	for (auto& fr : get_float_ranges())
 	{
 		std::cout << std::scientific << std::setprecision(out_precision) << fr.low_end.f << " to ";
 		std::cout << std::scientific << std::setprecision(out_precision) << fr.high_end.f;
 		std::cout << std::endl;
-		int padding = 19;
+		int padding = 14;
 		std::cout << "     " << get_fltu_log_str("low_end", padding, fr.low_end) << std::endl;
 		std::cout << "     " << get_fltu_log_str("low_end+1", padding, fr.low_end_plus_1) << std::endl;
 		std::cout << "     ... " << std::endl;

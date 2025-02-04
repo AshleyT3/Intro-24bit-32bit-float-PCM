@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="ShowFloatRanges.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\fltu.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
