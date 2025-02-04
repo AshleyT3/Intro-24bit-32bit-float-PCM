@@ -1,0 +1,895 @@
+0.000000000e+00 to 1.175494211e-38
+     low_end ........... 0.000000000e+00 (0.000000000) (sign=0 biased_exp=0 exp=-127 man=0x000000 raw=0x00000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.401298464e-45 (0.000000000) (sign=0 biased_exp=0 exp=-127 man=0x000001 raw=0x00000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.175494071e-38 (0.000000000) (sign=0 biased_exp=0 exp=-127 man=0x7ffffe raw=0x007ffffe) (24bit=0 0x000000)
+     high_end .......... 1.175494211e-38 (0.000000000) (sign=0 biased_exp=0 exp=-127 man=0x7fffff raw=0x007fffff) (24bit=0 0x000000)
+
+1.175494351e-38 to 2.350988562e-38
+     low_end ........... 1.175494351e-38 (0.000000000) (sign=0 biased_exp=1 exp=-126 man=0x000000 raw=0x00800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.175494491e-38 (0.000000000) (sign=0 biased_exp=1 exp=-126 man=0x000001 raw=0x00800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.350988421e-38 (0.000000000) (sign=0 biased_exp=1 exp=-126 man=0x7ffffe raw=0x00fffffe) (24bit=0 0x000000)
+     high_end .......... 2.350988562e-38 (0.000000000) (sign=0 biased_exp=1 exp=-126 man=0x7fffff raw=0x00ffffff) (24bit=0 0x000000)
+
+2.350988702e-38 to 4.701977123e-38
+     low_end ........... 2.350988702e-38 (0.000000000) (sign=0 biased_exp=2 exp=-125 man=0x000000 raw=0x01000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.350988982e-38 (0.000000000) (sign=0 biased_exp=2 exp=-125 man=0x000001 raw=0x01000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.701976843e-38 (0.000000000) (sign=0 biased_exp=2 exp=-125 man=0x7ffffe raw=0x017ffffe) (24bit=0 0x000000)
+     high_end .......... 4.701977123e-38 (0.000000000) (sign=0 biased_exp=2 exp=-125 man=0x7fffff raw=0x017fffff) (24bit=0 0x000000)
+
+4.701977403e-38 to 9.403954246e-38
+     low_end ........... 4.701977403e-38 (0.000000000) (sign=0 biased_exp=3 exp=-124 man=0x000000 raw=0x01800000) (24bit=0 0x000000)
+     low_end+1 ......... 4.701977964e-38 (0.000000000) (sign=0 biased_exp=3 exp=-124 man=0x000001 raw=0x01800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 9.403953686e-38 (0.000000000) (sign=0 biased_exp=3 exp=-124 man=0x7ffffe raw=0x01fffffe) (24bit=0 0x000000)
+     high_end .......... 9.403954246e-38 (0.000000000) (sign=0 biased_exp=3 exp=-124 man=0x7fffff raw=0x01ffffff) (24bit=0 0x000000)
+
+9.403954807e-38 to 1.880790849e-37
+     low_end ........... 9.403954807e-38 (0.000000000) (sign=0 biased_exp=4 exp=-123 man=0x000000 raw=0x02000000) (24bit=0 0x000000)
+     low_end+1 ......... 9.403955928e-38 (0.000000000) (sign=0 biased_exp=4 exp=-123 man=0x000001 raw=0x02000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.880790737e-37 (0.000000000) (sign=0 biased_exp=4 exp=-123 man=0x7ffffe raw=0x027ffffe) (24bit=0 0x000000)
+     high_end .......... 1.880790849e-37 (0.000000000) (sign=0 biased_exp=4 exp=-123 man=0x7fffff raw=0x027fffff) (24bit=0 0x000000)
+
+1.880790961e-37 to 3.761581698e-37
+     low_end ........... 1.880790961e-37 (0.000000000) (sign=0 biased_exp=5 exp=-122 man=0x000000 raw=0x02800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.880791186e-37 (0.000000000) (sign=0 biased_exp=5 exp=-122 man=0x000001 raw=0x02800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.761581474e-37 (0.000000000) (sign=0 biased_exp=5 exp=-122 man=0x7ffffe raw=0x02fffffe) (24bit=0 0x000000)
+     high_end .......... 3.761581698e-37 (0.000000000) (sign=0 biased_exp=5 exp=-122 man=0x7fffff raw=0x02ffffff) (24bit=0 0x000000)
+
+3.761581923e-37 to 7.523163397e-37
+     low_end ........... 3.761581923e-37 (0.000000000) (sign=0 biased_exp=6 exp=-121 man=0x000000 raw=0x03000000) (24bit=0 0x000000)
+     low_end+1 ......... 3.761582371e-37 (0.000000000) (sign=0 biased_exp=6 exp=-121 man=0x000001 raw=0x03000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 7.523162948e-37 (0.000000000) (sign=0 biased_exp=6 exp=-121 man=0x7ffffe raw=0x037ffffe) (24bit=0 0x000000)
+     high_end .......... 7.523163397e-37 (0.000000000) (sign=0 biased_exp=6 exp=-121 man=0x7fffff raw=0x037fffff) (24bit=0 0x000000)
+
+7.523163845e-37 to 1.504632679e-36
+     low_end ........... 7.523163845e-37 (0.000000000) (sign=0 biased_exp=7 exp=-120 man=0x000000 raw=0x03800000) (24bit=0 0x000000)
+     low_end+1 ......... 7.523164742e-37 (0.000000000) (sign=0 biased_exp=7 exp=-120 man=0x000001 raw=0x03800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.504632590e-36 (0.000000000) (sign=0 biased_exp=7 exp=-120 man=0x7ffffe raw=0x03fffffe) (24bit=0 0x000000)
+     high_end .......... 1.504632679e-36 (0.000000000) (sign=0 biased_exp=7 exp=-120 man=0x7fffff raw=0x03ffffff) (24bit=0 0x000000)
+
+1.504632769e-36 to 3.009265359e-36
+     low_end ........... 1.504632769e-36 (0.000000000) (sign=0 biased_exp=8 exp=-119 man=0x000000 raw=0x04000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.504632948e-36 (0.000000000) (sign=0 biased_exp=8 exp=-119 man=0x000001 raw=0x04000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.009265179e-36 (0.000000000) (sign=0 biased_exp=8 exp=-119 man=0x7ffffe raw=0x047ffffe) (24bit=0 0x000000)
+     high_end .......... 3.009265359e-36 (0.000000000) (sign=0 biased_exp=8 exp=-119 man=0x7fffff raw=0x047fffff) (24bit=0 0x000000)
+
+3.009265538e-36 to 6.018530717e-36
+     low_end ........... 3.009265538e-36 (0.000000000) (sign=0 biased_exp=9 exp=-118 man=0x000000 raw=0x04800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.009265897e-36 (0.000000000) (sign=0 biased_exp=9 exp=-118 man=0x000001 raw=0x04800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.018530359e-36 (0.000000000) (sign=0 biased_exp=9 exp=-118 man=0x7ffffe raw=0x04fffffe) (24bit=0 0x000000)
+     high_end .......... 6.018530717e-36 (0.000000000) (sign=0 biased_exp=9 exp=-118 man=0x7fffff raw=0x04ffffff) (24bit=0 0x000000)
+
+6.018531076e-36 to 1.203706143e-35
+     low_end ........... 6.018531076e-36 (0.000000000) (sign=0 biased_exp=10 exp=-117 man=0x000000 raw=0x05000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.018531794e-36 (0.000000000) (sign=0 biased_exp=10 exp=-117 man=0x000001 raw=0x05000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.203706072e-35 (0.000000000) (sign=0 biased_exp=10 exp=-117 man=0x7ffffe raw=0x057ffffe) (24bit=0 0x000000)
+     high_end .......... 1.203706143e-35 (0.000000000) (sign=0 biased_exp=10 exp=-117 man=0x7fffff raw=0x057fffff) (24bit=0 0x000000)
+
+1.203706215e-35 to 2.407412287e-35
+     low_end ........... 1.203706215e-35 (0.000000000) (sign=0 biased_exp=11 exp=-116 man=0x000000 raw=0x05800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.203706359e-35 (0.000000000) (sign=0 biased_exp=11 exp=-116 man=0x000001 raw=0x05800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.407412143e-35 (0.000000000) (sign=0 biased_exp=11 exp=-116 man=0x7ffffe raw=0x05fffffe) (24bit=0 0x000000)
+     high_end .......... 2.407412287e-35 (0.000000000) (sign=0 biased_exp=11 exp=-116 man=0x7fffff raw=0x05ffffff) (24bit=0 0x000000)
+
+2.407412430e-35 to 4.814824574e-35
+     low_end ........... 2.407412430e-35 (0.000000000) (sign=0 biased_exp=12 exp=-115 man=0x000000 raw=0x06000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.407412717e-35 (0.000000000) (sign=0 biased_exp=12 exp=-115 man=0x000001 raw=0x06000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.814824287e-35 (0.000000000) (sign=0 biased_exp=12 exp=-115 man=0x7ffffe raw=0x067ffffe) (24bit=0 0x000000)
+     high_end .......... 4.814824574e-35 (0.000000000) (sign=0 biased_exp=12 exp=-115 man=0x7fffff raw=0x067fffff) (24bit=0 0x000000)
+
+4.814824861e-35 to 9.629649148e-35
+     low_end ........... 4.814824861e-35 (0.000000000) (sign=0 biased_exp=13 exp=-114 man=0x000000 raw=0x06800000) (24bit=0 0x000000)
+     low_end+1 ......... 4.814825435e-35 (0.000000000) (sign=0 biased_exp=13 exp=-114 man=0x000001 raw=0x06800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 9.629648574e-35 (0.000000000) (sign=0 biased_exp=13 exp=-114 man=0x7ffffe raw=0x06fffffe) (24bit=0 0x000000)
+     high_end .......... 9.629649148e-35 (0.000000000) (sign=0 biased_exp=13 exp=-114 man=0x7fffff raw=0x06ffffff) (24bit=0 0x000000)
+
+9.629649722e-35 to 1.925929830e-34
+     low_end ........... 9.629649722e-35 (0.000000000) (sign=0 biased_exp=14 exp=-113 man=0x000000 raw=0x07000000) (24bit=0 0x000000)
+     low_end+1 ......... 9.629650870e-35 (0.000000000) (sign=0 biased_exp=14 exp=-113 man=0x000001 raw=0x07000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.925929715e-34 (0.000000000) (sign=0 biased_exp=14 exp=-113 man=0x7ffffe raw=0x077ffffe) (24bit=0 0x000000)
+     high_end .......... 1.925929830e-34 (0.000000000) (sign=0 biased_exp=14 exp=-113 man=0x7fffff raw=0x077fffff) (24bit=0 0x000000)
+
+1.925929944e-34 to 3.851859659e-34
+     low_end ........... 1.925929944e-34 (0.000000000) (sign=0 biased_exp=15 exp=-112 man=0x000000 raw=0x07800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.925930174e-34 (0.000000000) (sign=0 biased_exp=15 exp=-112 man=0x000001 raw=0x07800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.851859430e-34 (0.000000000) (sign=0 biased_exp=15 exp=-112 man=0x7ffffe raw=0x07fffffe) (24bit=0 0x000000)
+     high_end .......... 3.851859659e-34 (0.000000000) (sign=0 biased_exp=15 exp=-112 man=0x7fffff raw=0x07ffffff) (24bit=0 0x000000)
+
+3.851859889e-34 to 7.703719318e-34
+     low_end ........... 3.851859889e-34 (0.000000000) (sign=0 biased_exp=16 exp=-111 man=0x000000 raw=0x08000000) (24bit=0 0x000000)
+     low_end+1 ......... 3.851860348e-34 (0.000000000) (sign=0 biased_exp=16 exp=-111 man=0x000001 raw=0x08000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 7.703718859e-34 (0.000000000) (sign=0 biased_exp=16 exp=-111 man=0x7ffffe raw=0x087ffffe) (24bit=0 0x000000)
+     high_end .......... 7.703719318e-34 (0.000000000) (sign=0 biased_exp=16 exp=-111 man=0x7fffff raw=0x087fffff) (24bit=0 0x000000)
+
+7.703719778e-34 to 1.540743864e-33
+     low_end ........... 7.703719778e-34 (0.000000000) (sign=0 biased_exp=17 exp=-110 man=0x000000 raw=0x08800000) (24bit=0 0x000000)
+     low_end+1 ......... 7.703720696e-34 (0.000000000) (sign=0 biased_exp=17 exp=-110 man=0x000001 raw=0x08800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.540743772e-33 (0.000000000) (sign=0 biased_exp=17 exp=-110 man=0x7ffffe raw=0x08fffffe) (24bit=0 0x000000)
+     high_end .......... 1.540743864e-33 (0.000000000) (sign=0 biased_exp=17 exp=-110 man=0x7fffff raw=0x08ffffff) (24bit=0 0x000000)
+
+1.540743956e-33 to 3.081487727e-33
+     low_end ........... 1.540743956e-33 (0.000000000) (sign=0 biased_exp=18 exp=-109 man=0x000000 raw=0x09000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.540744139e-33 (0.000000000) (sign=0 biased_exp=18 exp=-109 man=0x000001 raw=0x09000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.081487544e-33 (0.000000000) (sign=0 biased_exp=18 exp=-109 man=0x7ffffe raw=0x097ffffe) (24bit=0 0x000000)
+     high_end .......... 3.081487727e-33 (0.000000000) (sign=0 biased_exp=18 exp=-109 man=0x7fffff raw=0x097fffff) (24bit=0 0x000000)
+
+3.081487911e-33 to 6.162975455e-33
+     low_end ........... 3.081487911e-33 (0.000000000) (sign=0 biased_exp=19 exp=-108 man=0x000000 raw=0x09800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.081488278e-33 (0.000000000) (sign=0 biased_exp=19 exp=-108 man=0x000001 raw=0x09800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.162975087e-33 (0.000000000) (sign=0 biased_exp=19 exp=-108 man=0x7ffffe raw=0x09fffffe) (24bit=0 0x000000)
+     high_end .......... 6.162975455e-33 (0.000000000) (sign=0 biased_exp=19 exp=-108 man=0x7fffff raw=0x09ffffff) (24bit=0 0x000000)
+
+6.162975822e-33 to 1.232595091e-32
+     low_end ........... 6.162975822e-33 (0.000000000) (sign=0 biased_exp=20 exp=-107 man=0x000000 raw=0x0a000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.162976557e-33 (0.000000000) (sign=0 biased_exp=20 exp=-107 man=0x000001 raw=0x0a000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.232595017e-32 (0.000000000) (sign=0 biased_exp=20 exp=-107 man=0x7ffffe raw=0x0a7ffffe) (24bit=0 0x000000)
+     high_end .......... 1.232595091e-32 (0.000000000) (sign=0 biased_exp=20 exp=-107 man=0x7fffff raw=0x0a7fffff) (24bit=0 0x000000)
+
+1.232595164e-32 to 2.465190182e-32
+     low_end ........... 1.232595164e-32 (0.000000000) (sign=0 biased_exp=21 exp=-106 man=0x000000 raw=0x0a800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.232595311e-32 (0.000000000) (sign=0 biased_exp=21 exp=-106 man=0x000001 raw=0x0a800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.465190035e-32 (0.000000000) (sign=0 biased_exp=21 exp=-106 man=0x7ffffe raw=0x0afffffe) (24bit=0 0x000000)
+     high_end .......... 2.465190182e-32 (0.000000000) (sign=0 biased_exp=21 exp=-106 man=0x7fffff raw=0x0affffff) (24bit=0 0x000000)
+
+2.465190329e-32 to 4.930380364e-32
+     low_end ........... 2.465190329e-32 (0.000000000) (sign=0 biased_exp=22 exp=-105 man=0x000000 raw=0x0b000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.465190623e-32 (0.000000000) (sign=0 biased_exp=22 exp=-105 man=0x000001 raw=0x0b000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.930380070e-32 (0.000000000) (sign=0 biased_exp=22 exp=-105 man=0x7ffffe raw=0x0b7ffffe) (24bit=0 0x000000)
+     high_end .......... 4.930380364e-32 (0.000000000) (sign=0 biased_exp=22 exp=-105 man=0x7fffff raw=0x0b7fffff) (24bit=0 0x000000)
+
+4.930380658e-32 to 9.860760728e-32
+     low_end ........... 4.930380658e-32 (0.000000000) (sign=0 biased_exp=23 exp=-104 man=0x000000 raw=0x0b800000) (24bit=0 0x000000)
+     low_end+1 ......... 4.930381245e-32 (0.000000000) (sign=0 biased_exp=23 exp=-104 man=0x000001 raw=0x0b800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 9.860760140e-32 (0.000000000) (sign=0 biased_exp=23 exp=-104 man=0x7ffffe raw=0x0bfffffe) (24bit=0 0x000000)
+     high_end .......... 9.860760728e-32 (0.000000000) (sign=0 biased_exp=23 exp=-104 man=0x7fffff raw=0x0bffffff) (24bit=0 0x000000)
+
+9.860761315e-32 to 1.972152146e-31
+     low_end ........... 9.860761315e-32 (0.000000000) (sign=0 biased_exp=24 exp=-103 man=0x000000 raw=0x0c000000) (24bit=0 0x000000)
+     low_end+1 ......... 9.860762491e-32 (0.000000000) (sign=0 biased_exp=24 exp=-103 man=0x000001 raw=0x0c000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.972152028e-31 (0.000000000) (sign=0 biased_exp=24 exp=-103 man=0x7ffffe raw=0x0c7ffffe) (24bit=0 0x000000)
+     high_end .......... 1.972152146e-31 (0.000000000) (sign=0 biased_exp=24 exp=-103 man=0x7fffff raw=0x0c7fffff) (24bit=0 0x000000)
+
+1.972152263e-31 to 3.944304291e-31
+     low_end ........... 1.972152263e-31 (0.000000000) (sign=0 biased_exp=25 exp=-102 man=0x000000 raw=0x0c800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.972152498e-31 (0.000000000) (sign=0 biased_exp=25 exp=-102 man=0x000001 raw=0x0c800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.944304056e-31 (0.000000000) (sign=0 biased_exp=25 exp=-102 man=0x7ffffe raw=0x0cfffffe) (24bit=0 0x000000)
+     high_end .......... 3.944304291e-31 (0.000000000) (sign=0 biased_exp=25 exp=-102 man=0x7fffff raw=0x0cffffff) (24bit=0 0x000000)
+
+3.944304526e-31 to 7.888608582e-31
+     low_end ........... 3.944304526e-31 (0.000000000) (sign=0 biased_exp=26 exp=-101 man=0x000000 raw=0x0d000000) (24bit=0 0x000000)
+     low_end+1 ......... 3.944304996e-31 (0.000000000) (sign=0 biased_exp=26 exp=-101 man=0x000001 raw=0x0d000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 7.888608112e-31 (0.000000000) (sign=0 biased_exp=26 exp=-101 man=0x7ffffe raw=0x0d7ffffe) (24bit=0 0x000000)
+     high_end .......... 7.888608582e-31 (0.000000000) (sign=0 biased_exp=26 exp=-101 man=0x7fffff raw=0x0d7fffff) (24bit=0 0x000000)
+
+7.888609052e-31 to 1.577721716e-30
+     low_end ........... 7.888609052e-31 (0.000000000) (sign=0 biased_exp=27 exp=-100 man=0x000000 raw=0x0d800000) (24bit=0 0x000000)
+     low_end+1 ......... 7.888609993e-31 (0.000000000) (sign=0 biased_exp=27 exp=-100 man=0x000001 raw=0x0d800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.577721622e-30 (0.000000000) (sign=0 biased_exp=27 exp=-100 man=0x7ffffe raw=0x0dfffffe) (24bit=0 0x000000)
+     high_end .......... 1.577721716e-30 (0.000000000) (sign=0 biased_exp=27 exp=-100 man=0x7fffff raw=0x0dffffff) (24bit=0 0x000000)
+
+1.577721810e-30 to 3.155443433e-30
+     low_end ........... 1.577721810e-30 (0.000000000) (sign=0 biased_exp=28 exp=-99 man=0x000000 raw=0x0e000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.577721999e-30 (0.000000000) (sign=0 biased_exp=28 exp=-99 man=0x000001 raw=0x0e000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.155443245e-30 (0.000000000) (sign=0 biased_exp=28 exp=-99 man=0x7ffffe raw=0x0e7ffffe) (24bit=0 0x000000)
+     high_end .......... 3.155443433e-30 (0.000000000) (sign=0 biased_exp=28 exp=-99 man=0x7fffff raw=0x0e7fffff) (24bit=0 0x000000)
+
+3.155443621e-30 to 6.310886866e-30
+     low_end ........... 3.155443621e-30 (0.000000000) (sign=0 biased_exp=29 exp=-98 man=0x000000 raw=0x0e800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.155443997e-30 (0.000000000) (sign=0 biased_exp=29 exp=-98 man=0x000001 raw=0x0e800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.310886489e-30 (0.000000000) (sign=0 biased_exp=29 exp=-98 man=0x7ffffe raw=0x0efffffe) (24bit=0 0x000000)
+     high_end .......... 6.310886866e-30 (0.000000000) (sign=0 biased_exp=29 exp=-98 man=0x7fffff raw=0x0effffff) (24bit=0 0x000000)
+
+6.310887242e-30 to 1.262177373e-29
+     low_end ........... 6.310887242e-30 (0.000000000) (sign=0 biased_exp=30 exp=-97 man=0x000000 raw=0x0f000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.310887994e-30 (0.000000000) (sign=0 biased_exp=30 exp=-97 man=0x000001 raw=0x0f000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.262177298e-29 (0.000000000) (sign=0 biased_exp=30 exp=-97 man=0x7ffffe raw=0x0f7ffffe) (24bit=0 0x000000)
+     high_end .......... 1.262177373e-29 (0.000000000) (sign=0 biased_exp=30 exp=-97 man=0x7fffff raw=0x0f7fffff) (24bit=0 0x000000)
+
+1.262177448e-29 to 2.524354746e-29
+     low_end ........... 1.262177448e-29 (0.000000000) (sign=0 biased_exp=31 exp=-96 man=0x000000 raw=0x0f800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.262177599e-29 (0.000000000) (sign=0 biased_exp=31 exp=-96 man=0x000001 raw=0x0f800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.524354596e-29 (0.000000000) (sign=0 biased_exp=31 exp=-96 man=0x7ffffe raw=0x0ffffffe) (24bit=0 0x000000)
+     high_end .......... 2.524354746e-29 (0.000000000) (sign=0 biased_exp=31 exp=-96 man=0x7fffff raw=0x0fffffff) (24bit=0 0x000000)
+
+2.524354897e-29 to 5.048709492e-29
+     low_end ........... 2.524354897e-29 (0.000000000) (sign=0 biased_exp=32 exp=-95 man=0x000000 raw=0x10000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.524355198e-29 (0.000000000) (sign=0 biased_exp=32 exp=-95 man=0x000001 raw=0x10000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.048709192e-29 (0.000000000) (sign=0 biased_exp=32 exp=-95 man=0x7ffffe raw=0x107ffffe) (24bit=0 0x000000)
+     high_end .......... 5.048709492e-29 (0.000000000) (sign=0 biased_exp=32 exp=-95 man=0x7fffff raw=0x107fffff) (24bit=0 0x000000)
+
+5.048709793e-29 to 1.009741898e-28
+     low_end ........... 5.048709793e-29 (0.000000000) (sign=0 biased_exp=33 exp=-94 man=0x000000 raw=0x10800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.048710395e-29 (0.000000000) (sign=0 biased_exp=33 exp=-94 man=0x000001 raw=0x10800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.009741838e-28 (0.000000000) (sign=0 biased_exp=33 exp=-94 man=0x7ffffe raw=0x10fffffe) (24bit=0 0x000000)
+     high_end .......... 1.009741898e-28 (0.000000000) (sign=0 biased_exp=33 exp=-94 man=0x7fffff raw=0x10ffffff) (24bit=0 0x000000)
+
+1.009741959e-28 to 2.019483797e-28
+     low_end ........... 1.009741959e-28 (0.000000000) (sign=0 biased_exp=34 exp=-93 man=0x000000 raw=0x11000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.009742079e-28 (0.000000000) (sign=0 biased_exp=34 exp=-93 man=0x000001 raw=0x11000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.019483677e-28 (0.000000000) (sign=0 biased_exp=34 exp=-93 man=0x7ffffe raw=0x117ffffe) (24bit=0 0x000000)
+     high_end .......... 2.019483797e-28 (0.000000000) (sign=0 biased_exp=34 exp=-93 man=0x7fffff raw=0x117fffff) (24bit=0 0x000000)
+
+2.019483917e-28 to 4.038967594e-28
+     low_end ........... 2.019483917e-28 (0.000000000) (sign=0 biased_exp=35 exp=-92 man=0x000000 raw=0x11800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.019484158e-28 (0.000000000) (sign=0 biased_exp=35 exp=-92 man=0x000001 raw=0x11800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.038967353e-28 (0.000000000) (sign=0 biased_exp=35 exp=-92 man=0x7ffffe raw=0x11fffffe) (24bit=0 0x000000)
+     high_end .......... 4.038967594e-28 (0.000000000) (sign=0 biased_exp=35 exp=-92 man=0x7fffff raw=0x11ffffff) (24bit=0 0x000000)
+
+4.038967835e-28 to 8.077935188e-28
+     low_end ........... 4.038967835e-28 (0.000000000) (sign=0 biased_exp=36 exp=-91 man=0x000000 raw=0x12000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.038968316e-28 (0.000000000) (sign=0 biased_exp=36 exp=-91 man=0x000001 raw=0x12000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 8.077934706e-28 (0.000000000) (sign=0 biased_exp=36 exp=-91 man=0x7ffffe raw=0x127ffffe) (24bit=0 0x000000)
+     high_end .......... 8.077935188e-28 (0.000000000) (sign=0 biased_exp=36 exp=-91 man=0x7fffff raw=0x127fffff) (24bit=0 0x000000)
+
+8.077935669e-28 to 1.615587038e-27
+     low_end ........... 8.077935669e-28 (0.000000000) (sign=0 biased_exp=37 exp=-90 man=0x000000 raw=0x12800000) (24bit=0 0x000000)
+     low_end+1 ......... 8.077936632e-28 (0.000000000) (sign=0 biased_exp=37 exp=-90 man=0x000001 raw=0x12800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.615586941e-27 (0.000000000) (sign=0 biased_exp=37 exp=-90 man=0x7ffffe raw=0x12fffffe) (24bit=0 0x000000)
+     high_end .......... 1.615587038e-27 (0.000000000) (sign=0 biased_exp=37 exp=-90 man=0x7fffff raw=0x12ffffff) (24bit=0 0x000000)
+
+1.615587134e-27 to 3.231174075e-27
+     low_end ........... 1.615587134e-27 (0.000000000) (sign=0 biased_exp=38 exp=-89 man=0x000000 raw=0x13000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.615587326e-27 (0.000000000) (sign=0 biased_exp=38 exp=-89 man=0x000001 raw=0x13000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.231173883e-27 (0.000000000) (sign=0 biased_exp=38 exp=-89 man=0x7ffffe raw=0x137ffffe) (24bit=0 0x000000)
+     high_end .......... 3.231174075e-27 (0.000000000) (sign=0 biased_exp=38 exp=-89 man=0x7fffff raw=0x137fffff) (24bit=0 0x000000)
+
+3.231174268e-27 to 6.462348150e-27
+     low_end ........... 3.231174268e-27 (0.000000000) (sign=0 biased_exp=39 exp=-88 man=0x000000 raw=0x13800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.231174653e-27 (0.000000000) (sign=0 biased_exp=39 exp=-88 man=0x000001 raw=0x13800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.462347765e-27 (0.000000000) (sign=0 biased_exp=39 exp=-88 man=0x7ffffe raw=0x13fffffe) (24bit=0 0x000000)
+     high_end .......... 6.462348150e-27 (0.000000000) (sign=0 biased_exp=39 exp=-88 man=0x7fffff raw=0x13ffffff) (24bit=0 0x000000)
+
+6.462348536e-27 to 1.292469630e-26
+     low_end ........... 6.462348536e-27 (0.000000000) (sign=0 biased_exp=40 exp=-87 man=0x000000 raw=0x14000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.462349306e-27 (0.000000000) (sign=0 biased_exp=40 exp=-87 man=0x000001 raw=0x14000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.292469553e-26 (0.000000000) (sign=0 biased_exp=40 exp=-87 man=0x7ffffe raw=0x147ffffe) (24bit=0 0x000000)
+     high_end .......... 1.292469630e-26 (0.000000000) (sign=0 biased_exp=40 exp=-87 man=0x7fffff raw=0x147fffff) (24bit=0 0x000000)
+
+1.292469707e-26 to 2.584939260e-26
+     low_end ........... 1.292469707e-26 (0.000000000) (sign=0 biased_exp=41 exp=-86 man=0x000000 raw=0x14800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.292469861e-26 (0.000000000) (sign=0 biased_exp=41 exp=-86 man=0x000001 raw=0x14800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.584939106e-26 (0.000000000) (sign=0 biased_exp=41 exp=-86 man=0x7ffffe raw=0x14fffffe) (24bit=0 0x000000)
+     high_end .......... 2.584939260e-26 (0.000000000) (sign=0 biased_exp=41 exp=-86 man=0x7fffff raw=0x14ffffff) (24bit=0 0x000000)
+
+2.584939414e-26 to 5.169878520e-26
+     low_end ........... 2.584939414e-26 (0.000000000) (sign=0 biased_exp=42 exp=-85 man=0x000000 raw=0x15000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.584939722e-26 (0.000000000) (sign=0 biased_exp=42 exp=-85 man=0x000001 raw=0x15000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.169878212e-26 (0.000000000) (sign=0 biased_exp=42 exp=-85 man=0x7ffffe raw=0x157ffffe) (24bit=0 0x000000)
+     high_end .......... 5.169878520e-26 (0.000000000) (sign=0 biased_exp=42 exp=-85 man=0x7fffff raw=0x157fffff) (24bit=0 0x000000)
+
+5.169878828e-26 to 1.033975704e-25
+     low_end ........... 5.169878828e-26 (0.000000000) (sign=0 biased_exp=43 exp=-84 man=0x000000 raw=0x15800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.169879445e-26 (0.000000000) (sign=0 biased_exp=43 exp=-84 man=0x000001 raw=0x15800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.033975642e-25 (0.000000000) (sign=0 biased_exp=43 exp=-84 man=0x7ffffe raw=0x15fffffe) (24bit=0 0x000000)
+     high_end .......... 1.033975704e-25 (0.000000000) (sign=0 biased_exp=43 exp=-84 man=0x7fffff raw=0x15ffffff) (24bit=0 0x000000)
+
+1.033975766e-25 to 2.067951408e-25
+     low_end ........... 1.033975766e-25 (0.000000000) (sign=0 biased_exp=44 exp=-83 man=0x000000 raw=0x16000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.033975889e-25 (0.000000000) (sign=0 biased_exp=44 exp=-83 man=0x000001 raw=0x16000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.067951285e-25 (0.000000000) (sign=0 biased_exp=44 exp=-83 man=0x7ffffe raw=0x167ffffe) (24bit=0 0x000000)
+     high_end .......... 2.067951408e-25 (0.000000000) (sign=0 biased_exp=44 exp=-83 man=0x7fffff raw=0x167fffff) (24bit=0 0x000000)
+
+2.067951531e-25 to 4.135902816e-25
+     low_end ........... 2.067951531e-25 (0.000000000) (sign=0 biased_exp=45 exp=-82 man=0x000000 raw=0x16800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.067951778e-25 (0.000000000) (sign=0 biased_exp=45 exp=-82 man=0x000001 raw=0x16800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.135902570e-25 (0.000000000) (sign=0 biased_exp=45 exp=-82 man=0x7ffffe raw=0x16fffffe) (24bit=0 0x000000)
+     high_end .......... 4.135902816e-25 (0.000000000) (sign=0 biased_exp=45 exp=-82 man=0x7fffff raw=0x16ffffff) (24bit=0 0x000000)
+
+4.135903063e-25 to 8.271805632e-25
+     low_end ........... 4.135903063e-25 (0.000000000) (sign=0 biased_exp=46 exp=-81 man=0x000000 raw=0x17000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.135903556e-25 (0.000000000) (sign=0 biased_exp=46 exp=-81 man=0x000001 raw=0x17000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 8.271805139e-25 (0.000000000) (sign=0 biased_exp=46 exp=-81 man=0x7ffffe raw=0x177ffffe) (24bit=0 0x000000)
+     high_end .......... 8.271805632e-25 (0.000000000) (sign=0 biased_exp=46 exp=-81 man=0x7fffff raw=0x177fffff) (24bit=0 0x000000)
+
+8.271806126e-25 to 1.654361126e-24
+     low_end ........... 8.271806126e-25 (0.000000000) (sign=0 biased_exp=47 exp=-80 man=0x000000 raw=0x17800000) (24bit=0 0x000000)
+     low_end+1 ......... 8.271807112e-25 (0.000000000) (sign=0 biased_exp=47 exp=-80 man=0x000001 raw=0x17800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.654361028e-24 (0.000000000) (sign=0 biased_exp=47 exp=-80 man=0x7ffffe raw=0x17fffffe) (24bit=0 0x000000)
+     high_end .......... 1.654361126e-24 (0.000000000) (sign=0 biased_exp=47 exp=-80 man=0x7fffff raw=0x17ffffff) (24bit=0 0x000000)
+
+1.654361225e-24 to 3.308722253e-24
+     low_end ........... 1.654361225e-24 (0.000000000) (sign=0 biased_exp=48 exp=-79 man=0x000000 raw=0x18000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.654361422e-24 (0.000000000) (sign=0 biased_exp=48 exp=-79 man=0x000001 raw=0x18000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.308722056e-24 (0.000000000) (sign=0 biased_exp=48 exp=-79 man=0x7ffffe raw=0x187ffffe) (24bit=0 0x000000)
+     high_end .......... 3.308722253e-24 (0.000000000) (sign=0 biased_exp=48 exp=-79 man=0x7fffff raw=0x187fffff) (24bit=0 0x000000)
+
+3.308722450e-24 to 6.617444506e-24
+     low_end ........... 3.308722450e-24 (0.000000000) (sign=0 biased_exp=49 exp=-78 man=0x000000 raw=0x18800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.308722845e-24 (0.000000000) (sign=0 biased_exp=49 exp=-78 man=0x000001 raw=0x18800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.617444112e-24 (0.000000000) (sign=0 biased_exp=49 exp=-78 man=0x7ffffe raw=0x18fffffe) (24bit=0 0x000000)
+     high_end .......... 6.617444506e-24 (0.000000000) (sign=0 biased_exp=49 exp=-78 man=0x7fffff raw=0x18ffffff) (24bit=0 0x000000)
+
+6.617444900e-24 to 1.323488901e-23
+     low_end ........... 6.617444900e-24 (0.000000000) (sign=0 biased_exp=50 exp=-77 man=0x000000 raw=0x19000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.617445689e-24 (0.000000000) (sign=0 biased_exp=50 exp=-77 man=0x000001 raw=0x19000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.323488822e-23 (0.000000000) (sign=0 biased_exp=50 exp=-77 man=0x7ffffe raw=0x197ffffe) (24bit=0 0x000000)
+     high_end .......... 1.323488901e-23 (0.000000000) (sign=0 biased_exp=50 exp=-77 man=0x7fffff raw=0x197fffff) (24bit=0 0x000000)
+
+1.323488980e-23 to 2.646977802e-23
+     low_end ........... 1.323488980e-23 (0.000000000) (sign=0 biased_exp=51 exp=-76 man=0x000000 raw=0x19800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.323489138e-23 (0.000000000) (sign=0 biased_exp=51 exp=-76 man=0x000001 raw=0x19800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.646977645e-23 (0.000000000) (sign=0 biased_exp=51 exp=-76 man=0x7ffffe raw=0x19fffffe) (24bit=0 0x000000)
+     high_end .......... 2.646977802e-23 (0.000000000) (sign=0 biased_exp=51 exp=-76 man=0x7fffff raw=0x19ffffff) (24bit=0 0x000000)
+
+2.646977960e-23 to 5.293955605e-23
+     low_end ........... 2.646977960e-23 (0.000000000) (sign=0 biased_exp=52 exp=-75 man=0x000000 raw=0x1a000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.646978276e-23 (0.000000000) (sign=0 biased_exp=52 exp=-75 man=0x000001 raw=0x1a000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.293955289e-23 (0.000000000) (sign=0 biased_exp=52 exp=-75 man=0x7ffffe raw=0x1a7ffffe) (24bit=0 0x000000)
+     high_end .......... 5.293955605e-23 (0.000000000) (sign=0 biased_exp=52 exp=-75 man=0x7fffff raw=0x1a7fffff) (24bit=0 0x000000)
+
+5.293955920e-23 to 1.058791121e-22
+     low_end ........... 5.293955920e-23 (0.000000000) (sign=0 biased_exp=53 exp=-74 man=0x000000 raw=0x1a800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.293956551e-23 (0.000000000) (sign=0 biased_exp=53 exp=-74 man=0x000001 raw=0x1a800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.058791058e-22 (0.000000000) (sign=0 biased_exp=53 exp=-74 man=0x7ffffe raw=0x1afffffe) (24bit=0 0x000000)
+     high_end .......... 1.058791121e-22 (0.000000000) (sign=0 biased_exp=53 exp=-74 man=0x7fffff raw=0x1affffff) (24bit=0 0x000000)
+
+1.058791184e-22 to 2.117582242e-22
+     low_end ........... 1.058791184e-22 (0.000000000) (sign=0 biased_exp=54 exp=-73 man=0x000000 raw=0x1b000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.058791310e-22 (0.000000000) (sign=0 biased_exp=54 exp=-73 man=0x000001 raw=0x1b000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.117582116e-22 (0.000000000) (sign=0 biased_exp=54 exp=-73 man=0x7ffffe raw=0x1b7ffffe) (24bit=0 0x000000)
+     high_end .......... 2.117582242e-22 (0.000000000) (sign=0 biased_exp=54 exp=-73 man=0x7fffff raw=0x1b7fffff) (24bit=0 0x000000)
+
+2.117582368e-22 to 4.235164484e-22
+     low_end ........... 2.117582368e-22 (0.000000000) (sign=0 biased_exp=55 exp=-72 man=0x000000 raw=0x1b800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.117582621e-22 (0.000000000) (sign=0 biased_exp=55 exp=-72 man=0x000001 raw=0x1b800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.235164231e-22 (0.000000000) (sign=0 biased_exp=55 exp=-72 man=0x7ffffe raw=0x1bfffffe) (24bit=0 0x000000)
+     high_end .......... 4.235164484e-22 (0.000000000) (sign=0 biased_exp=55 exp=-72 man=0x7fffff raw=0x1bffffff) (24bit=0 0x000000)
+
+4.235164736e-22 to 8.470328968e-22
+     low_end ........... 4.235164736e-22 (0.000000000) (sign=0 biased_exp=56 exp=-71 man=0x000000 raw=0x1c000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.235165241e-22 (0.000000000) (sign=0 biased_exp=56 exp=-71 man=0x000001 raw=0x1c000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 8.470328463e-22 (0.000000000) (sign=0 biased_exp=56 exp=-71 man=0x7ffffe raw=0x1c7ffffe) (24bit=0 0x000000)
+     high_end .......... 8.470328968e-22 (0.000000000) (sign=0 biased_exp=56 exp=-71 man=0x7fffff raw=0x1c7fffff) (24bit=0 0x000000)
+
+8.470329473e-22 to 1.694065794e-21
+     low_end ........... 8.470329473e-22 (0.000000000) (sign=0 biased_exp=57 exp=-70 man=0x000000 raw=0x1c800000) (24bit=0 0x000000)
+     low_end+1 ......... 8.470330482e-22 (0.000000000) (sign=0 biased_exp=57 exp=-70 man=0x000001 raw=0x1c800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.694065693e-21 (0.000000000) (sign=0 biased_exp=57 exp=-70 man=0x7ffffe raw=0x1cfffffe) (24bit=0 0x000000)
+     high_end .......... 1.694065794e-21 (0.000000000) (sign=0 biased_exp=57 exp=-70 man=0x7fffff raw=0x1cffffff) (24bit=0 0x000000)
+
+1.694065895e-21 to 3.388131587e-21
+     low_end ........... 1.694065895e-21 (0.000000000) (sign=0 biased_exp=58 exp=-69 man=0x000000 raw=0x1d000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.694066096e-21 (0.000000000) (sign=0 biased_exp=58 exp=-69 man=0x000001 raw=0x1d000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.388131385e-21 (0.000000000) (sign=0 biased_exp=58 exp=-69 man=0x7ffffe raw=0x1d7ffffe) (24bit=0 0x000000)
+     high_end .......... 3.388131587e-21 (0.000000000) (sign=0 biased_exp=58 exp=-69 man=0x7fffff raw=0x1d7fffff) (24bit=0 0x000000)
+
+3.388131789e-21 to 6.776263174e-21
+     low_end ........... 3.388131789e-21 (0.000000000) (sign=0 biased_exp=59 exp=-68 man=0x000000 raw=0x1d800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.388132193e-21 (0.000000000) (sign=0 biased_exp=59 exp=-68 man=0x000001 raw=0x1d800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.776262770e-21 (0.000000000) (sign=0 biased_exp=59 exp=-68 man=0x7ffffe raw=0x1dfffffe) (24bit=0 0x000000)
+     high_end .......... 6.776263174e-21 (0.000000000) (sign=0 biased_exp=59 exp=-68 man=0x7fffff raw=0x1dffffff) (24bit=0 0x000000)
+
+6.776263578e-21 to 1.355252635e-20
+     low_end ........... 6.776263578e-21 (0.000000000) (sign=0 biased_exp=60 exp=-67 man=0x000000 raw=0x1e000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.776264386e-21 (0.000000000) (sign=0 biased_exp=60 exp=-67 man=0x000001 raw=0x1e000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.355252554e-20 (0.000000000) (sign=0 biased_exp=60 exp=-67 man=0x7ffffe raw=0x1e7ffffe) (24bit=0 0x000000)
+     high_end .......... 1.355252635e-20 (0.000000000) (sign=0 biased_exp=60 exp=-67 man=0x7fffff raw=0x1e7fffff) (24bit=0 0x000000)
+
+1.355252716e-20 to 2.710505270e-20
+     low_end ........... 1.355252716e-20 (0.000000000) (sign=0 biased_exp=61 exp=-66 man=0x000000 raw=0x1e800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.355252877e-20 (0.000000000) (sign=0 biased_exp=61 exp=-66 man=0x000001 raw=0x1e800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.710505108e-20 (0.000000000) (sign=0 biased_exp=61 exp=-66 man=0x7ffffe raw=0x1efffffe) (24bit=0 0x000000)
+     high_end .......... 2.710505270e-20 (0.000000000) (sign=0 biased_exp=61 exp=-66 man=0x7fffff raw=0x1effffff) (24bit=0 0x000000)
+
+2.710505431e-20 to 5.421010539e-20
+     low_end ........... 2.710505431e-20 (0.000000000) (sign=0 biased_exp=62 exp=-65 man=0x000000 raw=0x1f000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.710505754e-20 (0.000000000) (sign=0 biased_exp=62 exp=-65 man=0x000001 raw=0x1f000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.421010216e-20 (0.000000000) (sign=0 biased_exp=62 exp=-65 man=0x7ffffe raw=0x1f7ffffe) (24bit=0 0x000000)
+     high_end .......... 5.421010539e-20 (0.000000000) (sign=0 biased_exp=62 exp=-65 man=0x7fffff raw=0x1f7fffff) (24bit=0 0x000000)
+
+5.421010862e-20 to 1.084202108e-19
+     low_end ........... 5.421010862e-20 (0.000000000) (sign=0 biased_exp=63 exp=-64 man=0x000000 raw=0x1f800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.421011509e-20 (0.000000000) (sign=0 biased_exp=63 exp=-64 man=0x000001 raw=0x1f800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.084202043e-19 (0.000000000) (sign=0 biased_exp=63 exp=-64 man=0x7ffffe raw=0x1ffffffe) (24bit=0 0x000000)
+     high_end .......... 1.084202108e-19 (0.000000000) (sign=0 biased_exp=63 exp=-64 man=0x7fffff raw=0x1fffffff) (24bit=0 0x000000)
+
+1.084202172e-19 to 2.168404216e-19
+     low_end ........... 1.084202172e-19 (0.000000000) (sign=0 biased_exp=64 exp=-63 man=0x000000 raw=0x20000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.084202302e-19 (0.000000000) (sign=0 biased_exp=64 exp=-63 man=0x000001 raw=0x20000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.168404086e-19 (0.000000000) (sign=0 biased_exp=64 exp=-63 man=0x7ffffe raw=0x207ffffe) (24bit=0 0x000000)
+     high_end .......... 2.168404216e-19 (0.000000000) (sign=0 biased_exp=64 exp=-63 man=0x7fffff raw=0x207fffff) (24bit=0 0x000000)
+
+2.168404345e-19 to 4.336808431e-19
+     low_end ........... 2.168404345e-19 (0.000000000) (sign=0 biased_exp=65 exp=-62 man=0x000000 raw=0x20800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.168404603e-19 (0.000000000) (sign=0 biased_exp=65 exp=-62 man=0x000001 raw=0x20800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.336808173e-19 (0.000000000) (sign=0 biased_exp=65 exp=-62 man=0x7ffffe raw=0x20fffffe) (24bit=0 0x000000)
+     high_end .......... 4.336808431e-19 (0.000000000) (sign=0 biased_exp=65 exp=-62 man=0x7fffff raw=0x20ffffff) (24bit=0 0x000000)
+
+4.336808690e-19 to 8.673616863e-19
+     low_end ........... 4.336808690e-19 (0.000000000) (sign=0 biased_exp=66 exp=-61 man=0x000000 raw=0x21000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.336809207e-19 (0.000000000) (sign=0 biased_exp=66 exp=-61 man=0x000001 raw=0x21000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 8.673616346e-19 (0.000000000) (sign=0 biased_exp=66 exp=-61 man=0x7ffffe raw=0x217ffffe) (24bit=0 0x000000)
+     high_end .......... 8.673616863e-19 (0.000000000) (sign=0 biased_exp=66 exp=-61 man=0x7fffff raw=0x217fffff) (24bit=0 0x000000)
+
+8.673617380e-19 to 1.734723373e-18
+     low_end ........... 8.673617380e-19 (0.000000000) (sign=0 biased_exp=67 exp=-60 man=0x000000 raw=0x21800000) (24bit=0 0x000000)
+     low_end+1 ......... 8.673618414e-19 (0.000000000) (sign=0 biased_exp=67 exp=-60 man=0x000001 raw=0x21800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.734723269e-18 (0.000000000) (sign=0 biased_exp=67 exp=-60 man=0x7ffffe raw=0x21fffffe) (24bit=0 0x000000)
+     high_end .......... 1.734723373e-18 (0.000000000) (sign=0 biased_exp=67 exp=-60 man=0x7fffff raw=0x21ffffff) (24bit=0 0x000000)
+
+1.734723476e-18 to 3.469446745e-18
+     low_end ........... 1.734723476e-18 (0.000000000) (sign=0 biased_exp=68 exp=-59 man=0x000000 raw=0x22000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.734723683e-18 (0.000000000) (sign=0 biased_exp=68 exp=-59 man=0x000001 raw=0x22000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.469446538e-18 (0.000000000) (sign=0 biased_exp=68 exp=-59 man=0x7ffffe raw=0x227ffffe) (24bit=0 0x000000)
+     high_end .......... 3.469446745e-18 (0.000000000) (sign=0 biased_exp=68 exp=-59 man=0x7fffff raw=0x227fffff) (24bit=0 0x000000)
+
+3.469446952e-18 to 6.938893490e-18
+     low_end ........... 3.469446952e-18 (0.000000000) (sign=0 biased_exp=69 exp=-58 man=0x000000 raw=0x22800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.469447366e-18 (0.000000000) (sign=0 biased_exp=69 exp=-58 man=0x000001 raw=0x22800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 6.938893077e-18 (0.000000000) (sign=0 biased_exp=69 exp=-58 man=0x7ffffe raw=0x22fffffe) (24bit=0 0x000000)
+     high_end .......... 6.938893490e-18 (0.000000000) (sign=0 biased_exp=69 exp=-58 man=0x7fffff raw=0x22ffffff) (24bit=0 0x000000)
+
+6.938893904e-18 to 1.387778698e-17
+     low_end ........... 6.938893904e-18 (0.000000000) (sign=0 biased_exp=70 exp=-57 man=0x000000 raw=0x23000000) (24bit=0 0x000000)
+     low_end+1 ......... 6.938894731e-18 (0.000000000) (sign=0 biased_exp=70 exp=-57 man=0x000001 raw=0x23000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.387778615e-17 (0.000000000) (sign=0 biased_exp=70 exp=-57 man=0x7ffffe raw=0x237ffffe) (24bit=0 0x000000)
+     high_end .......... 1.387778698e-17 (0.000000000) (sign=0 biased_exp=70 exp=-57 man=0x7fffff raw=0x237fffff) (24bit=0 0x000000)
+
+1.387778781e-17 to 2.775557396e-17
+     low_end ........... 1.387778781e-17 (0.000000000) (sign=0 biased_exp=71 exp=-56 man=0x000000 raw=0x23800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.387778946e-17 (0.000000000) (sign=0 biased_exp=71 exp=-56 man=0x000001 raw=0x23800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.775557231e-17 (0.000000000) (sign=0 biased_exp=71 exp=-56 man=0x7ffffe raw=0x23fffffe) (24bit=0 0x000000)
+     high_end .......... 2.775557396e-17 (0.000000000) (sign=0 biased_exp=71 exp=-56 man=0x7fffff raw=0x23ffffff) (24bit=0 0x000000)
+
+2.775557562e-17 to 5.551114792e-17
+     low_end ........... 2.775557562e-17 (0.000000000) (sign=0 biased_exp=72 exp=-55 man=0x000000 raw=0x24000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.775557892e-17 (0.000000000) (sign=0 biased_exp=72 exp=-55 man=0x000001 raw=0x24000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.551114461e-17 (0.000000000) (sign=0 biased_exp=72 exp=-55 man=0x7ffffe raw=0x247ffffe) (24bit=0 0x000000)
+     high_end .......... 5.551114792e-17 (0.000000000) (sign=0 biased_exp=72 exp=-55 man=0x7fffff raw=0x247fffff) (24bit=0 0x000000)
+
+5.551115123e-17 to 1.110222958e-16
+     low_end ........... 5.551115123e-17 (0.000000000) (sign=0 biased_exp=73 exp=-54 man=0x000000 raw=0x24800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.551115785e-17 (0.000000000) (sign=0 biased_exp=73 exp=-54 man=0x000001 raw=0x24800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.110222892e-16 (0.000000000) (sign=0 biased_exp=73 exp=-54 man=0x7ffffe raw=0x24fffffe) (24bit=0 0x000000)
+     high_end .......... 1.110222958e-16 (0.000000000) (sign=0 biased_exp=73 exp=-54 man=0x7fffff raw=0x24ffffff) (24bit=0 0x000000)
+
+1.110223025e-16 to 2.220445917e-16
+     low_end ........... 1.110223025e-16 (0.000000000) (sign=0 biased_exp=74 exp=-53 man=0x000000 raw=0x25000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.110223157e-16 (0.000000000) (sign=0 biased_exp=74 exp=-53 man=0x000001 raw=0x25000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.220445785e-16 (0.000000000) (sign=0 biased_exp=74 exp=-53 man=0x7ffffe raw=0x257ffffe) (24bit=0 0x000000)
+     high_end .......... 2.220445917e-16 (0.000000000) (sign=0 biased_exp=74 exp=-53 man=0x7fffff raw=0x257fffff) (24bit=0 0x000000)
+
+2.220446049e-16 to 4.440891834e-16
+     low_end ........... 2.220446049e-16 (0.000000000) (sign=0 biased_exp=75 exp=-52 man=0x000000 raw=0x25800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.220446314e-16 (0.000000000) (sign=0 biased_exp=75 exp=-52 man=0x000001 raw=0x25800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.440891569e-16 (0.000000000) (sign=0 biased_exp=75 exp=-52 man=0x7ffffe raw=0x25fffffe) (24bit=0 0x000000)
+     high_end .......... 4.440891834e-16 (0.000000000) (sign=0 biased_exp=75 exp=-52 man=0x7fffff raw=0x25ffffff) (24bit=0 0x000000)
+
+4.440892099e-16 to 8.881783668e-16
+     low_end ........... 4.440892099e-16 (0.000000000) (sign=0 biased_exp=76 exp=-51 man=0x000000 raw=0x26000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.440892628e-16 (0.000000000) (sign=0 biased_exp=76 exp=-51 man=0x000001 raw=0x26000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 8.881783138e-16 (0.000000000) (sign=0 biased_exp=76 exp=-51 man=0x7ffffe raw=0x267ffffe) (24bit=0 0x000000)
+     high_end .......... 8.881783668e-16 (0.000000000) (sign=0 biased_exp=76 exp=-51 man=0x7fffff raw=0x267fffff) (24bit=0 0x000000)
+
+8.881784197e-16 to 1.776356734e-15
+     low_end ........... 8.881784197e-16 (0.000000000) (sign=0 biased_exp=77 exp=-50 man=0x000000 raw=0x26800000) (24bit=0 0x000000)
+     low_end+1 ......... 8.881785256e-16 (0.000000000) (sign=0 biased_exp=77 exp=-50 man=0x000001 raw=0x26800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.776356628e-15 (0.000000000) (sign=0 biased_exp=77 exp=-50 man=0x7ffffe raw=0x26fffffe) (24bit=0 0x000000)
+     high_end .......... 1.776356734e-15 (0.000000000) (sign=0 biased_exp=77 exp=-50 man=0x7fffff raw=0x26ffffff) (24bit=0 0x000000)
+
+1.776356839e-15 to 3.552713467e-15
+     low_end ........... 1.776356839e-15 (0.000000000) (sign=0 biased_exp=78 exp=-49 man=0x000000 raw=0x27000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.776357051e-15 (0.000000000) (sign=0 biased_exp=78 exp=-49 man=0x000001 raw=0x27000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.552713255e-15 (0.000000000) (sign=0 biased_exp=78 exp=-49 man=0x7ffffe raw=0x277ffffe) (24bit=0 0x000000)
+     high_end .......... 3.552713467e-15 (0.000000000) (sign=0 biased_exp=78 exp=-49 man=0x7fffff raw=0x277fffff) (24bit=0 0x000000)
+
+3.552713679e-15 to 7.105426934e-15
+     low_end ........... 3.552713679e-15 (0.000000000) (sign=0 biased_exp=79 exp=-48 man=0x000000 raw=0x27800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.552714102e-15 (0.000000000) (sign=0 biased_exp=79 exp=-48 man=0x000001 raw=0x27800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 7.105426511e-15 (0.000000000) (sign=0 biased_exp=79 exp=-48 man=0x7ffffe raw=0x27fffffe) (24bit=0 0x000000)
+     high_end .......... 7.105426934e-15 (0.000000000) (sign=0 biased_exp=79 exp=-48 man=0x7fffff raw=0x27ffffff) (24bit=0 0x000000)
+
+7.105427358e-15 to 1.421085387e-14
+     low_end ........... 7.105427358e-15 (0.000000000) (sign=0 biased_exp=80 exp=-47 man=0x000000 raw=0x28000000) (24bit=0 0x000000)
+     low_end+1 ......... 7.105428205e-15 (0.000000000) (sign=0 biased_exp=80 exp=-47 man=0x000001 raw=0x28000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.421085302e-14 (0.000000000) (sign=0 biased_exp=80 exp=-47 man=0x7ffffe raw=0x287ffffe) (24bit=0 0x000000)
+     high_end .......... 1.421085387e-14 (0.000000000) (sign=0 biased_exp=80 exp=-47 man=0x7fffff raw=0x287fffff) (24bit=0 0x000000)
+
+1.421085472e-14 to 2.842170774e-14
+     low_end ........... 1.421085472e-14 (0.000000000) (sign=0 biased_exp=81 exp=-46 man=0x000000 raw=0x28800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.421085641e-14 (0.000000000) (sign=0 biased_exp=81 exp=-46 man=0x000001 raw=0x28800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.842170604e-14 (0.000000000) (sign=0 biased_exp=81 exp=-46 man=0x7ffffe raw=0x28fffffe) (24bit=0 0x000000)
+     high_end .......... 2.842170774e-14 (0.000000000) (sign=0 biased_exp=81 exp=-46 man=0x7fffff raw=0x28ffffff) (24bit=0 0x000000)
+
+2.842170943e-14 to 5.684341547e-14
+     low_end ........... 2.842170943e-14 (0.000000000) (sign=0 biased_exp=82 exp=-45 man=0x000000 raw=0x29000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.842171282e-14 (0.000000000) (sign=0 biased_exp=82 exp=-45 man=0x000001 raw=0x29000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.684341208e-14 (0.000000000) (sign=0 biased_exp=82 exp=-45 man=0x7ffffe raw=0x297ffffe) (24bit=0 0x000000)
+     high_end .......... 5.684341547e-14 (0.000000000) (sign=0 biased_exp=82 exp=-45 man=0x7fffff raw=0x297fffff) (24bit=0 0x000000)
+
+5.684341886e-14 to 1.136868309e-13
+     low_end ........... 5.684341886e-14 (0.000000000) (sign=0 biased_exp=83 exp=-44 man=0x000000 raw=0x29800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.684342564e-14 (0.000000000) (sign=0 biased_exp=83 exp=-44 man=0x000001 raw=0x29800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.136868242e-13 (0.000000000) (sign=0 biased_exp=83 exp=-44 man=0x7ffffe raw=0x29fffffe) (24bit=0 0x000000)
+     high_end .......... 1.136868309e-13 (0.000000000) (sign=0 biased_exp=83 exp=-44 man=0x7fffff raw=0x29ffffff) (24bit=0 0x000000)
+
+1.136868377e-13 to 2.273736619e-13
+     low_end ........... 1.136868377e-13 (0.000000000) (sign=0 biased_exp=84 exp=-43 man=0x000000 raw=0x2a000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.136868513e-13 (0.000000000) (sign=0 biased_exp=84 exp=-43 man=0x000001 raw=0x2a000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.273736483e-13 (0.000000000) (sign=0 biased_exp=84 exp=-43 man=0x7ffffe raw=0x2a7ffffe) (24bit=0 0x000000)
+     high_end .......... 2.273736619e-13 (0.000000000) (sign=0 biased_exp=84 exp=-43 man=0x7fffff raw=0x2a7fffff) (24bit=0 0x000000)
+
+2.273736754e-13 to 4.547473238e-13
+     low_end ........... 2.273736754e-13 (0.000000000) (sign=0 biased_exp=85 exp=-42 man=0x000000 raw=0x2a800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.273737025e-13 (0.000000000) (sign=0 biased_exp=85 exp=-42 man=0x000001 raw=0x2a800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.547472967e-13 (0.000000000) (sign=0 biased_exp=85 exp=-42 man=0x7ffffe raw=0x2afffffe) (24bit=0 0x000000)
+     high_end .......... 4.547473238e-13 (0.000000000) (sign=0 biased_exp=85 exp=-42 man=0x7fffff raw=0x2affffff) (24bit=0 0x000000)
+
+4.547473509e-13 to 9.094946476e-13
+     low_end ........... 4.547473509e-13 (0.000000000) (sign=0 biased_exp=86 exp=-41 man=0x000000 raw=0x2b000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.547474051e-13 (0.000000000) (sign=0 biased_exp=86 exp=-41 man=0x000001 raw=0x2b000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 9.094945934e-13 (0.000000000) (sign=0 biased_exp=86 exp=-41 man=0x7ffffe raw=0x2b7ffffe) (24bit=0 0x000000)
+     high_end .......... 9.094946476e-13 (0.000000000) (sign=0 biased_exp=86 exp=-41 man=0x7fffff raw=0x2b7fffff) (24bit=0 0x000000)
+
+9.094947018e-13 to 1.818989295e-12
+     low_end ........... 9.094947018e-13 (0.000000000) (sign=0 biased_exp=87 exp=-40 man=0x000000 raw=0x2b800000) (24bit=0 0x000000)
+     low_end+1 ......... 9.094948102e-13 (0.000000000) (sign=0 biased_exp=87 exp=-40 man=0x000001 raw=0x2b800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.818989187e-12 (0.000000000) (sign=0 biased_exp=87 exp=-40 man=0x7ffffe raw=0x2bfffffe) (24bit=0 0x000000)
+     high_end .......... 1.818989295e-12 (0.000000000) (sign=0 biased_exp=87 exp=-40 man=0x7fffff raw=0x2bffffff) (24bit=0 0x000000)
+
+1.818989404e-12 to 3.637978590e-12
+     low_end ........... 1.818989404e-12 (0.000000000) (sign=0 biased_exp=88 exp=-39 man=0x000000 raw=0x2c000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.818989620e-12 (0.000000000) (sign=0 biased_exp=88 exp=-39 man=0x000001 raw=0x2c000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.637978373e-12 (0.000000000) (sign=0 biased_exp=88 exp=-39 man=0x7ffffe raw=0x2c7ffffe) (24bit=0 0x000000)
+     high_end .......... 3.637978590e-12 (0.000000000) (sign=0 biased_exp=88 exp=-39 man=0x7fffff raw=0x2c7fffff) (24bit=0 0x000000)
+
+3.637978807e-12 to 7.275957181e-12
+     low_end ........... 3.637978807e-12 (0.000000000) (sign=0 biased_exp=89 exp=-38 man=0x000000 raw=0x2c800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.637979241e-12 (0.000000000) (sign=0 biased_exp=89 exp=-38 man=0x000001 raw=0x2c800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 7.275956747e-12 (0.000000000) (sign=0 biased_exp=89 exp=-38 man=0x7ffffe raw=0x2cfffffe) (24bit=0 0x000000)
+     high_end .......... 7.275957181e-12 (0.000000000) (sign=0 biased_exp=89 exp=-38 man=0x7fffff raw=0x2cffffff) (24bit=0 0x000000)
+
+7.275957614e-12 to 1.455191436e-11
+     low_end ........... 7.275957614e-12 (0.000000000) (sign=0 biased_exp=90 exp=-37 man=0x000000 raw=0x2d000000) (24bit=0 0x000000)
+     low_end+1 ......... 7.275958482e-12 (0.000000000) (sign=0 biased_exp=90 exp=-37 man=0x000001 raw=0x2d000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.455191349e-11 (0.000000000) (sign=0 biased_exp=90 exp=-37 man=0x7ffffe raw=0x2d7ffffe) (24bit=0 0x000000)
+     high_end .......... 1.455191436e-11 (0.000000000) (sign=0 biased_exp=90 exp=-37 man=0x7fffff raw=0x2d7fffff) (24bit=0 0x000000)
+
+1.455191523e-11 to 2.910382872e-11
+     low_end ........... 1.455191523e-11 (0.000000000) (sign=0 biased_exp=91 exp=-36 man=0x000000 raw=0x2d800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.455191696e-11 (0.000000000) (sign=0 biased_exp=91 exp=-36 man=0x000001 raw=0x2d800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.910382699e-11 (0.000000000) (sign=0 biased_exp=91 exp=-36 man=0x7ffffe raw=0x2dfffffe) (24bit=0 0x000000)
+     high_end .......... 2.910382872e-11 (0.000000000) (sign=0 biased_exp=91 exp=-36 man=0x7fffff raw=0x2dffffff) (24bit=0 0x000000)
+
+2.910383046e-11 to 5.820765744e-11
+     low_end ........... 2.910383046e-11 (0.000000000) (sign=0 biased_exp=92 exp=-35 man=0x000000 raw=0x2e000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.910383393e-11 (0.000000000) (sign=0 biased_exp=92 exp=-35 man=0x000001 raw=0x2e000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.820765397e-11 (0.000000000) (sign=0 biased_exp=92 exp=-35 man=0x7ffffe raw=0x2e7ffffe) (24bit=0 0x000000)
+     high_end .......... 5.820765744e-11 (0.000000000) (sign=0 biased_exp=92 exp=-35 man=0x7fffff raw=0x2e7fffff) (24bit=0 0x000000)
+
+5.820766091e-11 to 1.164153149e-10
+     low_end ........... 5.820766091e-11 (0.000000000) (sign=0 biased_exp=93 exp=-34 man=0x000000 raw=0x2e800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.820766785e-11 (0.000000000) (sign=0 biased_exp=93 exp=-34 man=0x000001 raw=0x2e800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.164153079e-10 (0.000000000) (sign=0 biased_exp=93 exp=-34 man=0x7ffffe raw=0x2efffffe) (24bit=0 0x000000)
+     high_end .......... 1.164153149e-10 (0.000000000) (sign=0 biased_exp=93 exp=-34 man=0x7fffff raw=0x2effffff) (24bit=0 0x000000)
+
+1.164153218e-10 to 2.328306298e-10
+     low_end ........... 1.164153218e-10 (0.000000000) (sign=0 biased_exp=94 exp=-33 man=0x000000 raw=0x2f000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.164153357e-10 (0.000000000) (sign=0 biased_exp=94 exp=-33 man=0x000001 raw=0x2f000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.328306159e-10 (0.000000000) (sign=0 biased_exp=94 exp=-33 man=0x7ffffe raw=0x2f7ffffe) (24bit=0 0x000000)
+     high_end .......... 2.328306298e-10 (0.000000000) (sign=0 biased_exp=94 exp=-33 man=0x7fffff raw=0x2f7fffff) (24bit=0 0x000000)
+
+2.328306437e-10 to 4.656612596e-10
+     low_end ........... 2.328306437e-10 (0.000000000) (sign=0 biased_exp=95 exp=-32 man=0x000000 raw=0x2f800000) (24bit=0 0x000000)
+     low_end+1 ......... 2.328306714e-10 (0.000000000) (sign=0 biased_exp=95 exp=-32 man=0x000001 raw=0x2f800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 4.656612318e-10 (0.000000000) (sign=0 biased_exp=95 exp=-32 man=0x7ffffe raw=0x2ffffffe) (24bit=0 0x000000)
+     high_end .......... 4.656612596e-10 (0.000000000) (sign=0 biased_exp=95 exp=-32 man=0x7fffff raw=0x2fffffff) (24bit=0 0x000000)
+
+4.656612873e-10 to 9.313225191e-10
+     low_end ........... 4.656612873e-10 (0.000000000) (sign=0 biased_exp=96 exp=-31 man=0x000000 raw=0x30000000) (24bit=0 0x000000)
+     low_end+1 ......... 4.656613428e-10 (0.000000000) (sign=0 biased_exp=96 exp=-31 man=0x000001 raw=0x30000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 9.313224636e-10 (0.000000001) (sign=0 biased_exp=96 exp=-31 man=0x7ffffe raw=0x307ffffe) (24bit=0 0x000000)
+     high_end .......... 9.313225191e-10 (0.000000001) (sign=0 biased_exp=96 exp=-31 man=0x7fffff raw=0x307fffff) (24bit=0 0x000000)
+
+9.313225746e-10 to 1.862645038e-09
+     low_end ........... 9.313225746e-10 (0.000000001) (sign=0 biased_exp=97 exp=-30 man=0x000000 raw=0x30800000) (24bit=0 0x000000)
+     low_end+1 ......... 9.313226856e-10 (0.000000001) (sign=0 biased_exp=97 exp=-30 man=0x000001 raw=0x30800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.862644927e-09 (0.000000002) (sign=0 biased_exp=97 exp=-30 man=0x7ffffe raw=0x30fffffe) (24bit=0 0x000000)
+     high_end .......... 1.862645038e-09 (0.000000002) (sign=0 biased_exp=97 exp=-30 man=0x7fffff raw=0x30ffffff) (24bit=0 0x000000)
+
+1.862645149e-09 to 3.725290076e-09
+     low_end ........... 1.862645149e-09 (0.000000002) (sign=0 biased_exp=98 exp=-29 man=0x000000 raw=0x31000000) (24bit=0 0x000000)
+     low_end+1 ......... 1.862645371e-09 (0.000000002) (sign=0 biased_exp=98 exp=-29 man=0x000001 raw=0x31000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 3.725289854e-09 (0.000000004) (sign=0 biased_exp=98 exp=-29 man=0x7ffffe raw=0x317ffffe) (24bit=0 0x000000)
+     high_end .......... 3.725290076e-09 (0.000000004) (sign=0 biased_exp=98 exp=-29 man=0x7fffff raw=0x317fffff) (24bit=0 0x000000)
+
+3.725290298e-09 to 7.450580153e-09
+     low_end ........... 3.725290298e-09 (0.000000004) (sign=0 biased_exp=99 exp=-28 man=0x000000 raw=0x31800000) (24bit=0 0x000000)
+     low_end+1 ......... 3.725290743e-09 (0.000000004) (sign=0 biased_exp=99 exp=-28 man=0x000001 raw=0x31800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 7.450579709e-09 (0.000000007) (sign=0 biased_exp=99 exp=-28 man=0x7ffffe raw=0x31fffffe) (24bit=0 0x000000)
+     high_end .......... 7.450580153e-09 (0.000000007) (sign=0 biased_exp=99 exp=-28 man=0x7fffff raw=0x31ffffff) (24bit=0 0x000000)
+
+7.450580597e-09 to 1.490116031e-08
+     low_end ........... 7.450580597e-09 (0.000000007) (sign=0 biased_exp=100 exp=-27 man=0x000000 raw=0x32000000) (24bit=0 0x000000)
+     low_end+1 ......... 7.450581485e-09 (0.000000007) (sign=0 biased_exp=100 exp=-27 man=0x000001 raw=0x32000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.490115942e-08 (0.000000015) (sign=0 biased_exp=100 exp=-27 man=0x7ffffe raw=0x327ffffe) (24bit=0 0x000000)
+     high_end .......... 1.490116031e-08 (0.000000015) (sign=0 biased_exp=100 exp=-27 man=0x7fffff raw=0x327fffff) (24bit=0 0x000000)
+
+1.490116119e-08 to 2.980232061e-08
+     low_end ........... 1.490116119e-08 (0.000000015) (sign=0 biased_exp=101 exp=-26 man=0x000000 raw=0x32800000) (24bit=0 0x000000)
+     low_end+1 ......... 1.490116297e-08 (0.000000015) (sign=0 biased_exp=101 exp=-26 man=0x000001 raw=0x32800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 2.980231883e-08 (0.000000030) (sign=0 biased_exp=101 exp=-26 man=0x7ffffe raw=0x32fffffe) (24bit=0 0x000000)
+     high_end .......... 2.980232061e-08 (0.000000030) (sign=0 biased_exp=101 exp=-26 man=0x7fffff raw=0x32ffffff) (24bit=0 0x000000)
+
+2.980232239e-08 to 5.960464122e-08
+     low_end ........... 2.980232239e-08 (0.000000030) (sign=0 biased_exp=102 exp=-25 man=0x000000 raw=0x33000000) (24bit=0 0x000000)
+     low_end+1 ......... 2.980232594e-08 (0.000000030) (sign=0 biased_exp=102 exp=-25 man=0x000001 raw=0x33000001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 5.960463767e-08 (0.000000060) (sign=0 biased_exp=102 exp=-25 man=0x7ffffe raw=0x337ffffe) (24bit=0 0x000000)
+     high_end .......... 5.960464122e-08 (0.000000060) (sign=0 biased_exp=102 exp=-25 man=0x7fffff raw=0x337fffff) (24bit=0 0x000000)
+
+5.960464478e-08 to 1.192092824e-07
+     low_end ........... 5.960464478e-08 (0.000000060) (sign=0 biased_exp=103 exp=-24 man=0x000000 raw=0x33800000) (24bit=0 0x000000)
+     low_end+1 ......... 5.960465188e-08 (0.000000060) (sign=0 biased_exp=103 exp=-24 man=0x000001 raw=0x33800001) (24bit=0 0x000000)
+     ...
+     high_end-1 ........ 1.192092753e-07 (0.000000119) (sign=0 biased_exp=103 exp=-24 man=0x7ffffe raw=0x33fffffe) (24bit=1 0x000001)
+     high_end .......... 1.192092824e-07 (0.000000119) (sign=0 biased_exp=103 exp=-24 man=0x7fffff raw=0x33ffffff) (24bit=1 0x000001)
+
+1.192092896e-07 to 2.384185649e-07
+     low_end ........... 1.192092896e-07 (0.000000119) (sign=0 biased_exp=104 exp=-23 man=0x000000 raw=0x34000000) (24bit=1 0x000001)
+     low_end+1 ......... 1.192093038e-07 (0.000000119) (sign=0 biased_exp=104 exp=-23 man=0x000001 raw=0x34000001) (24bit=1 0x000001)
+     ...
+     high_end-1 ........ 2.384185507e-07 (0.000000238) (sign=0 biased_exp=104 exp=-23 man=0x7ffffe raw=0x347ffffe) (24bit=2 0x000002)
+     high_end .......... 2.384185649e-07 (0.000000238) (sign=0 biased_exp=104 exp=-23 man=0x7fffff raw=0x347fffff) (24bit=2 0x000002)
+
+2.384185791e-07 to 4.768371298e-07
+     low_end ........... 2.384185791e-07 (0.000000238) (sign=0 biased_exp=105 exp=-22 man=0x000000 raw=0x34800000) (24bit=2 0x000002)
+     low_end+1 ......... 2.384186075e-07 (0.000000238) (sign=0 biased_exp=105 exp=-22 man=0x000001 raw=0x34800001) (24bit=2 0x000002)
+     ...
+     high_end-1 ........ 4.768371014e-07 (0.000000477) (sign=0 biased_exp=105 exp=-22 man=0x7ffffe raw=0x34fffffe) (24bit=4 0x000004)
+     high_end .......... 4.768371298e-07 (0.000000477) (sign=0 biased_exp=105 exp=-22 man=0x7fffff raw=0x34ffffff) (24bit=4 0x000004)
+
+4.768371582e-07 to 9.536742596e-07
+     low_end ........... 4.768371582e-07 (0.000000477) (sign=0 biased_exp=106 exp=-21 man=0x000000 raw=0x35000000) (24bit=4 0x000004)
+     low_end+1 ......... 4.768372150e-07 (0.000000477) (sign=0 biased_exp=106 exp=-21 man=0x000001 raw=0x35000001) (24bit=4 0x000004)
+     ...
+     high_end-1 ........ 9.536742027e-07 (0.000000954) (sign=0 biased_exp=106 exp=-21 man=0x7ffffe raw=0x357ffffe) (24bit=8 0x000008)
+     high_end .......... 9.536742596e-07 (0.000000954) (sign=0 biased_exp=106 exp=-21 man=0x7fffff raw=0x357fffff) (24bit=8 0x000008)
+
+9.536743164e-07 to 1.907348519e-06
+     low_end ........... 9.536743164e-07 (0.000000954) (sign=0 biased_exp=107 exp=-20 man=0x000000 raw=0x35800000) (24bit=8 0x000008)
+     low_end+1 ......... 9.536744301e-07 (0.000000954) (sign=0 biased_exp=107 exp=-20 man=0x000001 raw=0x35800001) (24bit=8 0x000008)
+     ...
+     high_end-1 ........ 1.907348405e-06 (0.000001907) (sign=0 biased_exp=107 exp=-20 man=0x7ffffe raw=0x35fffffe) (24bit=16 0x000010)
+     high_end .......... 1.907348519e-06 (0.000001907) (sign=0 biased_exp=107 exp=-20 man=0x7fffff raw=0x35ffffff) (24bit=16 0x000010)
+
+1.907348633e-06 to 3.814697038e-06
+     low_end ........... 1.907348633e-06 (0.000001907) (sign=0 biased_exp=108 exp=-19 man=0x000000 raw=0x36000000) (24bit=16 0x000010)
+     low_end+1 ......... 1.907348860e-06 (0.000001907) (sign=0 biased_exp=108 exp=-19 man=0x000001 raw=0x36000001) (24bit=16 0x000010)
+     ...
+     high_end-1 ........ 3.814696811e-06 (0.000003815) (sign=0 biased_exp=108 exp=-19 man=0x7ffffe raw=0x367ffffe) (24bit=32 0x000020)
+     high_end .......... 3.814697038e-06 (0.000003815) (sign=0 biased_exp=108 exp=-19 man=0x7fffff raw=0x367fffff) (24bit=32 0x000020)
+
+3.814697266e-06 to 7.629394077e-06
+     low_end ........... 3.814697266e-06 (0.000003815) (sign=0 biased_exp=109 exp=-18 man=0x000000 raw=0x36800000) (24bit=32 0x000020)
+     low_end+1 ......... 3.814697720e-06 (0.000003815) (sign=0 biased_exp=109 exp=-18 man=0x000001 raw=0x36800001) (24bit=32 0x000020)
+     ...
+     high_end-1 ........ 7.629393622e-06 (0.000007629) (sign=0 biased_exp=109 exp=-18 man=0x7ffffe raw=0x36fffffe) (24bit=64 0x000040)
+     high_end .......... 7.629394077e-06 (0.000007629) (sign=0 biased_exp=109 exp=-18 man=0x7fffff raw=0x36ffffff) (24bit=64 0x000040)
+
+7.629394531e-06 to 1.525878815e-05
+     low_end ........... 7.629394531e-06 (0.000007629) (sign=0 biased_exp=110 exp=-17 man=0x000000 raw=0x37000000) (24bit=64 0x000040)
+     low_end+1 ......... 7.629395441e-06 (0.000007629) (sign=0 biased_exp=110 exp=-17 man=0x000001 raw=0x37000001) (24bit=64 0x000040)
+     ...
+     high_end-1 ........ 1.525878724e-05 (0.000015259) (sign=0 biased_exp=110 exp=-17 man=0x7ffffe raw=0x377ffffe) (24bit=128 0x000080)
+     high_end .......... 1.525878815e-05 (0.000015259) (sign=0 biased_exp=110 exp=-17 man=0x7fffff raw=0x377fffff) (24bit=128 0x000080)
+
+1.525878906e-05 to 3.051757631e-05
+     low_end ........... 1.525878906e-05 (0.000015259) (sign=0 biased_exp=111 exp=-16 man=0x000000 raw=0x37800000) (24bit=128 0x000080)
+     low_end+1 ......... 1.525879088e-05 (0.000015259) (sign=0 biased_exp=111 exp=-16 man=0x000001 raw=0x37800001) (24bit=128 0x000080)
+     ...
+     high_end-1 ........ 3.051757449e-05 (0.000030518) (sign=0 biased_exp=111 exp=-16 man=0x7ffffe raw=0x37fffffe) (24bit=256 0x000100)
+     high_end .......... 3.051757631e-05 (0.000030518) (sign=0 biased_exp=111 exp=-16 man=0x7fffff raw=0x37ffffff) (24bit=256 0x000100)
+
+3.051757812e-05 to 6.103515261e-05
+     low_end ........... 3.051757812e-05 (0.000030518) (sign=0 biased_exp=112 exp=-15 man=0x000000 raw=0x38000000) (24bit=256 0x000100)
+     low_end+1 ......... 3.051758176e-05 (0.000030518) (sign=0 biased_exp=112 exp=-15 man=0x000001 raw=0x38000001) (24bit=256 0x000100)
+     ...
+     high_end-1 ........ 6.103514897e-05 (0.000061035) (sign=0 biased_exp=112 exp=-15 man=0x7ffffe raw=0x387ffffe) (24bit=512 0x000200)
+     high_end .......... 6.103515261e-05 (0.000061035) (sign=0 biased_exp=112 exp=-15 man=0x7fffff raw=0x387fffff) (24bit=512 0x000200)
+
+6.103515625e-05 to 1.220703052e-04
+     low_end ........... 6.103515625e-05 (0.000061035) (sign=0 biased_exp=113 exp=-14 man=0x000000 raw=0x38800000) (24bit=512 0x000200)
+     low_end+1 ......... 6.103516353e-05 (0.000061035) (sign=0 biased_exp=113 exp=-14 man=0x000001 raw=0x38800001) (24bit=512 0x000200)
+     ...
+     high_end-1 ........ 1.220702979e-04 (0.000122070) (sign=0 biased_exp=113 exp=-14 man=0x7ffffe raw=0x38fffffe) (24bit=1024 0x000400)
+     high_end .......... 1.220703052e-04 (0.000122070) (sign=0 biased_exp=113 exp=-14 man=0x7fffff raw=0x38ffffff) (24bit=1024 0x000400)
+
+1.220703125e-04 to 2.441406104e-04
+     low_end ........... 1.220703125e-04 (0.000122070) (sign=0 biased_exp=114 exp=-13 man=0x000000 raw=0x39000000) (24bit=1024 0x000400)
+     low_end+1 ......... 1.220703271e-04 (0.000122070) (sign=0 biased_exp=114 exp=-13 man=0x000001 raw=0x39000001) (24bit=1024 0x000400)
+     ...
+     high_end-1 ........ 2.441405959e-04 (0.000244141) (sign=0 biased_exp=114 exp=-13 man=0x7ffffe raw=0x397ffffe) (24bit=2048 0x000800)
+     high_end .......... 2.441406104e-04 (0.000244141) (sign=0 biased_exp=114 exp=-13 man=0x7fffff raw=0x397fffff) (24bit=2048 0x000800)
+
+2.441406250e-04 to 4.882812209e-04
+     low_end ........... 2.441406250e-04 (0.000244141) (sign=0 biased_exp=115 exp=-12 man=0x000000 raw=0x39800000) (24bit=2048 0x000800)
+     low_end+1 ......... 2.441406541e-04 (0.000244141) (sign=0 biased_exp=115 exp=-12 man=0x000001 raw=0x39800001) (24bit=2048 0x000800)
+     ...
+     high_end-1 ........ 4.882811918e-04 (0.000488281) (sign=0 biased_exp=115 exp=-12 man=0x7ffffe raw=0x39fffffe) (24bit=4096 0x001000)
+     high_end .......... 4.882812209e-04 (0.000488281) (sign=0 biased_exp=115 exp=-12 man=0x7fffff raw=0x39ffffff) (24bit=4096 0x001000)
+
+4.882812500e-04 to 9.765624418e-04
+     low_end ........... 4.882812500e-04 (0.000488281) (sign=0 biased_exp=116 exp=-11 man=0x000000 raw=0x3a000000) (24bit=4096 0x001000)
+     low_end+1 ......... 4.882813082e-04 (0.000488281) (sign=0 biased_exp=116 exp=-11 man=0x000001 raw=0x3a000001) (24bit=4096 0x001000)
+     ...
+     high_end-1 ........ 9.765623836e-04 (0.000976562) (sign=0 biased_exp=116 exp=-11 man=0x7ffffe raw=0x3a7ffffe) (24bit=8192 0x002000)
+     high_end .......... 9.765624418e-04 (0.000976562) (sign=0 biased_exp=116 exp=-11 man=0x7fffff raw=0x3a7fffff) (24bit=8192 0x002000)
+
+9.765625000e-04 to 1.953124884e-03
+     low_end ........... 9.765625000e-04 (0.000976562) (sign=0 biased_exp=117 exp=-10 man=0x000000 raw=0x3a800000) (24bit=8192 0x002000)
+     low_end+1 ......... 9.765626164e-04 (0.000976563) (sign=0 biased_exp=117 exp=-10 man=0x000001 raw=0x3a800001) (24bit=8192 0x002000)
+     ...
+     high_end-1 ........ 1.953124767e-03 (0.001953125) (sign=0 biased_exp=117 exp=-10 man=0x7ffffe raw=0x3afffffe) (24bit=16384 0x004000)
+     high_end .......... 1.953124884e-03 (0.001953125) (sign=0 biased_exp=117 exp=-10 man=0x7fffff raw=0x3affffff) (24bit=16384 0x004000)
+
+1.953125000e-03 to 3.906249767e-03
+     low_end ........... 1.953125000e-03 (0.001953125) (sign=0 biased_exp=118 exp=-9 man=0x000000 raw=0x3b000000) (24bit=16384 0x004000)
+     low_end+1 ......... 1.953125233e-03 (0.001953125) (sign=0 biased_exp=118 exp=-9 man=0x000001 raw=0x3b000001) (24bit=16384 0x004000)
+     ...
+     high_end-1 ........ 3.906249534e-03 (0.003906250) (sign=0 biased_exp=118 exp=-9 man=0x7ffffe raw=0x3b7ffffe) (24bit=32768 0x008000)
+     high_end .......... 3.906249767e-03 (0.003906250) (sign=0 biased_exp=118 exp=-9 man=0x7fffff raw=0x3b7fffff) (24bit=32768 0x008000)
+
+3.906250000e-03 to 7.812499534e-03
+     low_end ........... 3.906250000e-03 (0.003906250) (sign=0 biased_exp=119 exp=-8 man=0x000000 raw=0x3b800000) (24bit=32768 0x008000)
+     low_end+1 ......... 3.906250466e-03 (0.003906250) (sign=0 biased_exp=119 exp=-8 man=0x000001 raw=0x3b800001) (24bit=32768 0x008000)
+     ...
+     high_end-1 ........ 7.812499069e-03 (0.007812499) (sign=0 biased_exp=119 exp=-8 man=0x7ffffe raw=0x3bfffffe) (24bit=65536 0x010000)
+     high_end .......... 7.812499534e-03 (0.007812500) (sign=0 biased_exp=119 exp=-8 man=0x7fffff raw=0x3bffffff) (24bit=65536 0x010000)
+
+7.812500000e-03 to 1.562499907e-02
+     low_end ........... 7.812500000e-03 (0.007812500) (sign=0 biased_exp=120 exp=-7 man=0x000000 raw=0x3c000000) (24bit=65536 0x010000)
+     low_end+1 ......... 7.812500931e-03 (0.007812501) (sign=0 biased_exp=120 exp=-7 man=0x000001 raw=0x3c000001) (24bit=65536 0x010000)
+     ...
+     high_end-1 ........ 1.562499814e-02 (0.015624998) (sign=0 biased_exp=120 exp=-7 man=0x7ffffe raw=0x3c7ffffe) (24bit=131072 0x020000)
+     high_end .......... 1.562499907e-02 (0.015624999) (sign=0 biased_exp=120 exp=-7 man=0x7fffff raw=0x3c7fffff) (24bit=131072 0x020000)
+
+1.562500000e-02 to 3.124999814e-02
+     low_end ........... 1.562500000e-02 (0.015625000) (sign=0 biased_exp=121 exp=-6 man=0x000000 raw=0x3c800000) (24bit=131072 0x020000)
+     low_end+1 ......... 1.562500186e-02 (0.015625002) (sign=0 biased_exp=121 exp=-6 man=0x000001 raw=0x3c800001) (24bit=131072 0x020000)
+     ...
+     high_end-1 ........ 3.124999627e-02 (0.031249996) (sign=0 biased_exp=121 exp=-6 man=0x7ffffe raw=0x3cfffffe) (24bit=262144 0x040000)
+     high_end .......... 3.124999814e-02 (0.031249998) (sign=0 biased_exp=121 exp=-6 man=0x7fffff raw=0x3cffffff) (24bit=262144 0x040000)
+
+3.125000000e-02 to 6.249999627e-02
+     low_end ........... 3.125000000e-02 (0.031250000) (sign=0 biased_exp=122 exp=-5 man=0x000000 raw=0x3d000000) (24bit=262144 0x040000)
+     low_end+1 ......... 3.125000373e-02 (0.031250004) (sign=0 biased_exp=122 exp=-5 man=0x000001 raw=0x3d000001) (24bit=262144 0x040000)
+     ...
+     high_end-1 ........ 6.249999255e-02 (0.062499993) (sign=0 biased_exp=122 exp=-5 man=0x7ffffe raw=0x3d7ffffe) (24bit=524288 0x080000)
+     high_end .......... 6.249999627e-02 (0.062499996) (sign=0 biased_exp=122 exp=-5 man=0x7fffff raw=0x3d7fffff) (24bit=524288 0x080000)
+
+6.250000000e-02 to 1.249999925e-01
+     low_end ........... 6.250000000e-02 (0.062500000) (sign=0 biased_exp=123 exp=-4 man=0x000000 raw=0x3d800000) (24bit=524288 0x080000)
+     low_end+1 ......... 6.250000745e-02 (0.062500007) (sign=0 biased_exp=123 exp=-4 man=0x000001 raw=0x3d800001) (24bit=524288 0x080000)
+     ...
+     high_end-1 ........ 1.249999851e-01 (0.124999985) (sign=0 biased_exp=123 exp=-4 man=0x7ffffe raw=0x3dfffffe) (24bit=1048576 0x100000)
+     high_end .......... 1.249999925e-01 (0.124999993) (sign=0 biased_exp=123 exp=-4 man=0x7fffff raw=0x3dffffff) (24bit=1048576 0x100000)
+
+1.250000000e-01 to 2.499999851e-01
+     low_end ........... 1.250000000e-01 (0.125000000) (sign=0 biased_exp=124 exp=-3 man=0x000000 raw=0x3e000000) (24bit=1048576 0x100000)
+     low_end+1 ......... 1.250000149e-01 (0.125000015) (sign=0 biased_exp=124 exp=-3 man=0x000001 raw=0x3e000001) (24bit=1048576 0x100000)
+     ...
+     high_end-1 ........ 2.499999702e-01 (0.249999970) (sign=0 biased_exp=124 exp=-3 man=0x7ffffe raw=0x3e7ffffe) (24bit=2097152 0x200000)
+     high_end .......... 2.499999851e-01 (0.249999985) (sign=0 biased_exp=124 exp=-3 man=0x7fffff raw=0x3e7fffff) (24bit=2097152 0x200000)
+
+2.500000000e-01 to 4.999999702e-01
+     low_end ........... 2.500000000e-01 (0.250000000) (sign=0 biased_exp=125 exp=-2 man=0x000000 raw=0x3e800000) (24bit=2097152 0x200000)
+     low_end+1 ......... 2.500000298e-01 (0.250000030) (sign=0 biased_exp=125 exp=-2 man=0x000001 raw=0x3e800001) (24bit=2097152 0x200000)
+     ...
+     high_end-1 ........ 4.999999404e-01 (0.499999940) (sign=0 biased_exp=125 exp=-2 man=0x7ffffe raw=0x3efffffe) (24bit=4194303 0x3fffff)
+     high_end .......... 4.999999702e-01 (0.499999970) (sign=0 biased_exp=125 exp=-2 man=0x7fffff raw=0x3effffff) (24bit=4194303 0x3fffff)
+
+5.000000000e-01 to 9.999999404e-01
+     low_end ........... 5.000000000e-01 (0.500000000) (sign=0 biased_exp=126 exp=-1 man=0x000000 raw=0x3f000000) (24bit=4194304 0x400000)
+     low_end+1 ......... 5.000000596e-01 (0.500000060) (sign=0 biased_exp=126 exp=-1 man=0x000001 raw=0x3f000001) (24bit=4194304 0x400000)
+     ...
+     high_end-1 ........ 9.999998808e-01 (0.999999881) (sign=0 biased_exp=126 exp=-1 man=0x7ffffe raw=0x3f7ffffe) (24bit=8388606 0x7ffffe)
+     high_end .......... 9.999999404e-01 (0.999999940) (sign=0 biased_exp=126 exp=-1 man=0x7fffff raw=0x3f7fffff) (24bit=8388607 0x7fffff)
+
+1.000000000e+00 to 1.999999881e+00
+     low_end ........... 1.000000000e+00 (1.000000000) (sign=0 biased_exp=127 exp=0 man=0x000000 raw=0x3f800000) (24bit=8388607 0x7fffff)
+     low_end+1 ......... 1.000000119e+00 (1.000000119) (sign=0 biased_exp=127 exp=0 man=0x000001 raw=0x3f800001) (24bit=8388608 0x800000)
+     ...
+     high_end-1 ........ 1.999999762e+00 (1.999999762) (sign=0 biased_exp=127 exp=0 man=0x7ffffe raw=0x3ffffffe) (24bit=16777212 0xfffffc)
+     high_end .......... 1.999999881e+00 (1.999999881) (sign=0 biased_exp=127 exp=0 man=0x7fffff raw=0x3fffffff) (24bit=16777213 0xfffffd)
