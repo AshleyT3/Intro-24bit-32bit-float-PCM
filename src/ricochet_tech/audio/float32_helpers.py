@@ -1,17 +1,15 @@
-from ctypes import (
-    Structure,
-    Union,
-    c_uint32,
-    c_float
-)
+from ctypes import Structure, Union, c_uint32, c_float
+from dataclasses import dataclass
+from enum import Enum
 import math
 
 OUT_PRECISION = 9
 FLOAT_FORMAT_SCI = f".{OUT_PRECISION}e"
 FLOAT_FORMAT_FXD = f".{OUT_PRECISION}f"
 
-F_TO_I24BIT = float(0x800000)
-I24BIT_TO_F = 1.0 / float(0x800000)
+F_TO_I24BIT = float(0x7FFFFF)
+I24BIT_TO_F = 1.0 / float(0x7FFFFF)
+
 
 def round_float_to_int(f: float) -> int:
     return int(math.copysign(math.floor(math.fabs(f) + 0.5), f))
@@ -45,10 +43,11 @@ def get_i24bit_equal_under_float(i24bit: int, f_limit: float) -> int:
 
     return i24bit
 
+
 class fltu_fields(Structure):
     _fields_ = [
         ("man", c_uint32, 23),
-        ("raw_exp", c_uint32, 8),
+        ("biased_exp", c_uint32, 8),
         ("sign", c_uint32, 1),
     ]
 
@@ -72,40 +71,45 @@ class fltu(Union):
             sign (int): The IEEE-754 Float32 1-bit sign. If this is specified,
                 both exp and man, but not f, should also be specified.
 
-            exp (int): The IEEE-754 Float32 1-bit sign. If this is specified,
-                both sign and man, but not f, should also be specified.
+            biased_exp (int): The IEEE-754 Float32 biased exponent. If this is
+                specified, both sign and man, but not f, should also be specified.
 
-            man (int): The IEEE-754 Float32 1-bit sign. If this is specified,
+            man (int): The IEEE-754 Float32 mantissa. If this is specified,
                 both sign and exp, but not f, should also be specified.
         """
         self.i = c_uint32(0)
         self.f = c_float(0)
         f = kw.pop("f", None)
         sign = kw.pop("sign", None)
-        exp = kw.pop("exp", None)
+        biased_exp = kw.pop("biased_exp", None)
         man = kw.pop("man", None)
         super().__init__(*args, **kw)
         if f is not None:
-            if sign is not None or exp is not None or man is not None:
-                raise ValueError("Cannot specify both f and parts (sign, exp, and man).")
+            if sign is not None or biased_exp is not None or man is not None:
+                raise ValueError(
+                    "Cannot specify both f and parts (sign, exp, and man)."
+                )
             if isinstance(f, fltu):
                 f = c_float(f.f)
             if not isinstance(f, c_float):
                 f = c_float(f)
             self.f = f
-        if sign is not None or exp is not None or man is not None:
-            if sign is None or exp is None or man is None:
-                raise ValueError("If specifying any part (sign, exp, and man), all are required.")
+        if sign is not None or biased_exp is not None or man is not None:
+            if sign is None or biased_exp is None or man is None:
+                raise ValueError(
+                    "If specifying any part (sign, exp, and man), all are required."
+                )
             self.p.sign = sign
-            self.p.exp = exp
+            self.p.biased_exp = biased_exp
             self.p.man = man
 
     @property
     def exp(self) -> int:
-        exp = int(self.p.raw_exp) - 127
+        exp = int(self.p.biased_exp) - 127
         if exp == -127:
             exp = -126
         return exp
+
 
 def get_float_lowest_24bit_quant(f: float | fltu) -> float:
     f = fltu(f=f)
@@ -126,73 +130,106 @@ def get_float_highest_24bit_quant(f: float | fltu) -> float:
         f.i -= 1
     return f.f
 
+class FloatLogLevel(Enum):
+    NORMAL = 1
+    WITH_24BIT = 2
+    DETAILED = 3
 
-def get_fltu_log_str_detail(u: fltu):
+
+def get_fltu_log_str(u: fltu, level: FloatLogLevel = FloatLogLevel.NORMAL) -> str:
+    s = f"{u.f:{FLOAT_FORMAT_SCI}} "
+    if level == FloatLogLevel.DETAILED:
+        s += f"({u.f:{FLOAT_FORMAT_FXD}}) "
+    s += (
+        f"(sign={u.p.sign} "
+        f"bexp={u.p.biased_exp} "
+        f"exp={u.exp} "
+        f"man=0x{u.p.man:06x} "
+        f"raw=0x{u.i:08x})"
+    )
+    if level.value >= FloatLogLevel.WITH_24BIT.value:
+        f_24bit = float_to_24bit(u.f)
+        s += f" (24bit: 0x{f_24bit:06x}"
+        if level == FloatLogLevel.DETAILED:
+            s += f" dec={f_24bit}"
+        s += ")"
+    return s
+
+def get_float_from_to_log_str(f_from: float, f_to: float) -> str:
+    return f"{f_from:{FLOAT_FORMAT_SCI}} to {f_to:{FLOAT_FORMAT_SCI}}"
+
+
+class FloatRange:
+    def __init__(self, biased_exp: int):
+        self.low_end = fltu(sign=0, biased_exp=biased_exp, man=0)
+        self.low_end_plus_1 = fltu(sign=0, biased_exp=biased_exp, man=1)
+        self.high_end_minus_1 = fltu(sign=0, biased_exp=biased_exp, man=-2)
+        self.high_end = fltu(sign=0, biased_exp=biased_exp, man=-1)
+
+
+def get_float_ranges() -> list[FloatRange]:
+    fr_list = []
+    for exp in range(-127, 1):
+        biased_exp = 127 + exp
+        fr_list.append(FloatRange(biased_exp=biased_exp))
+    return fr_list
+
+
+def get_fltu_csv_heaader_part(name_pfx: str) -> str:
     return (
-        f"{{0:{FLOAT_FORMAT_SCI}}} "
-        f"({{0:{FLOAT_FORMAT_FXD}}}) "
-        "("
-        "sign={1} "
-        "rexp={2:3} (exp={3:4}) "
-        "man=0x{4:06x} "
-        "raw=0x{5:08x}"
-        ") ("
-        "24bit={6:07} "
-        "0x{6:06x}"
-        ")"
-    ).format(
-        u.f,
-        u.p.sign,
-        u.p.raw_exp,
-        u.exp,
-        u.p.man,
-        u.i,
-        float_to_24bit(u.f),
+        f"{name_pfx},"
+        f"{name_pfx}_raw,"
+        f"{name_pfx}_sign,"
+        f"{name_pfx}_biased_exp,"
+        f"{name_pfx}_mantissa,"
+        f"{name_pfx}_24bit,"
+        f"{name_pfx}_24bit_hex"
     )
 
 
-def get_fltu_log_str_with_24bit(u: fltu):
+def get_fltu_csv_part(u: fltu) -> str:
+
     return (
-        f"{{0:{FLOAT_FORMAT_SCI}}} "
-        "("
-        "sign={1} "
-        "rexp={2:3} (exp={3:4}) "
-        "man=0x{4:06x} "
-        "raw=0x{5:08x}"
-        ") ("
-        "24bit=0x{6:06x}"
-        ")"
-    ).format(
-        u.f,
-        u.p.sign,
-        u.p.raw_exp,
-        u.exp,
-        u.p.man,
-        u.i,
-        float_to_24bit(u.f),
+        f"{u.f:{FLOAT_FORMAT_SCI}},"
+        f"0x{u.i:08x},"
+        f"{u.p.sign},"
+        f"{u.p.biased_exp},"
+        f"{u.p.man},"
+        f"{float_to_24bit(f=u.f)},"
+        f"0x{float_to_24bit(f=u.f):06x}"
     )
 
 
-def get_fltu_log_str(u: fltu):
-    return (
-        f"{{0:{FLOAT_FORMAT_SCI}}} "
-        "("
-        "sign={1} "
-        "rexp={2:3} (exp={3:4}) "
-        "man=0x{4:06x} "
-        "raw=0x{5:08x}"
-        ")"
-    ).format(
-        u.f,
-        u.p.sign,
-        u.p.raw_exp,
-        u.exp,
-        u.p.man,
-        u.i,
+def output_float_ranges():
+    for fr in get_float_ranges():
+        print(get_float_from_to_log_str(fr.low_end.f, fr.high_end.f))
+        padding = 14
+        print(f"     {'low_end ':.<{padding}} ", end="")
+        print(get_fltu_log_str(u=fr.low_end, level=FloatLogLevel.DETAILED))
+        print(f"     {'low_end+1 ':.<{padding}} ", end="")
+        print(get_fltu_log_str(u=fr.low_end_plus_1, level=FloatLogLevel.DETAILED))
+        print(f"     ...")
+        print(f"     {'high_end-1 ':.<{padding}} ", end="")
+        print(get_fltu_log_str(u=fr.high_end_minus_1, level=FloatLogLevel.DETAILED))
+        print(f"     {'high_end ':.<{padding}} ", end="")
+        print(get_fltu_log_str(u=fr.high_end, level=FloatLogLevel.DETAILED))
+        print()
+
+def output_float_ranges_as_csv():
+    print(
+        f"{get_fltu_csv_heaader_part("low_end")}," 
+		f"{get_fltu_csv_heaader_part("low_end_plus_1")},"
+		f"{get_fltu_csv_heaader_part("high_end_minus_1")},"
+		f"{get_fltu_csv_heaader_part("high_end")}"
     )
+    for fr in get_float_ranges():
+        print(
+            f"{get_fltu_csv_part(fr.low_end)},"
+			f"{get_fltu_csv_part(fr.low_end_plus_1)},"
+			f"{get_fltu_csv_part(fr.high_end_minus_1)},"
+			f"{get_fltu_csv_part(fr.high_end)}"
+        )
 
 
 if __name__ == "__main__":
-    fu = fltu(f=3.0)
-    print(get_fltu_log_str(fu))
     pass

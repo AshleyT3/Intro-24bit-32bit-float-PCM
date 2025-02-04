@@ -38,6 +38,7 @@ def wait_debugger():
     debug_server_port = 7777
     try:
         import debugpy  # pylint: disable=import-outside-toplevel
+
         debugpy.listen(debug_server_port)
         print(f"Waiting for the debugger to attach via port {debug_server_port}...")
         debugpy.wait_for_client()
@@ -60,7 +61,9 @@ def load_24bit_pcm_with_pydub(file_path, mono: bool):
     audio = AudioSegment.from_wav(file_path)
     if mono and audio.channels > 1:
         audio.set_channels(1)
-    audio = audio.set_frame_rate(audio.frame_rate).set_channels(audio.channels)  # Ensure correct sample rate and channels
+    audio = audio.set_frame_rate(audio.frame_rate).set_channels(
+        audio.channels
+    )  # Ensure correct sample rate and channels
     samples = np.array(audio.get_array_of_samples())
     return samples, audio.frame_rate
 
@@ -87,8 +90,8 @@ def load_audio_files(filenames: str | list[str]) -> list[AudioInfo]:
                 continue
             mdata = tinytag.TinyTag.get(fn)
             if _LOAD_NON_FLOAT_AS_INT and mdata.bitdepth == 24:
-                #data, sr = sf.read(fn, dtype='int32')
-                #data = data.reshape(-1, 3)  # Reshape into 24-bit samples
+                # data, sr = sf.read(fn, dtype='int32')
+                # data = data.reshape(-1, 3)  # Reshape into 24-bit samples
                 data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
             else:
                 data, sr = librosa.load(fn, mono=True, sr=None)
@@ -115,14 +118,11 @@ class SteadyLevelSegment:
     mean_amplitude: float
     peak_dbfs: float
     rms_dbfs: float
-    avg_log_mel_db : float
+    avg_log_mel_db: float
 
 
 def find_steady_levels(
-    samples,
-    sample_rate,
-    min_duration=2.0,
-    threshold_db=0.2
+    samples, sample_rate, min_duration=2.0, threshold_db=0.2
 ) -> list[SteadyLevelSegment]:
     """
     Identify areas of a floating point audio samples where the audio level is
@@ -153,9 +153,11 @@ def find_steady_levels(
 
     def capture_steady_level():
         start_time = librosa.frames_to_time(current_segment_start, sr=sample_rate)
-        end_time = librosa.frames_to_time(current_segment_start + current_segment_samples, sr=sample_rate)
-        start_sample=int(start_time * sample_rate)
-        end_sample=int(end_time * sample_rate)
+        end_time = librosa.frames_to_time(
+            current_segment_start + current_segment_samples, sr=sample_rate
+        )
+        start_sample = int(start_time * sample_rate)
+        end_sample = int(end_time * sample_rate)
         seg_samples = samples[start_sample:end_sample]
         seg_samples_abs = np.abs(seg_samples)
 
@@ -182,7 +184,9 @@ def find_steady_levels(
             current_segment_samples = 1
             continue
 
-        level_difference = abs(current_frame_level - (current_level_sum / current_segment_samples))
+        level_difference = abs(
+            current_frame_level - (current_level_sum / current_segment_samples)
+        )
         if level_difference < threshold_db:
             current_level_sum += current_frame_level
             current_segment_samples += 1
@@ -233,7 +237,7 @@ def get_audio_segments(
     if trunc_segments != -1:
         segments = segments[:trunc_segments]
         if len(segments) > 0:
-            samples = samples[:int(segments[-1].end_sample)]
+            samples = samples[: int(segments[-1].end_sample)]
     return segments, samples
 
 
@@ -316,6 +320,7 @@ def create_audio_figure_subplots(
         ax.xaxis.set_major_locator(MultipleLocator(10))
         ax.xaxis.set_minor_locator(MultipleLocator(1))
         start_second = start_trim_count / ai.sr
+
         def x_label_fmt_func(secs, pos):
             targ_time = f"{int(secs // 60)}:{int(secs % 60):02d}"
             if start_second != 0:
@@ -331,9 +336,11 @@ def create_audio_figure_subplots(
         ax.set_xlabel("Time (minutes:seconds)")
         ax.tick_params(top=False, labeltop=False, bottom=True, labelbottom=True)
 
-        ax.set_title(f"{i}: {os.path.basename(ai.fn)}   (bits/sample={ai.bitdepth} rate={ai.sr})")
+        ax.set_title(
+            f"{i}: {os.path.basename(ai.fn)}   (bits/sample={ai.bitdepth} rate={ai.sr})"
+        )
         ax.set_ylabel("Amplitude")
-        ax.grid(which='both', linestyle='--', linewidth=0.5)
+        ax.grid(which="both", linestyle="--", linewidth=0.5)
         ax.minorticks_on()
 
         ax.yaxis.set_major_formatter(StrMethodFormatter("{x:+.3f}"))
@@ -355,7 +362,7 @@ def create_audio_figure_subplots(
             level_annot_inf = []
             for level, segment in enumerate(segments):
                 y_value = segment.peak_amplitude
-                segment_dbfs = 20*np.log10(y_value)
+                segment_dbfs = 20 * np.log10(y_value)
                 level_annot_inf.append(
                     (
                         f"Level {level} ({y_value:.3f})",
@@ -386,11 +393,11 @@ def create_audio_figure_subplots(
                     xy=(lx, ly),
                     xytext=(tx, ty),
                     arrowprops=dict(
-                        facecolor='black',
+                        facecolor="black",
                         headwidth=5,
                         headlength=5,
                         width=1,
-                        shrink=0.05
+                        shrink=0.05,
                     ),
                 )
     return fig, axs
@@ -426,6 +433,7 @@ def plot_audio_file_levels(args):
     plt.tight_layout()
     plt.show(block=True)
 
+
 def handle_levels(args):
     csv_writer = None
     if args.csv:
@@ -433,20 +441,22 @@ def handle_levels(args):
         if args.o is not None:
             csvfile = open(args.o, "wt", newline="")
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow([
-            "#",
-            "StartSecond",
-            "StartSecondSrc",
-            "EndSecond",
-            "EndSecondSrc",
-            "Peak_dBFS",
-            "RMS_dBFS",
-            "Peak_Amplitude",
-            "Mean_Amplitude",
-            "SampleRate",
-            "AvgLogMel_dB",
-            "Filename",
-        ])
+        csv_writer.writerow(
+            [
+                "#",
+                "StartSecond",
+                "StartSecondSrc",
+                "EndSecond",
+                "EndSecondSrc",
+                "Peak_dBFS",
+                "RMS_dBFS",
+                "Peak_Amplitude",
+                "Mean_Amplitude",
+                "SampleRate",
+                "AvgLogMel_dB",
+                "Filename",
+            ]
+        )
 
     audio_info = load_audio_files(filenames=args.filename)
     if args.boost_factor != 1.0:
@@ -482,20 +492,22 @@ def handle_levels(args):
         seg: SteadyLevelSegment
         for level, seg in enumerate(segments):
             if args.csv:
-                csv_writer.writerow([
-                    f"{level}",
-                    f"{seg.start_second}",
-                    f"{start_second + seg.start_second}",
-                    f"{seg.end_second}",
-                    f"{start_second + seg.end_second}",
-                    f"{seg.peak_dbfs}",
-                    f"{seg.rms_dbfs}",
-                    f"{seg.peak_amplitude}",
-                    f"{seg.mean_amplitude}",
-                    f"{ai.sr}",
-                    f"{seg.avg_log_mel_db }",
-                    f"{os.path.basename(ai.fn)}",
-                ])
+                csv_writer.writerow(
+                    [
+                        f"{level}",
+                        f"{seg.start_second}",
+                        f"{start_second + seg.start_second}",
+                        f"{seg.end_second}",
+                        f"{start_second + seg.end_second}",
+                        f"{seg.peak_dbfs}",
+                        f"{seg.rms_dbfs}",
+                        f"{seg.peak_amplitude}",
+                        f"{seg.mean_amplitude}",
+                        f"{ai.sr}",
+                        f"{seg.avg_log_mel_db }",
+                        f"{os.path.basename(ai.fn)}",
+                    ]
+                )
             else:
                 print(
                     f"Seg#={level} "
@@ -577,7 +589,9 @@ def range_i24_0_800000_inc_10th():
     f_cur = 0.1
     while f_cur <= 1.0:
         i24bit_range_end = float_to_24bit(f_cur)
-        i24bit_range_end = get_i24bit_equal_over_float(i24bit=i24bit_range_end, f_limit=f_cur)
+        i24bit_range_end = get_i24bit_equal_over_float(
+            i24bit=i24bit_range_end, f_limit=f_cur
+        )
         f_act = fltu(f=i24bit_to_float(i24bit=i24bit_range_end))
         ifloat_range_size = f_act.i - f_range_start.i
         i24bit_range_size = i24bit_range_end - i24bit_range_start
@@ -600,7 +614,7 @@ def print_range(
     i24bit_range_start: int,
     i24bit_range_end: int,
     f_range_start: fltu,
-    f_range_end: fltu
+    f_range_end: fltu,
 ):
     print(
         f"{line_num:3}: "
@@ -617,13 +631,15 @@ class IncrementType(Enum):
     EXP = 2
 
 
-def handle_range(incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv_fn: str = None):
+def handle_range(
+    incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv_fn: str = None
+):
 
     def inc_value(range_num: int, f: fltu, inc_val: fltu, inc_type: IncrementType):
         if inc_type == IncrementType.FLOAT:
-            f.f = (inc_val.f * range_num)
+            f.f = inc_val.f * range_num
         elif inc_type == IncrementType.EXP:
-            f.p.raw_exp += int(inc_val.f)
+            f.p.biased_exp += int(inc_val.f)
         else:
             raise ValueError(f"inc_type is unknown: {inc_type}")
 
@@ -633,27 +649,29 @@ def handle_range(incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv
         if csv_fn is not None:
             csvfile = open(csv_fn, "wt", newline="")
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow([
-            "#",
-            "i24bit_size_hex",
-            "i24bit_size_dec",
-            "ifloat_size_hex",
-            "ifloat_size_dec",
-            "i24bit_start",
-            "i24bit_end",
-            "f32_start",
-            "f32_start_sign",
-            "f32_start_rexp",
-            "f32_start_exp",
-            "f32_start_man",
-            "f32_start_raw",
-            "f32_end",
-            "f32_end_sign",
-            "f32_end_rexp",
-            "f32_end_exp",
-            "f32_end_man",
-            "f32_end_raw",
-        ])
+        csv_writer.writerow(
+            [
+                "#",
+                "i24bit_size_hex",
+                "i24bit_size_dec",
+                "ifloat_size_hex",
+                "ifloat_size_dec",
+                "i24bit_start",
+                "i24bit_end",
+                "f32_start",
+                "f32_start_sign",
+                "f32_start_bexp",
+                "f32_start_exp",
+                "f32_start_man",
+                "f32_start_raw",
+                "f32_end",
+                "f32_end_sign",
+                "f32_end_bexp",
+                "f32_end_exp",
+                "f32_end_man",
+                "f32_end_raw",
+            ]
+        )
     f_range_start = fltu(f=0.0)
     f_cur = fltu(f=f_range_start)
     i24bit_range_start = 0x000000
@@ -663,7 +681,9 @@ def handle_range(incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv
         i24bit_range_end = float_to_24bit(f_cur.f)
         if inc_type == IncrementType.FLOAT:
             f_range_end = fltu(f=i24bit_to_float(i24bit=i24bit_range_end))
-            i24bit_range_end = get_i24bit_equal_over_float(i24bit=i24bit_range_end, f_limit=f_cur.f)
+            i24bit_range_end = get_i24bit_equal_over_float(
+                i24bit=i24bit_range_end, f_limit=f_cur.f
+            )
         elif inc_type == IncrementType.EXP:
             f_range_end = fltu(f=f_cur)
         else:
@@ -671,27 +691,29 @@ def handle_range(incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv
         ifloat_range_size = f_range_end.i - f_range_start.i
         i24bit_range_size = i24bit_range_end - i24bit_range_start
         if use_csv:
-            csv_writer.writerow([
-                f"{range_num}",
-                f"0x{i24bit_range_size:06x}",
-                f"{i24bit_range_size}",
-                f"0x{ifloat_range_size:08x}",
-                f"{ifloat_range_size}",
-                f"0x{i24bit_range_start:06x}",
-                f"0x{i24bit_range_end:06x}",
-                f"{f_range_start.f:.9e}",
-                f"{f_range_start.p.sign}",
-                f"{f_range_start.p.raw_exp}",
-                f"{f_range_start.exp}",
-                f"0x{f_range_start.p.man:06x}",
-                f"0x{f_range_start.i:08x}",
-                f"{f_range_end.f:.9e}",
-                f"{f_range_end.p.sign}",
-                f"{f_range_end.p.raw_exp}",
-                f"{f_range_end.exp}",
-                f"0x{f_range_end.p.man:06x}",
-                f"0x{f_range_end.i:08x}",
-            ])
+            csv_writer.writerow(
+                [
+                    f"{range_num}",
+                    f"0x{i24bit_range_size:06x}",
+                    f"{i24bit_range_size}",
+                    f"0x{ifloat_range_size:08x}",
+                    f"{ifloat_range_size}",
+                    f"0x{i24bit_range_start:06x}",
+                    f"0x{i24bit_range_end:06x}",
+                    f"{f_range_start.f:.9e}",
+                    f"{f_range_start.p.sign}",
+                    f"{f_range_start.p.biased_exp}",
+                    f"{f_range_start.exp}",
+                    f"0x{f_range_start.p.man:06x}",
+                    f"0x{f_range_start.i:08x}",
+                    f"{f_range_end.f:.9e}",
+                    f"{f_range_end.p.sign}",
+                    f"{f_range_end.p.biased_exp}",
+                    f"{f_range_end.exp}",
+                    f"0x{f_range_end.p.man:06x}",
+                    f"0x{f_range_end.i:08x}",
+                ]
+            )
         else:
             print_range(
                 range_num,
@@ -709,25 +731,25 @@ def handle_range(incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv
 
 
 def show_ranges(args):
-    #wait_debugger()
-    #range1()
-    #range3_0_to_1_inc_10th_float_hquant()
+    # wait_debugger()
+    # range1()
+    # range3_0_to_1_inc_10th_float_hquant()
     inc_type = IncrementType[args.inc_type.upper()]
-    handle_range(incf=fltu(f=args.inc), inc_type=inc_type, use_csv=args.csv, csv_fn=args.o)
+    handle_range(
+        incf=fltu(f=args.inc), inc_type=inc_type, use_csv=args.csv, csv_fn=args.o
+    )
 
 
 def main(argv=None):
 
     parser = argparse.ArgumentParser(
-        prog='audio_util',
-        description='Audio Utility v0.01',
+        prog="audio_util",
+        description="Audio Utility v0.01",
     )
 
     parser_common_filenames = argparse.ArgumentParser(add_help=False)
     parser_common_filenames.add_argument(
-        "filename",
-        nargs="+",
-        help="One or more audio filenames."
+        "filename", nargs="+", help="One or more audio filenames."
     )
 
     parser_common_samples = argparse.ArgumentParser(add_help=False)
@@ -761,19 +783,22 @@ def main(argv=None):
 
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
     parser_common_find_levels.add_argument(
-        "-m", "--max-segments",
+        "-m",
+        "--max-segments",
         help="The maximum segments of steady audio to process.",
         default=-1,
         type=int,
     )
     parser_common_find_levels.add_argument(
-        "-t", "--threshold-db",
+        "-t",
+        "--threshold-db",
         help="The dB threshold defining the end of, and possibly the start of a segment.",
         default=0.05,
         type=float,
     )
     parser_common_find_levels.add_argument(
-        "-s", "--min-seconds",
+        "-s",
+        "--min-seconds",
         help="The minimum number of seconds within dB threshold of a valid segement.",
         default=2.0,
         type=float,
@@ -781,10 +806,11 @@ def main(argv=None):
 
     parser_common_csv = argparse.ArgumentParser(add_help=False)
     parser_common_csv.add_argument(
-        "-c", "--csv",
+        "-c",
+        "--csv",
         action=argparse.BooleanOptionalAction,
         default=False,
-        help="Output a CSV to either the terminal or a specified file."
+        help="Output a CSV to either the terminal or a specified file.",
     )
     parser_common_csv.add_argument(
         "-o",
@@ -842,10 +868,11 @@ def main(argv=None):
         help="Show ranges.",
         parents=[
             parser_common_csv,
-        ]
+        ],
     )
     subparser_range.add_argument(
-        "-i", "--inc",
+        "-i",
+        "--inc",
         help="The float step increment when going from 0.0 to 1.0.",
         default=0.1,
         type=float,
@@ -862,6 +889,7 @@ def main(argv=None):
 
     args = parser.parse_args()
     args.func(args)
+
 
 if __name__ == "__main__":
     main()
