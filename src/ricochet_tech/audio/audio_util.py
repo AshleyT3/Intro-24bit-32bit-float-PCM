@@ -2,7 +2,6 @@ import csv
 from ctypes import c_float
 from enum import Enum
 import glob
-import math
 import os
 from dataclasses import dataclass
 import argparse
@@ -13,8 +12,6 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 import librosa
-import sounddevice as sd
-import soundfile as sf
 from pydub import AudioSegment
 import tinytag
 from atbu.common.exception import (
@@ -26,15 +23,18 @@ from ricochet_tech.audio.float32_helpers import (
     float_to_24bit_no_round,
     fltu,
     float_to_24bit,
+    get_float_ranges_csv_output,
+    get_float_ranges_output,
     get_fltu_log_str,
     get_float_highest_24bit_quant,
-    get_float_lowest_24bit_quant,
     get_i24bit_equal_over_float,
     i24bit_to_float,
 )
 
 
 def wait_debugger():
+    """Call this from wherever you would like to begin waiting for remote debugger attach.
+    """
     debug_server_port = 7777
     try:
         import debugpy  # pylint: disable=import-outside-toplevel
@@ -607,7 +607,7 @@ def range_i24_0_800000_inc_10th():
         f_cur += 0.1
 
 
-def print_range(
+def get_range_output(
     line_num: int,
     i24bit_range_size: int,
     ifloat_range_size: int,
@@ -616,23 +616,24 @@ def print_range(
     f_range_start: fltu,
     f_range_end: fltu,
 ):
-    print(
+    return(
         f"{line_num:3}: "
         f"i24_size={i24bit_range_size:06x} ({i24bit_range_size:9,}) "
         f"flt_size={ifloat_range_size:08x} ({ifloat_range_size:13,}): "
         f"0x{i24bit_range_start:06x} to 0x{i24bit_range_end:06x}: "
         f"{f_range_start.f:.9e} to {f_range_end.f:.9e}   "
         f"{get_fltu_log_str(f_range_start)} to {get_fltu_log_str(f_range_end)}"
+        "\n"
     )
 
 
 class IncrementType(Enum):
-    FLOAT = 1
-    EXP = 2
+    FLOAT = 0
+    EXP = 1
 
 
 def handle_range(
-    incf: fltu, inc_type: IncrementType, use_csv: bool = False, csv_fn: str = None
+    incf: fltu, inc_type: IncrementType, use_csv: bool = False, output_fn: str = None
 ):
 
     def inc_value(range_num: int, f: fltu, inc_val: fltu, inc_type: IncrementType):
@@ -643,12 +644,13 @@ def handle_range(
         else:
             raise ValueError(f"inc_type is unknown: {inc_type}")
 
+    output_file = sys.stdout
+    if output_fn is not None:
+        output_file = open(output_fn, "wt", newline="")
+
     csv_writer = None
     if use_csv:
-        csvfile = sys.stdout
-        if csv_fn is not None:
-            csvfile = open(csv_fn, "wt", newline="")
-        csv_writer = csv.writer(csvfile)
+        csv_writer = csv.writer(output_file)
         csv_writer.writerow(
             [
                 "#",
@@ -715,7 +717,7 @@ def handle_range(
                 ]
             )
         else:
-            print_range(
+            range_output = get_range_output(
                 range_num,
                 i24bit_range_size=i24bit_range_size,
                 ifloat_range_size=ifloat_range_size,
@@ -724,20 +726,29 @@ def handle_range(
                 f_range_start=f_range_start,
                 f_range_end=f_range_end,
             )
+            output_file.write(range_output)
+
         i24bit_range_start = i24bit_range_end
         f_range_start = fltu(f=f_cur)
         range_num += 1
         inc_value(range_num, f=f_cur, inc_val=incf, inc_type=inc_type)
 
 
-def show_ranges(args):
-    # wait_debugger()
-    # range1()
-    # range3_0_to_1_inc_10th_float_hquant()
+def show_ranges_simple(args):
     inc_type = IncrementType[args.inc_type.upper()]
     handle_range(
-        incf=fltu(f=args.inc), inc_type=inc_type, use_csv=args.csv, csv_fn=args.o
+        incf=fltu(f=args.inc), inc_type=inc_type, use_csv=args.csv, output_fn=args.o
     )
+
+
+def show_ranges_detailed(args):
+    output_file = sys.stdout
+    if args.o is not None:
+        output_file = open(args.o, "wt", newline="")
+    if args.csv:
+        output_file.writelines(get_float_ranges_csv_output())
+    else:
+        output_file.writelines(get_float_ranges_output())
 
 
 def main(argv=None):
@@ -824,7 +835,7 @@ def main(argv=None):
     )
 
     plot_subcmd = subparser_plot.add_subparsers(
-        dest="subcmd",
+        dest="plot_subcmd",
     )
 
     plot_samples = plot_subcmd.add_parser(
@@ -866,28 +877,58 @@ def main(argv=None):
     subparser_range = subparsers.add_parser(
         "range",
         help="Show ranges.",
+    )
+
+    range_subcmd = subparser_range.add_subparsers(
+        dest="range_subcmd",
+    )
+    range_simple = range_subcmd.add_parser(
+        name="simple",
+        help=f"Display the float ranges from 0.0 to 1.0 using a relatively simple format.",
         parents=[
             parser_common_csv,
         ],
     )
-    subparser_range.add_argument(
+    inc_types = [e.name.lower() for e in IncrementType]
+    range_simple.add_argument(
         "-i",
         "--inc",
-        help="The float step increment when going from 0.0 to 1.0.",
-        default=0.1,
+        help=f"""The float step increment to use when showing ranges from 0.0 to 1.0. This value determines the size
+of each range. It defaults to 0.1 when --inc-type is '{inc_types[IncrementType.FLOAT.value]}', which makes each range
+approximately 0.1 (1/10th of 1.0) in size. It defaults to 1.0 when --inc-type is '{inc_types[IncrementType.EXP.value]}',
+which makes each range exactly the size of one expoonent's range.
+""",
+        default=None,
         type=float,
     )
-    inc_types = [e.name.lower() for e in IncrementType]
-    subparser_range.add_argument(
+    range_simple.add_argument(
         "--inc-type",
-        help="The float step increment when going from 0.0 to 1.0.",
+        help=f"""The type of increment to use when walking through the ranges. This can be one of {inc_types}.
+This switch's meaning is tied to the value of --inc. If --inc-type is '{inc_types[IncrementType.FLOAT.value]}', the next
+range is range_num*inc. If --inc-type is '{inc_types[IncrementType.EXP.value]}', the next range is the biased exponent
+plus <inc>.
+""",
         choices=inc_types,
         default=inc_types[0],
         type=str,
     )
-    subparser_range.set_defaults(func=show_ranges)
+    range_simple.set_defaults(func=show_ranges_simple)
+
+    range_detailed = range_subcmd.add_parser(
+        name="detailed",
+        help=f"Display each exponent's range with detail.",
+        parents=[
+            parser_common_csv,
+        ],
+    )
+    range_detailed.set_defaults(func=show_ranges_detailed)
+
 
     args = parser.parse_args()
+
+    if hasattr(args, 'inc') and args.inc is None:
+        args.inc = 0.1 if args.inc_type == inc_types[IncrementType.FLOAT.value] else 1.0
+
     args.func(args)
 
 

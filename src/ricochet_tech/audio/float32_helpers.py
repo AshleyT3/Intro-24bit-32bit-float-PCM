@@ -1,5 +1,4 @@
 from ctypes import Structure, Union, c_uint32, c_float
-from dataclasses import dataclass
 from enum import Enum
 import math
 
@@ -200,36 +199,52 @@ def get_fltu_csv_part(u: fltu) -> str:
     )
 
 
-def output_float_ranges():
+def get_float_ranges_output() -> list[str]:
+    padding = 14
+    output = []
     for fr in get_float_ranges():
-        print(get_float_from_to_log_str(fr.low_end.f, fr.high_end.f))
-        padding = 14
-        print(f"     {'low_end ':.<{padding}} ", end="")
-        print(get_fltu_log_str(u=fr.low_end, level=FloatLogLevel.DETAILED))
-        print(f"     {'low_end+1 ':.<{padding}} ", end="")
-        print(get_fltu_log_str(u=fr.low_end_plus_1, level=FloatLogLevel.DETAILED))
-        print(f"     ...")
-        print(f"     {'high_end-1 ':.<{padding}} ", end="")
-        print(get_fltu_log_str(u=fr.high_end_minus_1, level=FloatLogLevel.DETAILED))
-        print(f"     {'high_end ':.<{padding}} ", end="")
-        print(get_fltu_log_str(u=fr.high_end, level=FloatLogLevel.DETAILED))
-        print()
+        output.extend([
+            f"{get_float_from_to_log_str(fr.low_end.f, fr.high_end.f)}\n",
+            f"     {'low_end ':.<{padding}} {get_fltu_log_str(u=fr.low_end, level=FloatLogLevel.DETAILED)}\n",
+            f"     {'low_end+1 ':.<{padding}} {get_fltu_log_str(u=fr.low_end_plus_1, level=FloatLogLevel.DETAILED)}\n",
+            f"     ...\n",
+            f"     {'high_end-1 ':.<{padding}} {get_fltu_log_str(u=fr.high_end_minus_1, level=FloatLogLevel.DETAILED)}\n",
+            f"     {'high_end ':.<{padding}} {get_fltu_log_str(u=fr.high_end, level=FloatLogLevel.DETAILED)}\n",
+            "\n",
+        ])
+    return output
 
-def output_float_ranges_as_csv():
-    print(
+
+def get_float_ranges_csv_output() -> list[str]:
+    output = []
+    output.append(
         f"{get_fltu_csv_heaader_part("low_end")}," 
 		f"{get_fltu_csv_heaader_part("low_end_plus_1")},"
 		f"{get_fltu_csv_heaader_part("high_end_minus_1")},"
 		f"{get_fltu_csv_heaader_part("high_end")}"
+        "\n"
     )
     for fr in get_float_ranges():
-        print(
+        output.append(
             f"{get_fltu_csv_part(fr.low_end)},"
 			f"{get_fltu_csv_part(fr.low_end_plus_1)},"
 			f"{get_fltu_csv_part(fr.high_end_minus_1)},"
 			f"{get_fltu_csv_part(fr.high_end)}"
+            "\n"
         )
+    return output
+
+
+def output_float_ranges():
+    for line in get_float_ranges_output():
+        print(line, end="")
+
+
+def output_float_ranges_as_csv():
+    for line in get_float_ranges_csv_output():
+        print(line, end="")
 
 
 if __name__ == "__main__":
+    output_float_ranges()
     pass
