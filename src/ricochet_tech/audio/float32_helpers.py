@@ -133,6 +133,7 @@ class FloatLogLevel(Enum):
     NORMAL = 1
     WITH_24BIT = 2
     DETAILED = 3
+    DETAILED2 = 4
 
 
 def get_fltu_log_str(u: fltu, level: FloatLogLevel = FloatLogLevel.NORMAL) -> str:
@@ -151,6 +152,8 @@ def get_fltu_log_str(u: fltu, level: FloatLogLevel = FloatLogLevel.NORMAL) -> st
         s += f" (24bit: 0x{f_24bit:06x}"
         if level == FloatLogLevel.DETAILED:
             s += f" dec={f_24bit}"
+        if level == FloatLogLevel.DETAILED2:
+            s += f" f_from={i24bit_to_float(f_24bit):{FLOAT_FORMAT_SCI}}"
         s += ")"
     return s
 

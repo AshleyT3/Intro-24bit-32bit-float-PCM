@@ -20,6 +20,7 @@ from atbu.common.exception import (
 )
 
 from ricochet_tech.audio.float32_helpers import (
+    FloatLogLevel,
     float_to_24bit_no_round,
     fltu,
     float_to_24bit,
@@ -751,6 +752,18 @@ def show_ranges_detailed(args):
         output_file.writelines(get_float_ranges_output())
 
 
+def interactive_prompt(args):
+    while True:
+        float_value = input("Enter float value or 'exit':")
+        if float_value.lower() == 'exit':
+            break
+        try:
+            float_value = float(float_value)
+            print(get_fltu_log_str(u=fltu(f=float_value), level=FloatLogLevel.DETAILED2))
+        except ValueError:
+            print("Invalid value, try again.")
+
+
 def main(argv=None):
 
     parser = argparse.ArgumentParser(
@@ -923,6 +936,11 @@ plus <inc>.
     )
     range_detailed.set_defaults(func=show_ranges_detailed)
 
+    subparser_interactive = subparsers.add_parser(
+        "interactive",
+        help="Interactive prompt to show float details on-demand.",
+    )
+    subparser_interactive.set_defaults(func=interactive_prompt)
 
     args = parser.parse_args()
 
