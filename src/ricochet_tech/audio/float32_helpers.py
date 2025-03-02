@@ -6,8 +6,9 @@ OUT_PRECISION = 9
 FLOAT_FORMAT_SCI = f".{OUT_PRECISION}e"
 FLOAT_FORMAT_FXD = f".{OUT_PRECISION}f"
 
-F_TO_I24BIT = float(0x7FFFFF)
-I24BIT_TO_F = 1.0 / float(0x7FFFFF)
+I24BIT_MAX = int(0x800000)
+F_TO_I24BIT = float(I24BIT_MAX)
+I24BIT_TO_F = 1.0 / float(I24BIT_MAX)
 
 
 def round_float_to_int(f: float) -> int:
@@ -15,7 +16,10 @@ def round_float_to_int(f: float) -> int:
 
 
 def float_to_24bit(f: float) -> int:
-    return round_float_to_int(f * F_TO_I24BIT)
+    r = round_float_to_int(f * F_TO_I24BIT)
+    if f >= 0 and r == I24BIT_MAX:
+        return I24BIT_MAX - 1
+    return r
 
 
 def float_to_24bit_no_round(f: float) -> int:
@@ -23,6 +27,7 @@ def float_to_24bit_no_round(f: float) -> int:
 
 
 def i24bit_to_float(i24bit: int) -> float:
+    i24bit = min(max(i24bit, -I24BIT_MAX), I24BIT_MAX-1)
     return i24bit * I24BIT_TO_F
 
 
