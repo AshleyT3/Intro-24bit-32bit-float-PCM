@@ -34,13 +34,13 @@ def i24bit_to_float(i24bit: int) -> float:
 def get_i24bit_equal_over_float(i24bit: int, f_limit: float) -> int:
     while i24bit_to_float(i24bit=i24bit) > f_limit:
         i24bit -= 1
-    while i24bit_to_float(i24bit=i24bit) <= f_limit:
+    while i24bit_to_float(i24bit=i24bit) <= f_limit and i24bit < I24BIT_MAX - 1:
         i24bit += 1
     return i24bit
 
 
 def get_i24bit_equal_under_float(i24bit: int, f_limit: float) -> int:
-    while i24bit_to_float(i24bit=i24bit) < f_limit:
+    while i24bit_to_float(i24bit=i24bit) < f_limit and i24bit < I24BIT_MAX - 1:
         i24bit += 1
     while i24bit_to_float(i24bit=i24bit) > f_limit:
         i24bit -= 1
