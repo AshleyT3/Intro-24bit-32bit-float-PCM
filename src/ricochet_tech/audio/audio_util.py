@@ -6,6 +6,7 @@ import os
 from dataclasses import dataclass
 import argparse
 import sys
+from matplotlib import ticker
 from matplotlib.ticker import FuncFormatter, MultipleLocator, StrMethodFormatter
 import numpy as np
 import matplotlib.pyplot as plt
@@ -279,6 +280,7 @@ def create_audio_figure_subplots(
     threshold_db: float = None,
     min_segment_seconds: float = None,
     auto_adjust_y_axis: bool = True,
+    fixed_notation: bool = False,
 ) -> tuple[Figure, list[Axes]]:
 
     axs: list[Axes]
@@ -339,9 +341,9 @@ def create_audio_figure_subplots(
 
         ax.xaxis.set_major_formatter(FuncFormatter(func=x_label_fmt_func))
         for mtick_text in ax.xaxis.get_majorticklabels():
-            mtick_text.set_fontsize(mtick_text.get_fontsize() - 1)
+            mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
         for mtick_text in ax.xaxis.get_minorticklabels():
-            mtick_text.set_fontsize(mtick_text.get_fontsize() - 1)
+            mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
         ax.set_xlabel("Time (minutes:seconds)")
         ax.tick_params(top=False, labeltop=False, bottom=True, labelbottom=True)
 
@@ -351,11 +353,17 @@ def create_audio_figure_subplots(
         ax.set_ylabel("Amplitude")
         ax.grid(which="both", linestyle="--", linewidth=0.5)
         ax.minorticks_on()
+        ax.yaxis.set_minor_locator(ticker.AutoMinorLocator(3))
 
-        ax.yaxis.set_major_formatter(StrMethodFormatter("{x:+.3f}"))
-        ax.yaxis.set_minor_formatter(StrMethodFormatter("{x:+.3f}"))
-        for mtick_text in ax.yaxis.get_minorticklabels():
+        label_fmt = "{x:+.3e}"
+        if fixed_notation:
+            label_fmt = "{x:+.3f}"
+        ax.yaxis.set_major_formatter(StrMethodFormatter(label_fmt))
+        ax.yaxis.set_minor_formatter(StrMethodFormatter(label_fmt))
+        for mtick_text in ax.yaxis.get_majorticklabels():
             mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
+        for mtick_text in ax.yaxis.get_minorticklabels():
+            mtick_text.set_fontsize(mtick_text.get_fontsize() - 3)
 
         ax2 = ax.twinx()
         ax2.set_yticks(ax.get_yticks())
@@ -364,8 +372,10 @@ def create_audio_figure_subplots(
         ax2.set_yticklabels(ax.get_yticklabels(minor=True), minor=True)
         ax2.set_ylim(ax.get_ylim())
 
-        for mtick_text in ax2.get_yminorticklabels():
+        for mtick_text in ax2.get_ymajorticklabels():
             mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
+        for mtick_text in ax2.get_yminorticklabels():
+            mtick_text.set_fontsize(mtick_text.get_fontsize() - 3)
 
         if segments is not None and i == 0:
             level_annot_inf = []
@@ -422,6 +432,7 @@ def plot_audio_files(args):
         start_at_seconds=args.start_at,
         stop_at_seconds=args.stop_at,
         auto_adjust_y_axis=args.auto_adjust,
+        fixed_notation=args.fixed,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -440,6 +451,7 @@ def plot_audio_file_levels(args):
         threshold_db=args.threshold_db,
         min_segment_seconds=args.min_seconds,
         auto_adjust_y_axis=args.auto_adjust,
+        fixed_notation=args.fixed,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -828,6 +840,14 @@ def main(argv=None):
         ),
         action=argparse.BooleanOptionalAction,
         default=True,
+    )
+    parser_common_plot.add_argument(
+        "--fixed",
+        help=(
+            "Use fixed format notation for the y-axis (amplitude) instead of scientific notation."
+        ),
+        action=argparse.BooleanOptionalAction,
+        default=False,
     )
 
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
