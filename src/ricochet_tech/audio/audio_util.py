@@ -211,6 +211,7 @@ def find_steady_levels(
                 end_second=librosa.get_duration(y=samples, sr=sample_rate),
                 start_sample=0,
                 end_sample=len(samples),
+                min_amplitude=np.min(samples_abs),
                 peak_amplitude=np.max(samples_abs),
                 mean_amplitude=np.mean(samples_abs),
                 peak_dbfs=20 * np.log10(np.max(samples_abs)),
