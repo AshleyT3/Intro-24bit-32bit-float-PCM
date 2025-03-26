@@ -246,7 +246,7 @@ def get_target_samples(
     start_at_seconds: float = None,
     stop_at_seconds: float = None,
 ) -> np.array:
-    if audio_info.channels == 1:
+    if len(audio_info.data.shape) == 1:
         audio = audio_info.data
     else:
         audio = audio_info.data[0]
@@ -819,7 +819,7 @@ def main(argv=None):
     parser_common_find_levels.add_argument(
         "-t",
         "--threshold-db",
-        help="The dB threshold defining the end of, and possibly the start of a segment.",
+        help="The dB threshold defining the end of, and possibly the start of a segment (default=0.05).",
         default=0.05,
         type=float,
     )
