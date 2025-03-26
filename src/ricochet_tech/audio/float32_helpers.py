@@ -153,13 +153,16 @@ def get_fltu_log_str(u: fltu, level: FloatLogLevel = FloatLogLevel.NORMAL) -> st
         f"raw=0x{u.i:08x})"
     )
     if level.value >= FloatLogLevel.WITH_24BIT.value:
-        f_24bit = float_to_24bit(u.f)
-        s += f" (24bit: 0x{f_24bit:06x}"
-        if level == FloatLogLevel.DETAILED:
-            s += f" dec={f_24bit}"
-        if level == FloatLogLevel.DETAILED2:
-            s += f" f_from={i24bit_to_float(f_24bit):{FLOAT_FORMAT_SCI}}"
-        s += ")"
+        if u.f < I24BIT_MAX and u.f >= -I24BIT_MAX:
+            f_24bit = float_to_24bit(u.f)
+            s += f" (24bit: 0x{f_24bit:06x}"
+            if level == FloatLogLevel.DETAILED:
+                s += f" dec={f_24bit}"
+            if level == FloatLogLevel.DETAILED2:
+                s += f" f_from={i24bit_to_float(f_24bit):{FLOAT_FORMAT_SCI}}"
+            s += ")"
+        else:
+            s += f" (24bit: N/A)"
     return s
 
 def get_float_from_to_log_str(f_from: float, f_to: float) -> str:
