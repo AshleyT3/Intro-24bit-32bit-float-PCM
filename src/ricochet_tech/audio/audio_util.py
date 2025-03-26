@@ -278,6 +278,7 @@ def create_audio_figure_subplots(
     trunc_segments: int = None,
     threshold_db: float = None,
     min_segment_seconds: float = None,
+    auto_adjust_y_axis: bool = True,
 ) -> tuple[Figure, list[Axes]]:
 
     axs: list[Axes]
@@ -315,7 +316,15 @@ def create_audio_figure_subplots(
         target_seconds = np.arange(len(audio)) / ai.sr
         ax.plot(target_seconds, audio)
 
-        ax.set_ylim(ymin=-1.0, ymax=1.0)
+        ymin = -1.0
+        ymax = 1.0
+        if auto_adjust_y_axis:
+            max_sample = np.max(np.abs(audio))
+            if max_sample > ymax:
+                max_sample *= 1.1
+                ymin = -max_sample
+                ymax = max_sample
+        ax.set_ylim(ymin=ymin, ymax=ymax)
 
         ax.xaxis.set_major_locator(MultipleLocator(10))
         ax.xaxis.set_minor_locator(MultipleLocator(1))
@@ -412,6 +421,7 @@ def plot_audio_files(args):
         audio_info=audio_info,
         start_at_seconds=args.start_at,
         stop_at_seconds=args.stop_at,
+        auto_adjust_y_axis=args.auto_adjust,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -429,6 +439,7 @@ def plot_audio_file_levels(args):
         trunc_segments=args.max_segments,
         threshold_db=args.threshold_db,
         min_segment_seconds=args.min_seconds,
+        auto_adjust_y_axis=args.auto_adjust,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -808,6 +819,17 @@ def main(argv=None):
         default=None,
     )
 
+    parser_common_plot = argparse.ArgumentParser(add_help=False)
+    parser_common_plot.add_argument(
+        "--auto-adjust",
+        help=(
+            "Adjust the y-axis (amplitude) to fix the maximum amplitude sample. "
+            "If disabled, force -1.0 to 1.0."
+        ),
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
     parser_common_find_levels.add_argument(
         "-m",
@@ -868,6 +890,7 @@ def main(argv=None):
         parents=[
             parser_common_filenames,
             parser_common_samples,
+            parser_common_plot,
             parser_common_start_stop,
         ],
     )
@@ -879,6 +902,7 @@ def main(argv=None):
         parents=[
             parser_common_filenames,
             parser_common_samples,
+            parser_common_plot,
             parser_common_start_stop,
             parser_common_find_levels,
         ],
