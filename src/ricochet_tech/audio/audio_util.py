@@ -55,9 +55,6 @@ def wait_debugger():
         ) from ex
 
 
-_LOAD_NON_FLOAT_AS_INT = True
-
-
 def load_24bit_pcm_with_pydub(file_path, mono: bool):
     audio = AudioSegment.from_wav(file_path)
     if mono and audio.channels > 1:
@@ -79,7 +76,7 @@ class AudioInfo:
     fn: str
 
 
-def load_audio_files(filenames: str | list[str]) -> list[AudioInfo]:
+def load_audio_files(filenames: str | list[str], float_only: bool = True) -> list[AudioInfo]:
     if isinstance(filenames, str):
         filenames = list[filenames]
     audio_info: list[AudioInfo] = []
@@ -90,7 +87,7 @@ def load_audio_files(filenames: str | list[str]) -> list[AudioInfo]:
                 print(f"WARNING: Skipping non-file: {fn}")
                 continue
             mdata = tinytag.TinyTag.get(fn)
-            if _LOAD_NON_FLOAT_AS_INT and mdata.bitdepth == 24:
+            if not float_only and mdata.bitdepth == 24:
                 # data, sr = sf.read(fn, dtype='int32')
                 # data = data.reshape(-1, 3)  # Reshape into 24-bit samples
                 data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
