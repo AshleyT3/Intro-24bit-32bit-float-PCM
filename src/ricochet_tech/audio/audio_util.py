@@ -112,6 +112,7 @@ class SteadyLevelSegment:
     end_second: float
     start_sample: int
     end_sample: int
+    min_amplitude: float
     peak_amplitude: float
     mean_amplitude: float
     peak_dbfs: float
@@ -165,8 +166,9 @@ def find_steady_levels(
                 end_second=end_time,
                 start_sample=start_sample,
                 end_sample=end_sample,
-                peak_amplitude=np.max(np.abs(seg_samples)),
-                mean_amplitude=np.mean(np.abs(seg_samples)),
+                min_amplitude=np.min(seg_samples_abs),
+                peak_amplitude=np.max(seg_samples_abs),
+                mean_amplitude=np.mean(seg_samples_abs),
                 peak_dbfs=20 * np.log10(np.max(seg_samples_abs)),
                 rms_dbfs=20 * np.log10(np.sqrt(np.mean(seg_samples_abs**2))),
                 avg_log_mel_db=current_level_sum / current_segment_samples,
@@ -448,6 +450,7 @@ def handle_levels(args):
                 "EndSecondSrc",
                 "Peak_dBFS",
                 "RMS_dBFS",
+                "Min_Amplitude",
                 "Peak_Amplitude",
                 "Mean_Amplitude",
                 "SampleRate",
@@ -499,6 +502,7 @@ def handle_levels(args):
                         f"{start_second + seg.end_second}",
                         f"{seg.peak_dbfs}",
                         f"{seg.rms_dbfs}",
+                        f"{seg.min_amplitude}",
                         f"{seg.peak_amplitude}",
                         f"{seg.mean_amplitude}",
                         f"{ai.sr}",
@@ -507,18 +511,20 @@ def handle_levels(args):
                     ]
                 )
             else:
+                sep = " " if not args.multi_line else os.linesep + "    "
                 print(
-                    f"Seg#={level} "
-                    f"StartSec={seg.start_second:.3f} "
-                    f"StartSecSrc={start_second + seg.start_second:.3f} "
-                    f"EndSec={seg.end_second:.3f} "
-                    f"EndSecSrc={start_second + seg.end_second:.3f} "
-                    f"Peak_dBFS={seg.peak_dbfs} "
-                    f"RMS_dBFS={seg.rms_dbfs} "
-                    f"Peak_Amplitude={seg.peak_amplitude:.6f} "
-                    f"Mean_Amplitude={seg.peak_amplitude:.6f} "
-                    f"SR={ai.sr} "
-                    f"AvgLogMel_dB={seg.avg_log_mel_db :.6f} "
+                    f"Seg#={level}{sep}"
+                    f"StartSec={seg.start_second:.3f}{sep}"
+                    f"StartSecSrc={start_second + seg.start_second:.3f}{sep}"
+                    f"EndSec={seg.end_second:.3f}{sep}"
+                    f"EndSecSrc={start_second + seg.end_second:.3f}{sep}"
+                    f"Peak_dBFS={seg.peak_dbfs}{sep}"
+                    f"RMS_dBFS={seg.rms_dbfs}{sep}"
+                    f"Min_Amplitude={seg.min_amplitude:.9e}{sep}"
+                    f"Peak_Amplitude={seg.peak_amplitude:.9e}{sep}"
+                    f"Mean_Amplitude={seg.peak_amplitude:.9e}{sep}"
+                    f"SR={ai.sr}{sep}"
+                    f"AvgLogMel_dB={seg.avg_log_mel_db :.6f}{sep}"
                     f"FN={os.path.basename(ai.fn)}"
                 )
 
@@ -825,6 +831,14 @@ def main(argv=None):
         type=float,
     )
 
+    parser_common_output = argparse.ArgumentParser(add_help=False)
+    parser_common_output.add_argument(
+        "--multi-line",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="For non-CSV output, use a multi-line format instead of a single line per item.",
+    )
+
     parser_common_csv = argparse.ArgumentParser(add_help=False)
     parser_common_csv.add_argument(
         "-c",
@@ -876,6 +890,7 @@ def main(argv=None):
         help=f"Show audio file levels.",
         parents=[
             parser_common_filenames,
+            parser_common_output,
             parser_common_csv,
             parser_common_samples,
             parser_common_start_stop,
