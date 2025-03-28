@@ -781,12 +781,35 @@ def show_ranges_detailed(args):
 
 def interactive_prompt(args):
     while True:
-        float_value = input("Enter float value or 'exit':")
-        if float_value.lower() == 'exit':
+        cmd = input("Enter value (? for help):")
+        if cmd.lower() == 'exit':
             break
+        if cmd == '?':
+            print("""
+Display the IEEE-754 Binary32 details for a value entered in one of the following formats:
+
+    <float_value>: A floating point value (i.e., 1.0, 1.5e+00, -1.5e+00, 1.0e-37).
+
+    0x<hex_value>: A raw hex IEEE-754 Binary32 value (i.e., "0x3fc00000" is 1.5e+00).
+
+    <sign>,<bexp>,<mantissa>: Combine each into a single IEEE-754 Binary value. Each part is as follows:
+        <sign> is 0 for positive, 1 for negative.
+        <bexp> is the biased exponent (i.e., biased exponent 128 is an exponent of 1).
+        <mantissa> is the mantissa.
+        For example, entering "1,127,0x400000" shows details for -1.5e+00).
+""")
+            continue
         try:
-            float_value = float(float_value)
-            print(get_fltu_log_str(u=fltu(f=float_value), level=FloatLogLevel.DETAILED2))
+            cmd_list = cmd.split(',')
+            if len(cmd_list) == 3:
+                cmd_vals = [int(s, 0) for s in cmd_list]
+                f = fltu(sign=cmd_vals[0], biased_exp=cmd_vals[1], man=cmd_vals[2])
+            elif cmd[:2] == "0x":
+                f = fltu()
+                f.i = int(cmd, 16)
+            else:
+                f = fltu(f=float(cmd))
+            print(get_fltu_log_str(u=f, level=FloatLogLevel.DETAILED2))
         except ValueError:
             print("Invalid value, try again.")
 
