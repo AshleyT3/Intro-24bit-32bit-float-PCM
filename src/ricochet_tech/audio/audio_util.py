@@ -287,6 +287,7 @@ def create_audio_figure_subplots(
     min_segment_seconds: float = None,
     auto_adjust_y_axis: bool = True,
     fixed_notation: bool = False,
+    y_font_adjust: float = 0.0,
 ) -> tuple[Figure, list[Axes]]:
 
     axs: list[Axes]
@@ -367,9 +368,9 @@ def create_audio_figure_subplots(
         ax.yaxis.set_major_formatter(StrMethodFormatter(label_fmt))
         ax.yaxis.set_minor_formatter(StrMethodFormatter(label_fmt))
         for mtick_text in ax.yaxis.get_majorticklabels():
-            mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
+            mtick_text.set_fontsize(mtick_text.get_fontsize() + y_font_adjust)
         for mtick_text in ax.yaxis.get_minorticklabels():
-            mtick_text.set_fontsize(mtick_text.get_fontsize() - 3)
+            mtick_text.set_fontsize(mtick_text.get_fontsize() - 1 + y_font_adjust)
 
         ax2 = ax.twinx()
         ax2.set_yticks(ax.get_yticks())
@@ -379,9 +380,9 @@ def create_audio_figure_subplots(
         ax2.set_ylim(ax.get_ylim())
 
         for mtick_text in ax2.get_ymajorticklabels():
-            mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
+            mtick_text.set_fontsize(mtick_text.get_fontsize() + y_font_adjust)
         for mtick_text in ax2.get_yminorticklabels():
-            mtick_text.set_fontsize(mtick_text.get_fontsize() - 3)
+            mtick_text.set_fontsize(mtick_text.get_fontsize() - 1 + y_font_adjust)
 
         if segments is not None and i == 0:
             level_annot_inf = []
@@ -441,6 +442,7 @@ def plot_audio_files(args):
         stop_at_seconds=args.stop_at,
         auto_adjust_y_axis=args.auto_adjust,
         fixed_notation=args.fixed,
+        y_font_adjust=args.yfont_adjust,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -879,6 +881,12 @@ def main(argv=None):
         ),
         action=argparse.BooleanOptionalAction,
         default=False,
+    )
+    parser_common_plot.add_argument(
+        "--yfont-adjust",
+        help="Apply a delta to the y-axis font size (default is 0.0, no adjustment).",
+        type=float,
+        default=0.0,
     )
 
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
