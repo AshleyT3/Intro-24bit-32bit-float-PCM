@@ -109,6 +109,8 @@ def load_audio_files(filenames: str | list[str], float_only: bool = True) -> lis
                     fn=fn,
                 )
             )
+    if not audio_info:
+        raise AudioUtilException(f"No files found: {filenames}")
     return audio_info
 
 
@@ -431,8 +433,6 @@ def create_audio_figure_subplots(
 
 def plot_audio_files(args):
     audio_info = load_audio_files(filenames=args.filename)
-    if not audio_info:
-        raise AudioUtilException(f"No files found: {args.filename}")
     if args.boost_factor != 1.0:
         for ai in audio_info:
             ai.data *= args.boost_factor
