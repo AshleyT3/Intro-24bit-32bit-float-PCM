@@ -34,6 +34,11 @@ from ricochet_tech.audio.float32_helpers import (
 )
 
 
+class AudioUtilException(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
 def wait_debugger():
     """Call this from wherever you would like to begin waiting for remote debugger attach.
     """
@@ -425,6 +430,8 @@ def create_audio_figure_subplots(
 
 def plot_audio_files(args):
     audio_info = load_audio_files(filenames=args.filename)
+    if not audio_info:
+        raise AudioUtilException(f"No files found: {args.filename}")
     if args.boost_factor != 1.0:
         for ai in audio_info:
             ai.data *= args.boost_factor
@@ -1027,7 +1034,12 @@ plus <inc>.
     if hasattr(args, 'inc') and args.inc is None:
         args.inc = 0.1 if args.inc_type == inc_types[IncrementType.FLOAT.value] else 1.0
 
-    args.func(args)
+    try:
+        args.func(args)
+    except AudioUtilException as e:
+        print(e)
+        exit_code = 1 if len(e.args)==1 else int(e.args[1])
+        exit(exit_code)
 
 
 if __name__ == "__main__":
