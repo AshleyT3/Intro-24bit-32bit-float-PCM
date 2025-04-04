@@ -25,6 +25,7 @@ from ricochet_tech.audio.float32_helpers import (
     float_to_24bit_no_round,
     fltu,
     float_to_24bit,
+    get_float_inc,
     get_float_ranges_csv_output,
     get_float_ranges_output,
     get_fltu_log_str,
@@ -659,13 +660,16 @@ def get_range_output(
     f_range_start: fltu,
     f_range_end: fltu,
 ):
+    f_range_start_inc = get_float_inc(f_range_start)
+    f_range_end_inc = get_float_inc(f_range_end)
     return(
         f"{line_num:3}: "
         f"i24_size={i24bit_range_size:06x} ({i24bit_range_size:9,}) "
         f"flt_size={ifloat_range_size:08x} ({ifloat_range_size:13,}): "
         f"0x{i24bit_range_start:06x} to 0x{i24bit_range_end:06x}: "
         f"{f_range_start.f:.9e} to {f_range_end.f:.9e}   "
-        f"{get_fltu_log_str(f_range_start)} to {get_fltu_log_str(f_range_end)}"
+        f"{get_fltu_log_str(f_range_start)} to {get_fltu_log_str(f_range_end)}   "
+        f"(flt_start_inc={f_range_start_inc:.9e} flt_end_inc={f_range_end_inc:.9e})"
         "\n"
     )
 
@@ -709,12 +713,14 @@ def handle_range(
                 "f32_start_exp",
                 "f32_start_man",
                 "f32_start_raw",
+                "f32_start_inc",
                 "f32_end",
                 "f32_end_sign",
                 "f32_end_bexp",
                 "f32_end_exp",
                 "f32_end_man",
                 "f32_end_raw",
+                "f32_end_inc",
             ]
         )
     f_range_start = fltu(f=0.0)
@@ -733,6 +739,8 @@ def handle_range(
             f_range_end = fltu(f=f_cur)
         else:
             raise ValueError()
+        f_range_start_inc = get_float_inc(f_range_start)
+        f_range_end_inc = get_float_inc(f_range_end)
         ifloat_range_size = f_range_end.i - f_range_start.i
         i24bit_range_size = i24bit_range_end - i24bit_range_start
         if use_csv:
@@ -751,12 +759,14 @@ def handle_range(
                     f"{f_range_start.exp}",
                     f"0x{f_range_start.p.man:06x}",
                     f"0x{f_range_start.i:08x}",
+                    f"{f_range_start_inc:.9e}",
                     f"{f_range_end.f:.9e}",
                     f"{f_range_end.p.sign}",
                     f"{f_range_end.p.biased_exp}",
                     f"{f_range_end.exp}",
                     f"0x{f_range_end.p.man:06x}",
                     f"0x{f_range_end.i:08x}",
+                    f"{f_range_end_inc:.9e}",
                 ]
             )
         else:

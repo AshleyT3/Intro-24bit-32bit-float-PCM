@@ -115,6 +115,16 @@ class fltu(Union):
         return exp
 
 
+def get_float_inc(f: float | fltu) -> float:
+    if isinstance(f, float):
+        f = fltu(f=f)
+    return fltu(
+        sign=f.p.sign,
+        biased_exp=f.p.biased_exp,
+        man=1
+    ).f
+
+
 def get_float_lowest_24bit_quant(f: float | fltu) -> float:
     f = fltu(f=f)
     start_24bit = float_to_24bit(f.f)
@@ -133,6 +143,7 @@ def get_float_highest_24bit_quant(f: float | fltu) -> float:
     if float_to_24bit(f.f) != start_24bit:
         f.i -= 1
     return f.f
+
 
 class FloatLogLevel(Enum):
     NORMAL = 1
@@ -164,6 +175,7 @@ def get_fltu_log_str(u: fltu, level: FloatLogLevel = FloatLogLevel.NORMAL) -> st
         else:
             s += f" (24bit: N/A)"
     return s
+
 
 def get_float_from_to_log_str(f_from: float, f_to: float) -> str:
     return f"{f_from:{FLOAT_FORMAT_SCI}} to {f_to:{FLOAT_FORMAT_SCI}}"
