@@ -486,8 +486,10 @@ def handle_levels(args):
                 "Min_Amplitude",
                 "Peak_Amplitude",
                 "Mean_Amplitude",
-                "SampleRate",
                 "AvgLogMel_dB",
+                "SampleRate",
+                "BitDepth",
+                "Channels",
                 "Filename",
             ]
         )
@@ -538,8 +540,10 @@ def handle_levels(args):
                         f"{seg.min_amplitude}",
                         f"{seg.peak_amplitude}",
                         f"{seg.mean_amplitude}",
-                        f"{ai.sr}",
                         f"{seg.avg_log_mel_db }",
+                        f"{ai.sr}",
+                        f"{ai.bitdepth}",
+                        f"{ai.channels}",
                         f"{os.path.basename(ai.fn)}",
                     ]
                 )
@@ -556,8 +560,10 @@ def handle_levels(args):
                     f"Min_Amplitude={seg.min_amplitude:.9e}{sep}"
                     f"Peak_Amplitude={seg.peak_amplitude:.9e}{sep}"
                     f"Mean_Amplitude={seg.peak_amplitude:.9e}{sep}"
-                    f"SR={ai.sr}{sep}"
                     f"AvgLogMel_dB={seg.avg_log_mel_db :.6f}{sep}"
+                    f"SampleRate={ai.sr}{sep}"
+                    f"BitDepth={ai.bitdepth}{sep}"
+                    f"Channels={ai.channels}{sep}"
                     f"FN={os.path.basename(ai.fn)}"
                 )
 
