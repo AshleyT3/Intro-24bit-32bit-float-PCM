@@ -118,11 +118,12 @@ class fltu(Union):
 def get_float_inc(f: float | fltu) -> float:
     if isinstance(f, float):
         f = fltu(f=f)
-    return fltu(
+    f2 = fltu(
         sign=f.p.sign,
         biased_exp=f.p.biased_exp,
-        man=1
-    ).f
+        man=f.p.man - 1 if f.p.man != 0 else f.p.man + 1
+    )
+    return abs(f.f - f2.f)
 
 
 def get_float_lowest_24bit_quant(f: float | fltu) -> float:
