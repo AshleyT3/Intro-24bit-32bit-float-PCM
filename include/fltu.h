@@ -20,7 +20,7 @@ int32_t float_to_24bit(float f)
 {
 	// In python, precision is as if 'f * f_to_i24bit' is calculated
 	// with double-precision, then passed to 'lrint' and not 'lrintf'.
-	//return lrintf(f * f_to_i24bit);
+	// return lrintf(f * f_to_i24bit);
 
 	return lrint((double)f * (double)f_to_i24bit);
 }
@@ -54,6 +54,10 @@ union fltu {
 		this->p.sign = sign;
 		this->p.biased_exp = biased_exp;
 		this->p.man = man;
+	}
+	fltu(int32_t raw)
+	{
+		this->raw = raw;
 	}
 };
 
@@ -124,7 +128,6 @@ const std::string get_fltu_log_str(const fltu& u)
 {
 	return get_fltu_log_str(nullptr, 0, u);
 }
-
 
 
 void output_float_ranges()
