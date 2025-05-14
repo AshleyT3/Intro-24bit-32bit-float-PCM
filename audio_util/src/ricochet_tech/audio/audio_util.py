@@ -807,7 +807,7 @@ def show_ranges_detailed(args):
 def interactive_prompt(args):
     while True:
         cmd = input("Enter value (? for help):")
-        if cmd.lower() == 'exit':
+        if cmd.lower() in ['exit', 'quit']:
             break
         if cmd == '?':
             print("""
@@ -822,6 +822,8 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
         <bexp> is the biased exponent (i.e., biased exponent 128 is an exponent of 1).
         <mantissa> is the mantissa.
         For example, entering "1,127,0x400000" shows details for -1.5e+00).
+
+    'exit', 'quit': exit the program.
 """)
             continue
         try:
