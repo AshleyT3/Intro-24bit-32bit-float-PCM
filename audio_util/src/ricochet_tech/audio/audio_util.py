@@ -906,21 +906,25 @@ def main(argv=None):
     parser_common_find_levels.add_argument(
         "-m",
         "--max-segments",
-        help="The maximum segments of steady audio to process.",
+        help="The maximum segments of steady audio to process (default is unlimited).",
         default=-1,
         type=int,
     )
     parser_common_find_levels.add_argument(
         "-t",
         "--threshold-db",
-        help="The dB threshold defining the end of, and possibly the start of a segment (default=0.05).",
+        help="""The dB threshold that, if exceeded, defines the end of, and possibly the
+start of a segment (default=0.05).
+""",
         default=0.05,
         type=float,
     )
     parser_common_find_levels.add_argument(
         "-s",
         "--min-seconds",
-        help="The minimum number of seconds within dB threshold of a valid segement.",
+        help="""The minimum number of seconds required to remain within dB threshold
+in order for a segment to be observed (default=2.0 seconds).
+""",
         default=2.0,
         type=float,
     )
@@ -984,6 +988,10 @@ def main(argv=None):
     subparser_levels = subparsers.add_parser(
         "levels",
         help=f"Show audio file levels.",
+        description="""Identifies segments within an audio file based on amplitude remaining
+under a certain threshold for a minimum duration. Information is displayed
+for each segment found.
+""",
         parents=[
             parser_common_filenames,
             parser_common_output,
