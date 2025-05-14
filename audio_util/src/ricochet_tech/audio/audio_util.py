@@ -65,10 +65,7 @@ def wait_debugger():
 def load_24bit_pcm_with_pydub(file_path, mono: bool):
     audio = AudioSegment.from_wav(file_path)
     if mono and audio.channels > 1:
-        audio.set_channels(1)
-    audio = audio.set_frame_rate(audio.frame_rate).set_channels(
-        audio.channels
-    )  # Ensure correct sample rate and channels
+        audio = audio.set_channels(1)
     samples = np.array(audio.get_array_of_samples())
     return samples, audio.frame_rate
 
