@@ -8,8 +8,7 @@ dependencies = [
     "atbu-common-pkg >= 0.0.12",
     "numpy >= 2.0.2",
     "matplotlib >= 3.10.0",
-    "sounddevice >= 0.5.1",
-    "soundfile >= 0.13.0",
+    "pydub >= 0.25.1",
     "tinytag >= 2.0.0",
     "librosa >= 0.10.2.post1",
 ]
