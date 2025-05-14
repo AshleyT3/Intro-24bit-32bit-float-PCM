@@ -83,7 +83,11 @@ class AudioInfo:
     fn: str
 
 
-def load_audio_files(filenames: str | list[str], float_only: bool = True) -> list[AudioInfo]:
+def load_audio_files(
+    filenames: str | list[str],
+    float_only: bool = True,
+    boost_factor: float = None,
+) -> list[AudioInfo]:
     if isinstance(filenames, str):
         filenames = list[filenames]
     audio_info: list[AudioInfo] = []
@@ -112,6 +116,9 @@ def load_audio_files(filenames: str | list[str], float_only: bool = True) -> lis
             )
     if not audio_info:
         raise AudioUtilException(f"No files found: {filenames}")
+    if boost_factor is not None and boost_factor != 1.0:
+        for i in audio_info:
+            i.data *= boost_factor
     return audio_info
 
 
@@ -433,10 +440,7 @@ def create_audio_figure_subplots(
 
 
 def plot_audio_files(args):
-    audio_info = load_audio_files(filenames=args.filename)
-    if args.boost_factor != 1.0:
-        for ai in audio_info:
-            ai.data *= args.boost_factor
+    audio_info = load_audio_files(filenames=args.filename, boost_factor=args.boost_factor)
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
         start_at_seconds=args.start_at,
@@ -450,10 +454,7 @@ def plot_audio_files(args):
 
 
 def plot_audio_file_levels(args):
-    audio_info = load_audio_files(filenames=args.filename)
-    if args.boost_factor != 1.0:
-        for ai in audio_info:
-            ai.data *= args.boost_factor
+    audio_info = load_audio_files(filenames=args.filename, boost_factor=args.boost_factor)
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
         start_at_seconds=args.start_at,
@@ -495,10 +496,7 @@ def handle_levels(args):
             ]
         )
 
-    audio_info = load_audio_files(filenames=args.filename)
-    if args.boost_factor != 1.0:
-        for ai in audio_info:
-            ai.data *= args.boost_factor
+    audio_info = load_audio_files(filenames=args.filename, boost_factor=args.boost_factor)
     for i, ai in enumerate(audio_info):
         audio, start_trim_count, _ = get_target_samples(
             audio_info=ai,
