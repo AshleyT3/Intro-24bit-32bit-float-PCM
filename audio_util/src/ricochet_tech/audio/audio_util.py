@@ -84,6 +84,7 @@ def load_audio_files(
     filenames: str | list[str],
     float_only: bool = True,
     boost_factor: float = None,
+    shift_32bit_samples: bool = True,
 ) -> list[AudioInfo]:
     if isinstance(filenames, str):
         filenames = list[filenames]
@@ -96,9 +97,12 @@ def load_audio_files(
                 continue
             mdata = tinytag.TinyTag.get(fn)
             if not float_only and mdata.bitdepth == 24:
-                # data, sr = sf.read(fn, dtype='int32')
-                # data = data.reshape(-1, 3)  # Reshape into 24-bit samples
                 data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
+                if (
+                    shift_32bit_samples and data.size != 0 and type(data[0]) == np.intc
+                    and len(data[0].tobytes()) == 4
+                ):
+                    data = np.right_shift(data, 8)
             else:
                 data, sr = librosa.load(fn, mono=True, sr=None)
             audio_info.append(
@@ -836,6 +840,50 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
             print("Invalid value, try again.")
 
 
+def handle_dump(args):
+    audio_info = load_audio_files(
+        filenames=args.filename,
+        float_only=False,
+        boost_factor=args.boost_factor,
+        shift_32bit_samples=args.shift_32bit,
+    )
+    for i, ai in enumerate(audio_info):
+        audio, start_trim_count, _ = get_target_samples(
+            audio_info=ai,
+            start_at_seconds=args.start_at,
+            stop_at_seconds=args.stop_at,
+        )
+
+        if len(audio) == 0:
+            raise ValueError("No audio to process.")
+
+        total_seconds = len(audio) / ai.sr
+        start_second = start_trim_count / ai.sr
+        print("-----------------------------------------------------------------------------------")
+        print(f"Filename={ai.fn}")
+        print(f"Target samples duration: {total_seconds}s")
+        print(f"Target samples start: {start_second}s")
+
+        num_bytes_sample = int(ai.bitdepth/8)
+        bytes_fmt = f"0x{{:0{int(num_bytes_sample*2)}x}}"
+        for i, sample in enumerate(audio):
+            cur_time = start_second + (i * (1.0/ai.sr))
+            print(f"{i:7}", end="")
+            print(f": t={cur_time:.9f}s ", end="")
+            if ai.bitdepth == 32:
+                print(f"sample={sample:.9e} ({sample:.9f})", end="")
+            else:
+                raw_bytes = sample.tobytes()
+                if np.little_endian:
+                    raw_bytes = raw_bytes[::-1]
+                if len(raw_bytes) == 4 and args.shift_32bit:
+                    raw_bytes = raw_bytes[1:]
+                raw_hex = ''.join(f'{byte:02x}' for byte in raw_bytes)
+                byte_delta = int(len(raw_bytes) - (ai.bitdepth / 8))
+                print(f"sample=0x{raw_hex}", end="")
+            print()
+
+
 def main(argv=None):
 
     parser = argparse.ArgumentParser(
@@ -854,6 +902,17 @@ def main(argv=None):
         help="The amount by which to boost the .wav samples.",
         type=float,
         default=1.0,
+    )
+    parser_common_samples.add_argument(
+        "--shift-32bit",
+        help="""When 24-bit PCM integer samples are used directly (currently only by 'dump'), they are
+loaded into a high bytes of a 32-bit integer. By default, when dumping those samples,
+they are shifted back to the right by 8 bits in order to preset a normal 24-bit sample
+as part of dump output. If you wish to see the 32-bit sample loaded by the python
+package, you can use this option to disable that shift normalizing effect. Generally,
+you can ignore this option.""",
+        action=argparse.BooleanOptionalAction,
+        default=True,
     )
 
     subparsers = parser.add_subparsers(
@@ -1057,6 +1116,19 @@ plus <inc>.
         help="Interactive prompt to show float details on-demand.",
     )
     subparser_interactive.set_defaults(func=interactive_prompt)
+
+    subparser_dump = subparsers.add_parser(
+        "dump",
+        help=f"Dump audio file samples.",
+        description="Dumps the audio file names.",
+        parents=[
+            parser_common_filenames,
+            parser_common_output,
+            parser_common_samples,
+            parser_common_start_stop,
+        ],
+    )
+    subparser_dump.set_defaults(func=handle_dump)
 
     args = parser.parse_args()
 
