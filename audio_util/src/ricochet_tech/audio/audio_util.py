@@ -1,3 +1,7 @@
+"""audioutil, a utility to access/examine audio 24-bit and 32-bit float audio samples."""
+
+# pylint: disable=unsupported-binary-operation
+
 import csv
 from ctypes import c_float
 from enum import Enum
@@ -22,7 +26,6 @@ from atbu.common.exception import (
 
 from ricochet_tech.audio.float32_helpers import (
     FloatLogLevel,
-    float_to_24bit_no_round,
     fltu,
     float_to_24bit,
     get_float_inc,
@@ -41,8 +44,7 @@ class AudioUtilException(Exception):
 
 
 def wait_debugger():
-    """Call this from wherever you would like to begin waiting for remote debugger attach.
-    """
+    """Call this from wherever you would like to begin waiting for remote debugger attach."""
     debug_server_port = 7777
     try:
         import debugpy  # pylint: disable=import-outside-toplevel
@@ -99,7 +101,9 @@ def load_audio_files(
             if not float_only and mdata.bitdepth == 24:
                 data, sr = load_24bit_pcm_with_pydub(fn, mono=True)
                 if (
-                    shift_32bit_samples and data.size != 0 and type(data[0]) == np.intc
+                    shift_32bit_samples
+                    and data.size != 0
+                    and isinstance(data[0], np.intc)
                     and len(data[0].tobytes()) == 4
                 ):
                     data = np.right_shift(data, 8)
@@ -350,14 +354,20 @@ def create_audio_figure_subplots(
         ax.xaxis.set_minor_locator(MultipleLocator(1))
         start_second = start_trim_count / ai.sr
 
-        def x_label_fmt_func(secs, pos):
-            targ_time = f"{int(secs // 60)}:{int(secs % 60):02d}"
-            if start_second != 0:
-                real_time = f"{int((start_second + secs) // 60)}:{int((start_second + secs) % 60):02d}"
-                return f"{real_time}\n({targ_time})"
-            return f"{targ_time}"
+        def make_x_label_fmt_func(start_second):
+            def x_label_fmt_func(secs, pos):
+                # pylint: disable=unused-argument
+                targ_time = f"{int(secs // 60)}:{int(secs % 60):02d}"
+                if start_second != 0:
+                    label_minutes = int((start_second + secs) // 60)
+                    label_seconds = int((start_second + secs) % 60)
+                    real_time = f"{label_minutes}:{label_seconds:02d}"
+                    return f"{real_time}\n({targ_time})"
+                return f"{targ_time}"
 
-        ax.xaxis.set_major_formatter(FuncFormatter(func=x_label_fmt_func))
+        ax.xaxis.set_major_formatter(
+            FuncFormatter(func=make_x_label_fmt_func(start_second=start_second))
+        )
         for mtick_text in ax.xaxis.get_majorticklabels():
             mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
         for mtick_text in ax.xaxis.get_minorticklabels():
@@ -441,7 +451,9 @@ def create_audio_figure_subplots(
 
 
 def plot_audio_files(args):
-    audio_info = load_audio_files(filenames=args.filename, boost_factor=args.boost_factor)
+    audio_info = load_audio_files(
+        filenames=args.filename, boost_factor=args.boost_factor
+    )
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
         start_at_seconds=args.start_at,
@@ -455,7 +467,9 @@ def plot_audio_files(args):
 
 
 def plot_audio_file_levels(args):
-    audio_info = load_audio_files(filenames=args.filename, boost_factor=args.boost_factor)
+    audio_info = load_audio_files(
+        filenames=args.filename, boost_factor=args.boost_factor
+    )
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
         start_at_seconds=args.start_at,
@@ -475,7 +489,7 @@ def handle_levels(args):
     if args.csv:
         csvfile = sys.stdout
         if args.o is not None:
-            csvfile = open(args.o, "wt", newline="")
+            csvfile = open(args.o, "wt", newline="", encoding="utf-8")
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(
             [
@@ -497,7 +511,9 @@ def handle_levels(args):
             ]
         )
 
-    audio_info = load_audio_files(filenames=args.filename, boost_factor=args.boost_factor)
+    audio_info = load_audio_files(
+        filenames=args.filename, boost_factor=args.boost_factor
+    )
     for i, ai in enumerate(audio_info):
         audio, start_trim_count, _ = get_target_samples(
             audio_info=ai,
@@ -661,7 +677,7 @@ def get_range_output(
 ):
     f_range_start_inc = get_float_inc(f_range_start)
     f_range_end_inc = get_float_inc(f_range_end)
-    return(
+    return (
         f"{line_num:3}: "
         f"i24_size={i24bit_range_size:06x} ({i24bit_range_size:9,}) "
         f"flt_size={ifloat_range_size:08x} ({ifloat_range_size:13,}): "
@@ -678,6 +694,9 @@ class IncrementType(Enum):
     EXP = 1
 
 
+INC_TYPE_NAMES = [e.name.lower() for e in IncrementType]
+
+
 def handle_range(
     incf: fltu, inc_type: IncrementType, use_csv: bool = False, output_fn: str = None
 ):
@@ -692,7 +711,7 @@ def handle_range(
 
     output_file = sys.stdout
     if output_fn is not None:
-        output_file = open(output_fn, "wt", newline="")
+        output_file = open(output_fn, "wt", newline="", encoding="utf-8")
 
     csv_writer = None
     if use_csv:
@@ -796,7 +815,7 @@ def show_ranges_simple(args):
 def show_ranges_detailed(args):
     output_file = sys.stdout
     if args.o is not None:
-        output_file = open(args.o, "wt", newline="")
+        output_file = open(args.o, "wt", newline="", encoding="utf-8")
     if args.csv:
         output_file.writelines(get_float_ranges_csv_output())
     else:
@@ -804,12 +823,14 @@ def show_ranges_detailed(args):
 
 
 def interactive_prompt(args):
+    # pylint: disable=unused-argument,line-too-long
     while True:
         cmd = input("Enter value (? for help):")
-        if cmd.lower() in ['exit', 'quit']:
+        if cmd.lower() in ["exit", "quit"]:
             break
-        if cmd == '?':
-            print("""
+        if cmd == "?":
+            print(
+                """
 Display the IEEE-754 Binary32 details for a value entered in one of the following formats:
 
     <float_value>: A floating point value (i.e., 1.0, 1.5e+00, -1.5e+00, 1.0e-37).
@@ -823,10 +844,11 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
         For example, entering "1,127,0x400000" shows details for -1.5e+00).
 
     'exit', 'quit': exit the program.
-""")
+"""
+            )
             continue
         try:
-            cmd_list = cmd.split(',')
+            cmd_list = cmd.split(",")
             if len(cmd_list) == 3:
                 cmd_vals = [int(s, 0) for s in cmd_list]
                 f = fltu(sign=cmd_vals[0], biased_exp=cmd_vals[1], man=cmd_vals[2])
@@ -859,15 +881,17 @@ def handle_dump(args):
 
         total_seconds = len(audio) / ai.sr
         start_second = start_trim_count / ai.sr
-        print("-----------------------------------------------------------------------------------")
+        print(
+            "-----------------------------------------------------------------------------------"
+        )
         print(f"Filename={ai.fn}")
         print(f"Target samples duration: {total_seconds}s")
         print(f"Target samples start: {start_second}s")
 
-        num_bytes_sample = int(ai.bitdepth/8)
+        num_bytes_sample = int(ai.bitdepth / 8)
         bytes_fmt = f"0x{{:0{int(num_bytes_sample*2)}x}}"
         for i, sample in enumerate(audio):
-            cur_time = start_second + (i * (1.0/ai.sr))
+            cur_time = start_second + (i * (1.0 / ai.sr))
             print(f"{i:7}", end="")
             print(f": t={cur_time:.9f}s ", end="")
             if ai.bitdepth == 32:
@@ -878,13 +902,14 @@ def handle_dump(args):
                     raw_bytes = raw_bytes[::-1]
                 if len(raw_bytes) == 4 and args.shift_32bit:
                     raw_bytes = raw_bytes[1:]
-                raw_hex = ''.join(f'{byte:02x}' for byte in raw_bytes)
+                raw_hex = "".join(f"{byte:02x}" for byte in raw_bytes)
                 byte_delta = int(len(raw_bytes) - (ai.bitdepth / 8))
                 print(f"sample=0x{raw_hex}", end="")
             print()
 
 
-def main(argv=None):
+def create_args_parser() -> argparse.ArgumentParser:
+    # pylint: disable=line-too-long
 
     parser = argparse.ArgumentParser(
         prog="audio_util",
@@ -1077,13 +1102,12 @@ for each segment found.
             parser_common_csv,
         ],
     )
-    inc_types = [e.name.lower() for e in IncrementType]
     range_simple.add_argument(
         "-i",
         "--inc",
         help=f"""The float step increment to use when showing ranges from 0.0 to 1.0. This value determines the size
-of each range. It defaults to 0.1 when --inc-type is '{inc_types[IncrementType.FLOAT.value]}', which makes each range
-approximately 0.1 (1/10th of 1.0) in size. It defaults to 1.0 when --inc-type is '{inc_types[IncrementType.EXP.value]}',
+of each range. It defaults to 0.1 when --inc-type is '{INC_TYPE_NAMES[IncrementType.FLOAT.value]}', which makes each range
+approximately 0.1 (1/10th of 1.0) in size. It defaults to 1.0 when --inc-type is '{INC_TYPE_NAMES[IncrementType.EXP.value]}',
 which makes each range exactly the size of one expoonent's range.
 """,
         default=None,
@@ -1091,13 +1115,13 @@ which makes each range exactly the size of one expoonent's range.
     )
     range_simple.add_argument(
         "--inc-type",
-        help=f"""The type of increment to use when walking through the ranges. This can be one of {inc_types}.
-This switch's meaning is tied to the value of --inc. If --inc-type is '{inc_types[IncrementType.FLOAT.value]}', the next
-range is range_num*inc. If --inc-type is '{inc_types[IncrementType.EXP.value]}', the next range is the biased exponent
+        help=f"""The type of increment to use when walking through the ranges. This can be one of {INC_TYPE_NAMES}.
+This switch's meaning is tied to the value of --inc. If --inc-type is '{INC_TYPE_NAMES[IncrementType.FLOAT.value]}', the next
+range is range_num*inc. If --inc-type is '{INC_TYPE_NAMES[IncrementType.EXP.value]}', the next range is the biased exponent
 plus <inc>.
 """,
-        choices=inc_types,
-        default=inc_types[0],
+        choices=INC_TYPE_NAMES,
+        default=INC_TYPE_NAMES[0],
         type=str,
     )
     range_simple.set_defaults(func=show_ranges_simple)
@@ -1130,16 +1154,25 @@ plus <inc>.
     )
     subparser_dump.set_defaults(func=handle_dump)
 
+    return parser
+
+
+def main(argv=None):
+    # pylint: disable=unused-argument
+
+    parser = create_args_parser()
     args = parser.parse_args()
 
-    if hasattr(args, 'inc') and args.inc is None:
-        args.inc = 0.1 if args.inc_type == inc_types[IncrementType.FLOAT.value] else 1.0
+    if hasattr(args, "inc") and args.inc is None:
+        args.inc = (
+            0.1 if args.inc_type == INC_TYPE_NAMES[IncrementType.FLOAT.value] else 1.0
+        )
 
     try:
         args.func(args)
     except AudioUtilException as e:
         print(e)
-        exit_code = 1 if len(e.args)==1 else int(e.args[1])
+        exit_code = 1 if len(e.args) == 1 else int(e.args[1])
         exit(exit_code)
 
 

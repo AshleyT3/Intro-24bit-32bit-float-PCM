@@ -1,3 +1,8 @@
+"""Helper classes, unions, functions to examine/manipulate the 32-bit float format.
+"""
+
+# pylint: disable=unsupported-binary-operation
+
 from ctypes import Structure, Union, c_uint32, c_float
 from enum import Enum
 import math
@@ -27,7 +32,7 @@ def float_to_24bit_no_round(f: float) -> int:
 
 
 def i24bit_to_float(i24bit: int) -> float:
-    i24bit = min(max(i24bit, -I24BIT_MAX), I24BIT_MAX-1)
+    i24bit = min(max(i24bit, -I24BIT_MAX), I24BIT_MAX - 1)
     return i24bit * I24BIT_TO_F
 
 
@@ -121,7 +126,7 @@ def get_float_inc(f: float | fltu) -> float:
     f2 = fltu(
         sign=f.p.sign,
         biased_exp=f.p.biased_exp,
-        man=f.p.man - 1 if f.p.man != 0 else f.p.man + 1
+        man=f.p.man - 1 if f.p.man != 0 else f.p.man + 1,
     )
     return abs(f.f - f2.f)
 
@@ -224,36 +229,39 @@ def get_fltu_csv_part(u: fltu) -> str:
 
 
 def get_float_ranges_output() -> list[str]:
+    # pylint: disable=line-too-long
     padding = 14
     output = []
     for fr in get_float_ranges():
-        output.extend([
-            f"{get_float_from_to_log_str(fr.low_end.f, fr.high_end.f)}\n",
-            f"     {'low_end ':.<{padding}} {get_fltu_log_str(u=fr.low_end, level=FloatLogLevel.DETAILED)}\n",
-            f"     {'low_end+1 ':.<{padding}} {get_fltu_log_str(u=fr.low_end_plus_1, level=FloatLogLevel.DETAILED)}\n",
-            f"     ...\n",
-            f"     {'high_end-1 ':.<{padding}} {get_fltu_log_str(u=fr.high_end_minus_1, level=FloatLogLevel.DETAILED)}\n",
-            f"     {'high_end ':.<{padding}} {get_fltu_log_str(u=fr.high_end, level=FloatLogLevel.DETAILED)}\n",
-            "\n",
-        ])
+        output.extend(
+            [
+                f"{get_float_from_to_log_str(fr.low_end.f, fr.high_end.f)}\n",
+                f"     {'low_end ':.<{padding}} {get_fltu_log_str(u=fr.low_end, level=FloatLogLevel.DETAILED)}\n",
+                f"     {'low_end+1 ':.<{padding}} {get_fltu_log_str(u=fr.low_end_plus_1, level=FloatLogLevel.DETAILED)}\n",
+                f"     ...\n",
+                f"     {'high_end-1 ':.<{padding}} {get_fltu_log_str(u=fr.high_end_minus_1, level=FloatLogLevel.DETAILED)}\n",
+                f"     {'high_end ':.<{padding}} {get_fltu_log_str(u=fr.high_end, level=FloatLogLevel.DETAILED)}\n",
+                "\n",
+            ]
+        )
     return output
 
 
 def get_float_ranges_csv_output() -> list[str]:
     output = []
     output.append(
-        f"{get_fltu_csv_heaader_part("low_end")}," 
-		f"{get_fltu_csv_heaader_part("low_end_plus_1")},"
-		f"{get_fltu_csv_heaader_part("high_end_minus_1")},"
-		f"{get_fltu_csv_heaader_part("high_end")}"
+        f"{get_fltu_csv_heaader_part("low_end")},"
+        f"{get_fltu_csv_heaader_part("low_end_plus_1")},"
+        f"{get_fltu_csv_heaader_part("high_end_minus_1")},"
+        f"{get_fltu_csv_heaader_part("high_end")}"
         "\n"
     )
     for fr in get_float_ranges():
         output.append(
             f"{get_fltu_csv_part(fr.low_end)},"
-			f"{get_fltu_csv_part(fr.low_end_plus_1)},"
-			f"{get_fltu_csv_part(fr.high_end_minus_1)},"
-			f"{get_fltu_csv_part(fr.high_end)}"
+            f"{get_fltu_csv_part(fr.low_end_plus_1)},"
+            f"{get_fltu_csv_part(fr.high_end_minus_1)},"
+            f"{get_fltu_csv_part(fr.high_end)}"
             "\n"
         )
     return output
