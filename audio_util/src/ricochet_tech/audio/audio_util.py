@@ -2,27 +2,30 @@
 
 # pylint: disable=unsupported-binary-operation
 
-import csv
-from ctypes import c_float
-from enum import Enum
-import glob
-import os
-from dataclasses import dataclass
-import argparse
 import sys
-from matplotlib import ticker
-from matplotlib.ticker import FuncFormatter, MultipleLocator, StrMethodFormatter
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
-from matplotlib.figure import Figure
-import librosa
-from pydub import AudioSegment
-import tinytag
+import os
+import glob
+import argparse
+from dataclasses import dataclass
+from enum import Enum
+from ctypes import c_float
+import csv
+
+
 from atbu.common.exception import (
     InvalidStateError,
     exc_to_string,
 )
+from matplotlib import ticker
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter, MultipleLocator, StrMethodFormatter
+import numpy as np
+import librosa
+from pydub import AudioSegment
+import tinytag
+
 
 from ricochet_tech.audio.float32_helpers import (
     FloatLogLevel,
