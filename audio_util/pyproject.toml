@@ -25,40 +25,13 @@ classifiers = [
 homepage = "https://example.local/SomeGDev/example123"
 issues = "https://example.local/SomeGDev/example123/issues"
 
-[tool.poetry]
-# Optional: If using poetry for dependency management
-# sources = ["pypi"]
-# dependencies = {"python": "^3.12"}
-
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-# Optional: If not using poetry for dependency management
-#install_requires = [
-#    "numpy >= 2.0.2",
-#    "matplotlib >= 3.10.0",
-#    "sounddevice >= 0.5.1",
-#    "soundfile >= 0.13.0",
-#    "tinytag >= 2.0.0",
-#    "librosa >= 0.10.2.post1",
-#]
-
 [project.scripts]
 audioutil = "ricochet_tech.audio.audio_util:main"
-#entry_points = {
-#    'console_scripts': ['audioutil=ricochet_tech.audio.audio_util:main']
-#}
 
-#[tool.setuptools.package_dir]
-#"" = "src"
-
-#[tool.setuptools.packages]
-#find_namespace_packages = { where = "src" }
 [tool.setuptools.packages.find]
 where = ["src/"]
-#include = ["mynamespace.subpackage_a"]
 
-#[tool.setuptools.python_requires]
-#>= 3.12
