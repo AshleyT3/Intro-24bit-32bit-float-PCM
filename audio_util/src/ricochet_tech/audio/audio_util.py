@@ -367,6 +367,7 @@ def create_audio_figure_subplots(
                     real_time = f"{label_minutes}:{label_seconds:02d}"
                     return f"{real_time}\n({targ_time})"
                 return f"{targ_time}"
+            return x_label_fmt_func
 
         ax.xaxis.set_major_formatter(
             FuncFormatter(func=make_x_label_fmt_func(start_second=start_second))
