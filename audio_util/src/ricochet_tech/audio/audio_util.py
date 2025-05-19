@@ -184,6 +184,14 @@ def find_steady_levels(
         seg_samples = samples[start_sample:end_sample]
         seg_samples_abs = np.abs(seg_samples)
 
+        max_seg_samples_abs = np.max(seg_samples_abs)
+        peak_dbfs = np.float32(-np.inf)
+        rms_dbfs = np.float32(-np.inf)
+        if max_seg_samples_abs != 0:
+            peak_dbfs = 20 * np.log10(max_seg_samples_abs)
+        if not np.all(seg_samples_abs == 0):
+            rms_dbfs = 20 * np.log10(np.sqrt(np.mean(seg_samples_abs**2)))
+
         steady_segments.append(
             SteadyLevelSegment(
                 start_second=start_time,
@@ -193,8 +201,8 @@ def find_steady_levels(
                 min_amplitude=np.min(seg_samples_abs),
                 peak_amplitude=np.max(seg_samples_abs),
                 mean_amplitude=np.mean(seg_samples_abs),
-                peak_dbfs=20 * np.log10(np.max(seg_samples_abs)),
-                rms_dbfs=20 * np.log10(np.sqrt(np.mean(seg_samples_abs**2))),
+                peak_dbfs=peak_dbfs,
+                rms_dbfs=rms_dbfs,
                 avg_log_mel_db=current_level_sum / current_segment_samples,
             )
         )
@@ -413,7 +421,7 @@ def create_audio_figure_subplots(
             level_annot_inf = []
             for level, segment in enumerate(segments):
                 y_value = segment.peak_amplitude
-                segment_dbfs = 20 * np.log10(y_value)
+                segment_dbfs = np.float32(-np.inf) if y_value == 0 else 20 * np.log10(y_value)
                 level_annot_inf.append(
                     (
                         f"Level {level} ({y_value:.3f})",
@@ -488,7 +496,7 @@ def plot_audio_file_levels(args):
     plt.show(block=True)
 
 
-def handle_levels(args):
+def handle_steadylevels(args):
     csv_writer = None
     if args.csv:
         csvfile = sys.stdout
@@ -936,7 +944,7 @@ def create_args_parser() -> argparse.ArgumentParser:
         "--shift-32bit",
         help="""When 24-bit PCM integer samples are used directly (currently only by 'dump'), they are
 loaded into a high bytes of a 32-bit integer. By default, when dumping those samples,
-they are shifted back to the right by 8 bits in order to preset a normal 24-bit sample
+they are shifted back to the right by 8 bits so a normal 24-bit sample is presented
 as part of dump output. If you wish to see the 32-bit sample loaded by the python
 package, you can use this option to disable that shift normalizing effect. Generally,
 you can ignore this option.""",
@@ -1061,8 +1069,14 @@ in order for a segment to be observed (default=2.0 seconds).
     plot_samples.set_defaults(func=plot_audio_files)
 
     plot_levels = plot_subcmd.add_parser(
-        name="levels",
-        help=f"Plot the audio file samples with level annotations.",
+        name="steadylevels",
+        description="""Identifies segments within an audio file where the amplitude remains at a
+particular level for some duration. The resulting segments are then graphed
+with annotations. For example, a test tone could be played while adjusting a
+gain knob to different steps at some selected interval where this command
+will graph and annoatate the levels at the different steps. This command should
+only be used with files that have periods of largly unchanged amplitude.""",
+        help="Plot the steady levels of an audio file annotations.",
         parents=[
             parser_common_filenames,
             parser_common_samples,
@@ -1074,12 +1088,14 @@ in order for a segment to be observed (default=2.0 seconds).
     plot_levels.set_defaults(func=plot_audio_file_levels)
 
     subparser_levels = subparsers.add_parser(
-        "levels",
-        help=f"Show audio file levels.",
-        description="""Identifies segments within an audio file based on amplitude remaining
-under a certain threshold for a minimum duration. Information is displayed
-for each segment found.
-""",
+        "steadylevels",
+        description="""Identifies segments within an audio file where the amplitude remains at a
+particular level for some duration. The resulting segments are then listed in
+human-readable or csv format. For example, a test tone could be played while
+adjusting a gain knob to different steps at some selected interval where this
+command will list information about the levels at the different steps. This command
+should only be used with files that have periods of largly unchanged amplitude.""",
+        help="List the steady levels of an audio file annotations.",
         parents=[
             parser_common_filenames,
             parser_common_output,
@@ -1089,7 +1105,7 @@ for each segment found.
             parser_common_find_levels,
         ],
     )
-    subparser_levels.set_defaults(func=handle_levels)
+    subparser_levels.set_defaults(func=handle_steadylevels)
 
     subparser_range = subparsers.add_parser(
         "range",
