@@ -936,14 +936,14 @@ def create_args_parser() -> argparse.ArgumentParser:
     parser_common_samples = argparse.ArgumentParser(add_help=False)
     parser_common_samples.add_argument(
         "--boost-factor",
-        help="The amount by which to boost the .wav samples.",
+        help="The amount by which to boost the .wav samples (default is 1.0, no adjustment).",
         type=float,
         default=1.0,
     )
     parser_common_samples.add_argument(
         "--shift-32bit",
-        help="""When 24-bit PCM integer samples are used directly (currently only by 'dump'), they are
-loaded into a high bytes of a 32-bit integer. By default, when dumping those samples,
+        help="""When 24-bit PCM integer samples are used directly (currently only used by 'dump'), they
+are loaded into a high bytes of a 32-bit integer. By default, when dumping those samples,
 they are shifted back to the right by 8 bits so a normal 24-bit sample is presented
 as part of dump output. If you wish to see the 32-bit sample loaded by the python
 package, you can use this option to disable that shift normalizing effect. Generally,
@@ -978,7 +978,7 @@ you can ignore this option.""",
         "--auto-adjust",
         help=(
             "Adjust the y-axis (amplitude) to fix the maximum amplitude sample. "
-            "If disabled, force -1.0 to 1.0."
+            "If disabled, force -1.0 to 1.0 (default is enabled)."
         ),
         action=argparse.BooleanOptionalAction,
         default=True,
@@ -986,7 +986,8 @@ you can ignore this option.""",
     parser_common_plot.add_argument(
         "--fixed",
         help=(
-            "Use fixed format notation for the y-axis (amplitude) instead of scientific notation."
+            "Use fixed format notation for the y-axis (amplitude) instead of scientific notation "
+            "(default is scientific notation)."
         ),
         action=argparse.BooleanOptionalAction,
         default=False,
