@@ -321,6 +321,24 @@ def create_audio_figure_subplots(
     if not isinstance(axs, (list, np.ndarray)):
         axs = [axs]
 
+    foreground_color = 'cyan'
+    background_color = 'black'
+    plot_color = '#008000'
+    grid_color = '#404040'
+
+    fig.patch.set_facecolor(background_color)
+
+    def set_axis_color(ax: Axes):
+        ax.set_facecolor(background_color)
+        ax.spines['bottom'].set_color(foreground_color)
+        ax.spines['top'].set_color(foreground_color)
+        ax.spines['left'].set_color(foreground_color)
+        ax.spines['right'].set_color(foreground_color)
+        for tick in ax.get_xticklabels():
+            tick.set_color(foreground_color)
+        for tick in ax.get_yticklabels():
+            tick.set_color(foreground_color)
+
     for i, ai in enumerate(audio_info):
         audio, start_trim_count, end_trim_count = get_target_samples(
             audio_info=ai,
@@ -349,7 +367,7 @@ def create_audio_figure_subplots(
 
         ax: Axes = axs[i]
         target_seconds = np.arange(len(audio)) / ai.sr
-        ax.plot(target_seconds, audio)
+        ax.plot(target_seconds, audio, color=plot_color)
 
         ymin = -1.0
         ymax = 1.0
@@ -384,14 +402,12 @@ def create_audio_figure_subplots(
             mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
         for mtick_text in ax.xaxis.get_minorticklabels():
             mtick_text.set_fontsize(mtick_text.get_fontsize() - 2)
-        ax.set_xlabel("Time (minutes:seconds)")
+        ax.set_xlabel("Time (minutes:seconds)", color=foreground_color)
         ax.tick_params(top=False, labeltop=False, bottom=True, labelbottom=True)
 
-        ax.set_title(
-            f"{i}: {os.path.basename(ai.fn)}   (bits/sample={ai.bitdepth} rate={ai.sr})"
-        )
-        ax.set_ylabel("Amplitude")
-        ax.grid(which="both", linestyle="--", linewidth=0.5)
+        ax.set_title(cur_title, color=foreground_color)
+        ax.set_ylabel("Amplitude", color=foreground_color)
+        ax.grid(which="both", linestyle="--", linewidth=0.5, color=grid_color)
         ax.minorticks_on()
         ax.yaxis.set_minor_locator(ticker.AutoMinorLocator(3))
 
@@ -416,6 +432,9 @@ def create_audio_figure_subplots(
             mtick_text.set_fontsize(mtick_text.get_fontsize() + y_font_adjust)
         for mtick_text in ax2.get_yminorticklabels():
             mtick_text.set_fontsize(mtick_text.get_fontsize() - 1 + y_font_adjust)
+
+        set_axis_color(ax)
+        set_axis_color(ax2)
 
         if segments is not None and i == 0:
             level_annot_inf = []
@@ -448,11 +467,13 @@ def create_audio_figure_subplots(
                 ax.annotate(
                     text=lbl,
                     fontsize="small",
+                    color=foreground_color,
                     rotation=rot,
                     xy=(lx, ly),
                     xytext=(tx, ty),
                     arrowprops=dict(
-                        facecolor="black",
+                        facecolor=foreground_color,
+                        edgecolor=foreground_color,
                         headwidth=5,
                         headlength=5,
                         width=1,
