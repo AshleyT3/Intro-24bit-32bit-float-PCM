@@ -367,6 +367,8 @@ def create_audio_figure_subplots(
         # print(f"Seconds:{len(audio) / ai.sr}")
 
         ax: Axes = axs[i]
+
+        total_seconds = len(audio) / ai.sr
         target_seconds = np.arange(len(audio)) / ai.sr
         ax.plot(target_seconds, audio, color=plot_color)
 
@@ -380,13 +382,18 @@ def create_audio_figure_subplots(
                 ymax = max_sample
         ax.set_ylim(ymin=ymin, ymax=ymax)
 
-        ax.xaxis.set_major_locator(MultipleLocator(10))
+        x_maj_multiple = 10
+        if total_seconds < 10:
+            x_maj_multiple = 0.2
+        ax.xaxis.set_major_locator(MultipleLocator(x_maj_multiple))
         ax.xaxis.set_minor_locator(MultipleLocator(1))
         start_second = start_trim_count / ai.sr
 
         def make_x_label_fmt_func(start_second):
             def x_label_fmt_func(secs, pos):
                 # pylint: disable=unused-argument
+                if secs < 0:
+                    return ""
                 targ_time = f"{int(secs // 60)}:{int(secs % 60):02d}"
                 if start_second != 0:
                     label_minutes = int((start_second + secs) // 60)
