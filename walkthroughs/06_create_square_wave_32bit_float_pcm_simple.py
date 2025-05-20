@@ -98,7 +98,7 @@ def main():
     # The .wav filename to use.
     example_num = os.path.basename(__file__)[:2]
     filename = (
-        f"{example_num}_square_24bit_pcm_{sample_rate//1000}kHz-"
+        f"{example_num}_square_32bit_float_{sample_rate//1000}kHz-"
         f"{frequency}Hz-{duration_secs}s-amplow-{amp_low:.1f}-amphigh-{amp_high:.1f}.wav"
     )
     filename = os.path.join(
