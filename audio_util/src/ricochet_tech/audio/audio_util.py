@@ -314,6 +314,7 @@ def create_audio_figure_subplots(
     auto_adjust_y_axis: bool = True,
     fixed_notation: bool = False,
     y_font_adjust: float = 0.0,
+    titles: str = None,
 ) -> tuple[Figure, list[Axes]]:
 
     axs: list[Axes]
@@ -405,6 +406,12 @@ def create_audio_figure_subplots(
         ax.set_xlabel("Time (minutes:seconds)", color=foreground_color)
         ax.tick_params(top=False, labeltop=False, bottom=True, labelbottom=True)
 
+        if titles is None or len(titles) <= i:
+            cur_title = f"{os.path.basename(ai.fn)}   (bits/sample={ai.bitdepth} rate={ai.sr})"
+            if len(audio_info) > 1:
+                cur_title = f"Graph #{i}: " + cur_title
+        else:
+            cur_title = titles[i]
         ax.set_title(cur_title, color=foreground_color)
         ax.set_ylabel("Amplitude", color=foreground_color)
         ax.grid(which="both", linestyle="--", linewidth=0.5, color=grid_color)
@@ -494,6 +501,7 @@ def plot_audio_files(args):
         auto_adjust_y_axis=args.auto_adjust,
         fixed_notation=args.fixed,
         y_font_adjust=args.yfont_adjust,
+        titles=args.titles,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -512,6 +520,7 @@ def plot_audio_file_levels(args):
         min_segment_seconds=args.min_seconds,
         auto_adjust_y_axis=args.auto_adjust,
         fixed_notation=args.fixed,
+        titles=args.titles,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -1018,6 +1027,18 @@ you can ignore this option.""",
         help="Apply a delta to the y-axis font size (default is 0.0, no adjustment).",
         type=float,
         default=0.0,
+    )
+    parser_common_plot.add_argument(
+        "--titles",
+        nargs="+",
+        help=(
+            "One or more titles for graphs (by default, titles are auto-generated using file name "
+            "and metadata). If multiple graphs are produced (multiple files specified), "
+            "auto-generated titles will be used if enough titles are not specified for all graphs. "
+            "Specifying more titles than needed simply does not use the additional titles."
+        ),
+        type=str,
+        default=None,
     )
 
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
