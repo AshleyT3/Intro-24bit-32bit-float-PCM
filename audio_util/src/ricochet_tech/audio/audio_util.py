@@ -1193,7 +1193,7 @@ which makes each range exactly the size of one expoonent's range.
         help=f"""The type of increment to use when walking through the ranges. This can be one of {INC_TYPE_NAMES}.
 This switch's meaning is tied to the value of --inc. If --inc-type is '{INC_TYPE_NAMES[IncrementType.FLOAT.value]}', the next
 range is range_num*inc. If --inc-type is '{INC_TYPE_NAMES[IncrementType.EXP.value]}', the next range is the biased exponent
-plus <inc>.
+plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)
 """,
         choices=INC_TYPE_NAMES,
         default=INC_TYPE_NAMES[0],
