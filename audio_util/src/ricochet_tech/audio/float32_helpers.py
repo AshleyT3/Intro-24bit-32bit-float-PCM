@@ -3,6 +3,7 @@
 
 # pylint: disable=unsupported-binary-operation
 
+import sys
 from ctypes import Structure, Union, c_uint32, c_float
 from enum import Enum
 import math
@@ -14,6 +15,16 @@ FLOAT_FORMAT_FXD = f".{OUT_PRECISION}f"
 I24BIT_MAX = int(0x800000)
 F_TO_I24BIT = float(I24BIT_MAX)
 I24BIT_TO_F = 1.0 / float(I24BIT_MAX)
+
+def is_little_endian() -> bool:
+    return sys.byteorder == 'little'
+
+
+def get_32bit_raw_hex(v):
+    b = bytes(c_uint32(int(v)))
+    if is_little_endian():
+        b = b[::-1]
+    return b.hex()
 
 
 def round_float_to_int(f: float) -> int:
@@ -172,7 +183,7 @@ def get_fltu_log_str(u: fltu, level: FloatLogLevel = FloatLogLevel.NORMAL) -> st
     if level.value >= FloatLogLevel.WITH_24BIT.value:
         if u.f < I24BIT_MAX and u.f >= -I24BIT_MAX:
             f_24bit = float_to_24bit(u.f)
-            s += f" (24bit: 0x{f_24bit:06x}"
+            s += f" (24bit: 0x{get_32bit_raw_hex(f_24bit)[2:]}"
             if level == FloatLogLevel.DETAILED:
                 s += f" dec={f_24bit}"
             if level == FloatLogLevel.DETAILED2:
