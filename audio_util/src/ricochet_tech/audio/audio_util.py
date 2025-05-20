@@ -912,6 +912,8 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
 
 
 def handle_dump(args):
+    verbosity = args.verbose
+    verbosity = min(verbosity, FloatLogLevel.DETAILED2.value)
     audio_info = load_audio_files(
         filenames=args.filename,
         float_only=False,
@@ -945,6 +947,9 @@ def handle_dump(args):
             print(f": t={cur_time:.9f}s ", end="")
             if ai.bitdepth == 32:
                 print(f"sample={sample:.9e} ({sample:.9f})", end="")
+                if verbosity != 0:
+                    flt_log_str = get_fltu_log_str(u=fltu(f=sample), level=FloatLogLevel(verbosity))
+                    print(f" {flt_log_str}", end="")
             else:
                 raw_bytes = sample.tobytes()
                 if np.little_endian:
@@ -1213,7 +1218,7 @@ plus <inc>.
 
     subparser_dump = subparsers.add_parser(
         "dump",
-        help=f"Dump audio file samples.",
+        help="Dump audio file samples.",
         description="Dumps the audio file names.",
         parents=[
             parser_common_filenames,
@@ -1221,6 +1226,13 @@ plus <inc>.
             parser_common_samples,
             parser_common_start_stop,
         ],
+    )
+    subparser_dump.add_argument(
+        "-v",
+        "--verbose",
+        help="Verbose. This can be specified multiple times (i.e., -vv is more verbose than -v).",
+        action='count',
+        default=0,
     )
     subparser_dump.set_defaults(func=handle_dump)
 
