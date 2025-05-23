@@ -947,9 +947,7 @@ def handle_dump(args):
             print(f": t={cur_time:.9f}s ", end="")
             if ai.bitdepth == 32:
                 print(f"sample={sample:.9e} ({sample:.9f})", end="")
-                if verbosity != 0:
-                    flt_log_str = get_fltu_log_str(u=fltu(f=sample), level=FloatLogLevel(verbosity))
-                    print(f" {flt_log_str}", end="")
+                sample_f = sample
             else:
                 raw_bytes = sample.tobytes()
                 if np.little_endian:
@@ -959,6 +957,10 @@ def handle_dump(args):
                 raw_hex = "".join(f"{byte:02x}" for byte in raw_bytes)
                 byte_delta = int(len(raw_bytes) - (ai.bitdepth / 8))
                 print(f"sample=0x{raw_hex}", end="")
+                sample_f = i24bit_to_float(i24bit=sample)
+            if verbosity != 0:
+                flt_log_str = get_fltu_log_str(u=fltu(f=sample_f), level=FloatLogLevel(verbosity))
+                print(f" {flt_log_str}", end="")
             print()
 
 
