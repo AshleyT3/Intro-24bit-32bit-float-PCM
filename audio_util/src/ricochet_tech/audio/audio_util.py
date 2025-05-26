@@ -304,6 +304,32 @@ def get_target_samples(
     return audio, start_trim_count, end_trim_count
 
 
+def add_annotation(
+    ax: Axes,
+    text: str,
+    color,
+    xy,
+    xytext,
+):
+    rot = 65 if xy[0] >= 0 else 45
+    ax.annotate(
+        text=text,
+        fontsize="small",
+        color=color,
+        rotation=rot,
+        xy=xy,
+        xytext=xytext,
+        arrowprops=dict(
+            facecolor=color,
+            edgecolor=color,
+            headwidth=5,
+            headlength=5,
+            width=1,
+            shrink=0.05,
+        ),
+    )
+
+
 def create_audio_figure_subplots(
     audio_info: AudioInfo | list[AudioInfo],
     start_at_seconds: float = None,
@@ -315,6 +341,7 @@ def create_audio_figure_subplots(
     fixed_notation: bool = False,
     y_font_adjust: float = 0.0,
     titles: str = None,
+    anno_minmax: bool = False,
 ) -> tuple[Figure, list[Axes]]:
 
     axs: list[Axes]
@@ -326,6 +353,8 @@ def create_audio_figure_subplots(
     background_color = 'black'
     plot_color = '#008000'
     grid_color = '#404040'
+    cool_color = '#0055ff'
+    hot_color = '#d18c4b'
 
     fig.patch.set_facecolor(background_color)
 
@@ -372,15 +401,18 @@ def create_audio_figure_subplots(
         target_seconds = np.arange(len(audio)) / ai.sr
         ax.plot(target_seconds, audio, color=plot_color)
 
+        min_sample_idx = np.argmin(np.abs(audio))
+        max_sample_idx = np.argmax(np.abs(audio))
+        min_sample = audio[min_sample_idx]
+        max_sample = audio[max_sample_idx]
+
         ymin = -1.0
         ymax = 1.0
         if auto_adjust_y_axis:
-            auto_adjust_factor = 1.51
-            max_sample = np.max(np.abs(audio))
+            auto_adjust_factor = 2
             if max_sample*auto_adjust_factor > ymax:
-                max_sample *= auto_adjust_factor
-                ymin = -max_sample
-                ymax = max_sample
+                ymin = -max_sample * auto_adjust_factor
+                ymax = max_sample * auto_adjust_factor
         ax.set_ylim(ymin=ymin, ymax=ymax)
 
         x_maj_multiple = 10
@@ -463,7 +495,7 @@ def create_audio_figure_subplots(
                         y_value,
                         65,
                         segment.start_second - 0.35,
-                        y_value + 0.1,
+                        y_value + 0.3,
                     )
                 )
 
@@ -477,28 +509,55 @@ def create_audio_figure_subplots(
                         -y_value,
                         45,
                         segment.start_second - 1,
-                        -(y_value + 0.3),
+                        -(y_value + 0.6),
                     )
                 )
 
             for next_idx, tup in enumerate(level_annot_inf):
                 lbl, lx, ly, rot, tx, ty = tup
-                ax.annotate(
+                add_annotation(
+                    ax=ax,
                     text=lbl,
-                    fontsize="small",
                     color=foreground_color,
-                    rotation=rot,
                     xy=(lx, ly),
                     xytext=(tx, ty),
-                    arrowprops=dict(
-                        facecolor=foreground_color,
-                        edgecolor=foreground_color,
-                        headwidth=5,
-                        headlength=5,
-                        width=1,
-                        shrink=0.05,
-                    ),
                 )
+
+        if anno_minmax:
+            min_sample_secs = min_sample_idx / ai.sr
+            if min_sample >= 0.0:
+                tx = min_sample_secs + 2
+                ty = min(ymax, min_sample + 0.5)
+                rot = 65
+            else:
+                tx = min_sample_secs - 1
+                ty = max(ymin, -(min_sample + 0.3))
+                rot = 45
+            add_annotation(
+                ax=ax,
+                text=f"Min Sample ({min_sample:.3f})",
+                color=cool_color,
+                xy=(min_sample_secs, min_sample),
+                xytext=(tx, ty),
+            )
+
+            max_sample_secs = max_sample_idx / ai.sr
+            if max_sample >= 0.0:
+                tx = max_sample_secs + 2
+                ty = min(ymax - 0.3, max_sample + 0.4)
+                rot = 65
+            else:
+                tx = max_sample_secs - 1
+                ty = max(ymin + 0.3, -(max_sample + 0.3))
+                rot = 45
+            add_annotation(
+                ax=ax,
+                text=f"Max Sample ({max_sample:.3f})",
+                color=hot_color,
+                xy=(max_sample_secs, max_sample),
+                xytext=(tx, ty),
+            )
+
     return fig, axs
 
 
@@ -514,6 +573,7 @@ def plot_audio_files(args):
         fixed_notation=args.fixed,
         y_font_adjust=args.yfont_adjust,
         titles=args.titles,
+        anno_minmax=args.show_minmax,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -533,6 +593,7 @@ def plot_audio_file_levels(args):
         auto_adjust_y_axis=args.auto_adjust,
         fixed_notation=args.fixed,
         titles=args.titles,
+        anno_minmax=args.show_minmax,
     )
     plt.tight_layout()
     plt.show(block=True)
@@ -1058,6 +1119,14 @@ you can ignore this option.""",
         ),
         type=str,
         default=None,
+    )
+    parser_common_plot.add_argument(
+        "--show-minmax",
+        help=(
+            "Annotate the location of the minimum and maximum sample values."
+        ),
+        action=argparse.BooleanOptionalAction,
+        default=False,
     )
 
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
