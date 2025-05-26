@@ -375,9 +375,10 @@ def create_audio_figure_subplots(
         ymin = -1.0
         ymax = 1.0
         if auto_adjust_y_axis:
+            auto_adjust_factor = 1.51
             max_sample = np.max(np.abs(audio))
-            if max_sample > ymax:
-                max_sample *= 1.1
+            if max_sample*auto_adjust_factor > ymax:
+                max_sample *= auto_adjust_factor
                 ymin = -max_sample
                 ymax = max_sample
         ax.set_ylim(ymin=ymin, ymax=ymax)
@@ -453,26 +454,30 @@ def create_audio_figure_subplots(
         if segments is not None and i == 0:
             level_annot_inf = []
             for level, segment in enumerate(segments):
+
                 y_value = segment.peak_amplitude
-                segment_dbfs = np.float32(-np.inf) if y_value == 0 else 20 * np.log10(y_value)
                 level_annot_inf.append(
                     (
                         f"Level {level} ({y_value:.3f})",
                         segment.start_second,
                         y_value,
                         65,
-                        segment.start_second - 1,
+                        segment.start_second - 0.35,
                         y_value + 0.1,
                     )
                 )
+
+                segment_dbfs = np.float32(-np.inf) if y_value == 0 else 20 * np.log10(y_value)
+                segment_dbfs = np.round(segment_dbfs * 10.0) / 10.0
+                segment_dbfs = np.float32(0.0) if segment_dbfs == 0.0 else segment_dbfs
                 level_annot_inf.append(
                     (
                         f"{segment_dbfs:.1f} dBFS",
                         segment.start_second,
                         -y_value,
                         45,
-                        segment.start_second - 12,
-                        -(y_value + 0.22),
+                        segment.start_second - 1,
+                        -(y_value + 0.3),
                     )
                 )
 
