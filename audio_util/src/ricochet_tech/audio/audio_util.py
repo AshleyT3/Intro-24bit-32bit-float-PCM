@@ -977,6 +977,18 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
             print("Invalid value, try again.")
 
 
+def get_24bit_int_sample_bytes(sample: np.intc):
+    if not isinstance(sample, np.intc):
+        raise ValueError()
+    raw_bytes = sample.tobytes()
+    if not len(raw_bytes) == 4:
+        raise ValueError()
+    if np.little_endian:
+        raw_bytes = raw_bytes[::-1]
+    raw_bytes = raw_bytes[1:]
+    return "".join(f"{byte:02x}" for byte in raw_bytes)
+
+
 def handle_dump(args):
     verbosity = args.verbose
     verbosity = min(verbosity, FloatLogLevel.DETAILED2.value)
@@ -1002,32 +1014,147 @@ def handle_dump(args):
             "-----------------------------------------------------------------------------------"
         )
         print(f"Filename={ai.fn}")
-        print(f"Target samples duration: {total_seconds}s")
-        print(f"Target samples start: {start_second}s")
+        print(f"Target samples duration: {total_seconds:.7f}s")
+        print(f"Target samples start: {start_second:.7f}s")
 
-        num_bytes_sample = int(ai.bitdepth / 8)
-        bytes_fmt = f"0x{{:0{int(num_bytes_sample*2)}x}}"
         for i, sample in enumerate(audio):
             cur_time = start_second + (i * (1.0 / ai.sr))
             print(f"{i:7}", end="")
             print(f": t={cur_time:.9f}s ", end="")
             if ai.bitdepth == 32:
-                print(f"sample={sample:.9e} ({sample:.9f})", end="")
+                sample_str = f"sample={sample:.9e} ({sample:.9f})"
                 sample_f = sample
             else:
-                raw_bytes = sample.tobytes()
-                if np.little_endian:
-                    raw_bytes = raw_bytes[::-1]
-                if len(raw_bytes) == 4 and args.shift_32bit:
-                    raw_bytes = raw_bytes[1:]
-                raw_hex = "".join(f"{byte:02x}" for byte in raw_bytes)
-                byte_delta = int(len(raw_bytes) - (ai.bitdepth / 8))
-                print(f"sample=0x{raw_hex}", end="")
+                sample_str = f"sample=0x{get_24bit_int_sample_bytes(sample)}"
                 sample_f = i24bit_to_float(i24bit=sample)
+            print(sample_str, end="")
             if verbosity != 0:
                 flt_log_str = get_fltu_log_str(u=fltu(f=sample_f), level=FloatLogLevel(verbosity))
                 print(f" {flt_log_str}", end="")
             print()
+
+
+def mean_of_n_values(arr, n, top_n_unique: bool):
+    if not isinstance(n, int) or n <= 0:
+        raise ValueError("n must be a positive integer.")
+    if arr.size == 0:
+        return np.nan
+    sorted_unique = np.sort(np.unique(np.abs(arr)))
+    if top_n_unique:
+        sorted_unique = sorted_unique[::-1]
+    n = min(n, sorted_unique.size)
+    if n == 0:
+        return np.nan
+    threshold_values = sorted_unique[n - 1]
+    values_to_avergage = arr[arr >= threshold_values]
+    return np.mean(values_to_avergage)
+
+
+def handle_stats(args):
+
+    def show_sample_info(
+        name,
+        sample_secs,
+        sample,
+    ):
+        if not isinstance(sample, (np.float32, np.intc)):
+            raise ValueError()
+        if isinstance(sample, np.intc):
+            sample_str = f"{int(sample):>7} (0x{get_24bit_int_sample_bytes(sample)})"
+            sample_f = i24bit_to_float(i24bit=sample)
+        else:
+            sample_str = f"{sample:.9e} ({sample:.9f})"
+            sample_f = sample
+        seconds_str = "" if sample_secs is None else f" at {sample_secs: >7.3f} seconds"
+        print(f"{name}{sample_str}{seconds_str}", end="")
+        if verbosity != 0:
+            flt_log_str = get_fltu_log_str(u=fltu(f=sample_f), level=FloatLogLevel(verbosity))
+            print(f" {flt_log_str}", end="")
+        print()
+
+    verbosity = args.verbose
+    verbosity = min(verbosity, FloatLogLevel.DETAILED2.value)
+    audio_info = load_audio_files(
+        filenames=args.filename,
+        float_only=False,
+        boost_factor=args.boost_factor,
+        shift_32bit_samples=args.shift_32bit,
+    )
+    for i, ai in enumerate(audio_info):
+        audio, start_trim_count, _ = get_target_samples(
+            audio_info=ai,
+            start_at_seconds=args.start_at,
+            stop_at_seconds=args.stop_at,
+        )
+
+        if len(audio) == 0:
+            raise ValueError("No audio to process.")
+
+        total_seconds = len(audio) / ai.sr
+        start_second = start_trim_count / ai.sr
+
+        min_sample_idx = np.argmin(np.abs(audio))
+        min_sample_secs = min_sample_idx / ai.sr
+        min_sample = audio[min_sample_idx]
+
+        max_sample_idx = np.argmax(np.abs(audio))
+        max_sample_secs = max_sample_idx / ai.sr
+        max_sample = audio[max_sample_idx]
+
+        print(
+            "-----------------------------------------------------------------------------------"
+        )
+        print(f"Filename={ai.fn}")
+        print(f"Target samples duration: {total_seconds}s")
+        print(f"Target samples start: {start_second}s")
+        show_sample_info(
+            name="Minimum sample: ",
+            sample_secs=min_sample_secs,
+            sample=min_sample,
+        )
+        show_sample_info(
+            name="Maximum sample: ",
+            sample_secs=max_sample_secs,
+            sample=max_sample,
+        )
+        avg_info = [
+            0.01,
+            0.02,
+            0.05,
+            0.10,
+        ]
+        for n_vals_ratio in avg_info:
+
+            n_vals = int(n_vals_ratio * len(audio))
+
+            avg_high = mean_of_n_values(
+                arr=audio,
+                n=n_vals,
+                top_n_unique=True,
+            )
+            avg_low = mean_of_n_values(
+                arr=audio,
+                n=n_vals,
+                top_n_unique=False,
+            )
+
+            show_sample_info(
+                name=(
+                    f"Mean of highest {n_vals:>6} "
+                    f"({n_vals_ratio*100:4.1f}%) values: "
+                ),
+                sample_secs=None,
+                sample=avg_high,
+            )
+            show_sample_info(
+                name=(
+                    f"Mean of lowest  {n_vals:>6} "
+                    f"({n_vals_ratio*100:4.1f}%) values: "
+                ),
+                sample_secs=None,
+                sample=avg_low,
+            )
+
 
 
 def create_args_parser() -> argparse.ArgumentParser:
@@ -1060,6 +1187,15 @@ package, you can use this option to disable that shift normalizing effect. Gener
 you can ignore this option.""",
         action=argparse.BooleanOptionalAction,
         default=True,
+    )
+
+    parser_common_verbosity = argparse.ArgumentParser(add_help=False)
+    parser_common_verbosity.add_argument(
+        "-v",
+        "--verbose",
+        help="Verbose. This can be specified multiple times (i.e., -vv is more verbose than -v).",
+        action='count',
+        default=0,
     )
 
     subparsers = parser.add_subparsers(
@@ -1301,16 +1437,24 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)
             parser_common_output,
             parser_common_samples,
             parser_common_start_stop,
+            parser_common_verbosity,
         ],
     )
-    subparser_dump.add_argument(
-        "-v",
-        "--verbose",
-        help="Verbose. This can be specified multiple times (i.e., -vv is more verbose than -v).",
-        action='count',
-        default=0,
-    )
     subparser_dump.set_defaults(func=handle_dump)
+
+    subparser_info = subparsers.add_parser(
+        "stats",
+        help="Show audio file information/stats.",
+        description="Show audio file information/stats.",
+        parents=[
+            parser_common_filenames,
+            parser_common_output,
+            parser_common_samples,
+            parser_common_start_stop,
+            parser_common_verbosity,
+        ],
+    )
+    subparser_info.set_defaults(func=handle_stats)
 
     return parser
 
