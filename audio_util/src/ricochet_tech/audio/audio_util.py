@@ -6,10 +6,11 @@ import sys
 import os
 import glob
 import argparse
-from dataclasses import dataclass
-from enum import Enum
-from ctypes import c_float
+import re
 import csv
+from ctypes import c_float
+from enum import Enum
+from dataclasses import dataclass
 
 
 from atbu.common.exception import (
@@ -88,7 +89,7 @@ class AudioInfo:
 def load_audio_files(
     filenames: str | list[str],
     float_only: bool = True,
-    boost_factor: float = None,
+    scaling_factor: float = None,
     shift_32bit_samples: bool = True,
 ) -> list[AudioInfo]:
     if isinstance(filenames, str):
@@ -124,9 +125,9 @@ def load_audio_files(
             )
     if not audio_info:
         raise AudioUtilException(f"No files found: {filenames}")
-    if boost_factor is not None and boost_factor != 1.0:
+    if scaling_factor is not None and scaling_factor != 1.0:
         for i in audio_info:
-            i.data *= boost_factor
+            i.data *= scaling_factor
     return audio_info
 
 
@@ -571,7 +572,7 @@ def create_audio_figure_subplots(
 
 def plot_audio_files(args):
     audio_info = load_audio_files(
-        filenames=args.filename, boost_factor=args.boost_factor
+        filenames=args.filename, scaling_factor=args.scaling_factor
     )
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
@@ -589,7 +590,7 @@ def plot_audio_files(args):
 
 def plot_audio_file_levels(args):
     audio_info = load_audio_files(
-        filenames=args.filename, boost_factor=args.boost_factor
+        filenames=args.filename, scaling_factor=args.scaling_factor
     )
     fig, axs = create_audio_figure_subplots(
         audio_info=audio_info,
@@ -635,7 +636,7 @@ def handle_steadylevels(args):
         )
 
     audio_info = load_audio_files(
-        filenames=args.filename, boost_factor=args.boost_factor
+        filenames=args.filename, scaling_factor=args.scaling_factor
     )
     for i, ai in enumerate(audio_info):
         audio, start_trim_count, _ = get_target_samples(
@@ -1020,7 +1021,7 @@ def handle_dump(args):
     audio_info = load_audio_files(
         filenames=args.filename,
         float_only=False,
-        boost_factor=args.boost_factor,
+        scaling_factor=args.scaling_factor,
         shift_32bit_samples=args.shift_32bit,
     )
     for i, ai in enumerate(audio_info):
@@ -1119,6 +1120,7 @@ def handle_stats(args):
             "AudioStartSec",
             "AudioEndTrimSec",
             "TotalTrimSec",
+            "AppliedScaling",
             #
             "MinSampleIndex",
             "MinSampleSec",
@@ -1154,7 +1156,7 @@ def handle_stats(args):
     audio_info = load_audio_files(
         filenames=args.filename,
         float_only=False,
-        boost_factor=args.boost_factor,
+        scaling_factor=args.scaling_factor,
         shift_32bit_samples=args.shift_32bit,
     )
     for file_num, ai in enumerate(audio_info):
@@ -1203,6 +1205,7 @@ def handle_stats(args):
                 start_second,
                 end_trim_seconds,
                 start_second + end_trim_seconds,
+                args.scaling_factor,
                 #
                 min_sample_idx,
                 min_sample_secs,
@@ -1237,6 +1240,10 @@ def handle_stats(args):
             print(f"Filename={ai.fn}")
             print(f"Target samples duration: {total_seconds}s")
             print(f"Target samples start: {start_second}s")
+            print(
+                "Scaling factor applied: "
+                f"{'None' if args.scaling_factor == 1.0 else args.scaling_factor}"
+            )
 
             show_sample_info(
                 name="Minimum sample: ",
@@ -1283,19 +1290,24 @@ def create_args_parser() -> argparse.ArgumentParser:
 
     parser_common_samples = argparse.ArgumentParser(add_help=False)
     parser_common_samples.add_argument(
+        "--scaling-factor",
         "--boost-factor",
-        help="The amount by which to boost the .wav samples (default is 1.0, no adjustment).",
-        type=float,
-        default=1.0,
+        help="""The amount by which to scale the .wav samples (default is 1.0, no adjustment). This
+switch accepts a floating point parameter as a direct scaling factor, or one suffixed
+with dB to derive the scaling factor from a dB increase/decrease. For example,
+specifying '--scaling-factor=30dB' or '--scaling-factor=-30dB' will derive the
+scaling factor 31.62 or ~0.03162 respectively.""",
+        type=str,
+        default="1.0",
     )
     parser_common_samples.add_argument(
         "--shift-32bit",
-        help="""When 24-bit PCM integer samples are used directly (currently only used by 'dump'), they
-are loaded into a high bytes of a 32-bit integer. By default, when dumping those samples,
-they are shifted back to the right by 8 bits so a normal 24-bit sample is presented
-as part of dump output. If you wish to see the 32-bit sample loaded by the python
-package, you can use this option to disable that shift normalizing effect. Generally,
-you can ignore this option.""",
+        help="""When 24-bit PCM integer samples are used directly (currently only used
+by 'dump'), they are loaded into a high bytes of a 32-bit integer. By default,
+when dumping those samples, they are shifted back to the right by 8 bits so a
+normal 24-bit sample is presented as part of dump output. If you wish to see
+the 32-bit sample loaded by the python package, you can use this option to
+disable that shift normalizing effect. Generally, you can ignore this option.""",
         action=argparse.BooleanOptionalAction,
         default=True,
     )
@@ -1604,6 +1616,19 @@ def main(argv=None):
         args.inc = (
             0.1 if args.inc_type == INC_TYPE_NAMES[IncrementType.FLOAT.value] else 1.0
         )
+
+    if hasattr(args, "scaling_factor"):
+        args.scaling_factor = args.scaling_factor.strip().lower()
+        m = re.match(r"^\s*([0-9+\-\.]+)\s*db\s*$", args.scaling_factor)
+        if m is not None:
+            scaling_factor_db = float(m[1])
+            args.scaling_factor = 10.0**(scaling_factor_db / 20.0)
+        else:
+            try:
+                args.scaling_factor = float(args.scaling_factor)
+            except ValueError:
+                print(f"The scaling factor \"{args.scaling_factor}\" is invalid.")
+                exit(1)
 
     if hasattr(args, "func"):
         try:
