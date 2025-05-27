@@ -977,16 +977,33 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
             print("Invalid value, try again.")
 
 
-def get_24bit_int_sample_bytes(sample: np.intc):
+def get_24bit_int_sample_hex_str(sample: np.intc, empty_str_on_error: bool = False):
     if not isinstance(sample, np.intc):
+        if empty_str_on_error:
+            return ""
         raise ValueError()
     raw_bytes = sample.tobytes()
     if not len(raw_bytes) == 4:
+        if empty_str_on_error:
+            return ""
         raise ValueError()
     if np.little_endian:
         raw_bytes = raw_bytes[::-1]
     raw_bytes = raw_bytes[1:]
     return "".join(f"{byte:02x}" for byte in raw_bytes)
+
+
+def get_float_sample(sample):
+    if isinstance(sample, (np.intc, int)):
+        return i24bit_to_float(i24bit=sample)
+    return sample
+
+
+def get_flt_log_str(sample, verbosity: FloatLogLevel) -> str:
+    if verbosity == 0:
+        return ""
+    sample_f = get_float_sample(sample)
+    return get_fltu_log_str(u=fltu(f=sample_f), level=FloatLogLevel(verbosity))
 
 
 def handle_dump(args):
@@ -1023,13 +1040,11 @@ def handle_dump(args):
             print(f": t={cur_time:.9f}s ", end="")
             if ai.bitdepth == 32:
                 sample_str = f"sample={sample:.9e} ({sample:.9f})"
-                sample_f = sample
             else:
-                sample_str = f"sample=0x{get_24bit_int_sample_bytes(sample)}"
-                sample_f = i24bit_to_float(i24bit=sample)
+                sample_str = f"sample=0x{get_24bit_int_sample_hex_str(sample)}"
             print(sample_str, end="")
-            if verbosity != 0:
-                flt_log_str = get_fltu_log_str(u=fltu(f=sample_f), level=FloatLogLevel(verbosity))
+            flt_log_str = get_flt_log_str(sample=sample, verbosity=verbosity)
+            if flt_log_str:
                 print(f" {flt_log_str}", end="")
             print()
 
@@ -1060,17 +1075,71 @@ def handle_stats(args):
         if not isinstance(sample, (np.float32, np.intc)):
             raise ValueError()
         if isinstance(sample, np.intc):
-            sample_str = f"{int(sample):>7} (0x{get_24bit_int_sample_bytes(sample)})"
-            sample_f = i24bit_to_float(i24bit=sample)
+            sample_str = f"{int(sample):>7} (0x{get_24bit_int_sample_hex_str(sample)})"
         else:
             sample_str = f"{sample:.9e} ({sample:.9f})"
-            sample_f = sample
         seconds_str = "" if sample_secs is None else f" at {sample_secs: >7.3f} seconds"
         print(f"{name}{sample_str}{seconds_str}", end="")
-        if verbosity != 0:
-            flt_log_str = get_fltu_log_str(u=fltu(f=sample_f), level=FloatLogLevel(verbosity))
+        flt_log_str = get_flt_log_str(sample=sample, verbosity=verbosity)
+        if flt_log_str:
             print(f" {flt_log_str}", end="")
         print()
+
+    @dataclass
+    class AverageInfo:
+        portion: float
+        portion_size: int = None
+        mean_highest: np.floating = np.nan
+        mean_lowest: np.floating = np.nan
+
+    averages_to_calc = [
+        AverageInfo(0.01),
+        AverageInfo(0.02),
+        AverageInfo(0.05),
+        AverageInfo(0.10),
+    ]
+
+    csv_writer = None
+    if args.csv:
+        csvfile = sys.stdout
+        if args.o is not None:
+            csvfile = open(args.o, "wt", newline="", encoding="utf-8")
+        csv_writer = csv.writer(csvfile)
+        csv_fields = [
+            "FileNum",
+            "AudioSeconds",
+            "AudioStartSec",
+            "AudioEndTrimSec",
+            "TotalTrimSec",
+            #
+            "MinSampleIndex",
+            "MinSampleSec",
+            "MinSample",
+            "MinSampleHex",
+            "MinSampleFloatDetails",
+            #
+            "MaxSampleIndex",
+            "MaxSampleSec",
+            "MaxSample",
+            "MaxSampleHex",
+            "MaxSampleFloatDetails",
+        ]
+        for avg_info in averages_to_calc:
+            csv_fields.append(
+                f"Lowest{avg_info.portion*100:.0f}Percent"
+            )
+            csv_fields.append(
+                f"Highest{avg_info.portion*100:.0f}Percent"
+            )
+        csv_fields.extend(
+            [
+                "SampleRate",
+                "BitDepth",
+                "Channels",
+                "Filename",
+            ]
+        )
+        csv_writer.writerow(csv_fields)
 
     verbosity = args.verbose
     verbosity = min(verbosity, FloatLogLevel.DETAILED2.value)
@@ -1080,8 +1149,8 @@ def handle_stats(args):
         boost_factor=args.boost_factor,
         shift_32bit_samples=args.shift_32bit,
     )
-    for i, ai in enumerate(audio_info):
-        audio, start_trim_count, _ = get_target_samples(
+    for file_num, ai in enumerate(audio_info):
+        audio, start_trim_count, end_trim_count = get_target_samples(
             audio_info=ai,
             start_at_seconds=args.start_at,
             stop_at_seconds=args.stop_at,
@@ -1092,6 +1161,7 @@ def handle_stats(args):
 
         total_seconds = len(audio) / ai.sr
         start_second = start_trim_count / ai.sr
+        end_trim_seconds = end_trim_count / ai.sr
 
         min_sample_idx = np.argmin(np.abs(audio))
         min_sample_secs = min_sample_idx / ai.sr
@@ -1101,60 +1171,92 @@ def handle_stats(args):
         max_sample_secs = max_sample_idx / ai.sr
         max_sample = audio[max_sample_idx]
 
-        print(
-            "-----------------------------------------------------------------------------------"
-        )
-        print(f"Filename={ai.fn}")
-        print(f"Target samples duration: {total_seconds}s")
-        print(f"Target samples start: {start_second}s")
-        show_sample_info(
-            name="Minimum sample: ",
-            sample_secs=min_sample_secs,
-            sample=min_sample,
-        )
-        show_sample_info(
-            name="Maximum sample: ",
-            sample_secs=max_sample_secs,
-            sample=max_sample,
-        )
-        avg_info = [
-            0.01,
-            0.02,
-            0.05,
-            0.10,
-        ]
-        for n_vals_ratio in avg_info:
+        for avg_info in averages_to_calc:
 
-            n_vals = int(n_vals_ratio * len(audio))
+            avg_info.portion_size = int(avg_info.portion * len(audio))
 
-            avg_high = mean_of_n_values(
+            avg_info.mean_lowest = mean_of_n_values(
                 arr=audio,
-                n=n_vals,
-                top_n_unique=True,
-            )
-            avg_low = mean_of_n_values(
-                arr=audio,
-                n=n_vals,
+                n=avg_info.portion_size,
                 top_n_unique=False,
             )
 
-            show_sample_info(
-                name=(
-                    f"Mean of highest {n_vals:>6} "
-                    f"({n_vals_ratio*100:4.1f}%) values: "
-                ),
-                sample_secs=None,
-                sample=avg_high,
-            )
-            show_sample_info(
-                name=(
-                    f"Mean of lowest  {n_vals:>6} "
-                    f"({n_vals_ratio*100:4.1f}%) values: "
-                ),
-                sample_secs=None,
-                sample=avg_low,
+            avg_info.mean_highest = mean_of_n_values(
+                arr=audio,
+                n=avg_info.portion_size,
+                top_n_unique=True,
             )
 
+        if args.csv:
+
+            csv_row = [
+                file_num + 1,
+                total_seconds,
+                start_second,
+                end_trim_seconds,
+                start_second + end_trim_seconds,
+                #
+                min_sample_idx,
+                min_sample_secs,
+                min_sample,
+                get_24bit_int_sample_hex_str(min_sample, empty_str_on_error=True),
+                get_flt_log_str(sample=min_sample, verbosity=verbosity),
+                #
+                max_sample_idx,
+                max_sample_secs,
+                max_sample,
+                get_24bit_int_sample_hex_str(max_sample, empty_str_on_error=True),
+                get_flt_log_str(sample=max_sample, verbosity=verbosity),
+            ]
+
+            for avg_info in averages_to_calc:
+                csv_row.append(avg_info.mean_lowest)
+                csv_row.append(avg_info.mean_highest)
+
+            csv_row.extend(
+                [
+                    ai.sr,
+                    ai.bitdepth,
+                    ai.channels,
+                    os.path.basename(ai.fn),
+                ]                
+            )
+
+            csv_writer.writerow(csv_row)
+
+        else:
+            print("-"*80)
+            print(f"Filename={ai.fn}")
+            print(f"Target samples duration: {total_seconds}s")
+            print(f"Target samples start: {start_second}s")
+
+            show_sample_info(
+                name="Minimum sample: ",
+                sample_secs=min_sample_secs,
+                sample=min_sample,
+            )
+            show_sample_info(
+                name="Maximum sample: ",
+                sample_secs=max_sample_secs,
+                sample=max_sample,
+            )
+            for avg_info in averages_to_calc:
+                show_sample_info(
+                    name=(
+                        f"Mean of highest {avg_info.portion_size:>6} "
+                        f"({avg_info.portion*100:4.1f}%) values: "
+                    ),
+                    sample_secs=None,
+                    sample=avg_info.mean_highest,
+                )
+                show_sample_info(
+                    name=(
+                        f"Mean of lowest  {avg_info.portion_size:>6} "
+                        f"({avg_info.portion*100:4.1f}%) values: "
+                    ),
+                    sample_secs=None,
+                    sample=avg_info.mean_lowest,
+                )
 
 
 def create_args_parser() -> argparse.ArgumentParser:
@@ -1465,6 +1567,7 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)""",
         parents=[
             parser_common_filenames,
             parser_common_output,
+            parser_common_csv,
             parser_common_samples,
             parser_common_start_stop,
             parser_common_verbosity,
