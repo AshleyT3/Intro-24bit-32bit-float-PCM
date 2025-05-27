@@ -288,12 +288,20 @@ def get_target_samples(
     start_trim_count = 0
     end_trim_count = 0
 
+    duration_seconds = len(audio) / sr
+
     if stop_at_seconds is not None:
+        if stop_at_seconds < 0:
+            stop_at_seconds = duration_seconds - abs(stop_at_seconds)
+        if stop_at_seconds > duration_seconds or stop_at_seconds <= start_at_seconds:
+            raise ValueError(f"--stop-at {stop_at_seconds} is invalid.")
         stop_at_sample = int(stop_at_seconds * sr)
         end_trim_count = max(len(audio) - stop_at_sample, 0)
         audio = audio[:stop_at_sample]
 
     if start_at_seconds is not None:
+        if start_at_seconds < 0 or start_at_seconds > duration_seconds:
+            raise ValueError(f"--start-at {start_at_seconds} is invalid.")
         start_at_sample = int(start_at_seconds * sr)
         start_trim_count = min(len(audio), start_at_sample)
         audio = audio[start_at_sample:]
@@ -1307,14 +1315,22 @@ you can ignore this option.""",
 
     parser_common_start_stop = argparse.ArgumentParser(add_help=False)
     parser_common_start_stop.add_argument(
-        "--stop-at",
-        help="Point in time (in seconds) where audio file processing should stop.",
+        "--start-at",
+        help="""Point in time (in seconds) where audio file processing should start. For
+example, you can eliminate consideration of samples before one second
+from the start of the channel's stream, and one second before the last
+sample of the same stream by using '--start-at 1 --stop-at -1' (see 
+--stop-at).""",
         type=float,
         default=None,
     )
     parser_common_start_stop.add_argument(
-        "--start-at",
-        help="Point in time (in seconds) where audio file processing should start.",
+        "--stop-at",
+        help="""Point in time (in seconds) where audio file processing should stop.
+A negative value indicates the number of seconds from the end. For
+example, '--stop-at -1' will end the targeted audio at the sample
+one second before the end of the channel's stream (i.e., one second
+before the end of the "file.")""",
         type=float,
         default=None,
     )
