@@ -1163,6 +1163,7 @@ def create_args_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="audio_util",
         description="Audio Utility v0.01",
+        formatter_class=argparse.RawTextHelpFormatter,
     )
 
     parser_common_filenames = argparse.ArgumentParser(add_help=False)
@@ -1199,10 +1200,7 @@ you can ignore this option.""",
     )
 
     subparsers = parser.add_subparsers(
-        title="Subcommands",
-        description="Subcommands description",
-        help="Subcommands help",
-        required=True,
+        help="",
     )
 
     parser_common_start_stop = argparse.ArgumentParser(add_help=False)
@@ -1344,6 +1342,7 @@ gain knob to different steps at some selected interval where this command
 will graph and annoatate the levels at the different steps. This command should
 only be used with files that have periods of largly unchanged amplitude.""",
         help="Plot the steady levels of an audio file annotations.",
+        formatter_class=argparse.RawTextHelpFormatter,
         parents=[
             parser_common_filenames,
             parser_common_samples,
@@ -1363,6 +1362,7 @@ adjusting a gain knob to different steps at some selected interval where this
 command will list information about the levels at the different steps. This command
 should only be used with files that have periods of largly unchanged amplitude.""",
         help="List the steady levels of an audio file annotations.",
+        formatter_class=argparse.RawTextHelpFormatter,
         parents=[
             parser_common_filenames,
             parser_common_output,
@@ -1376,6 +1376,7 @@ should only be used with files that have periods of largly unchanged amplitude."
 
     subparser_range = subparsers.add_parser(
         "range",
+        formatter_class=argparse.RawTextHelpFormatter,
         help="Show ranges.",
     )
 
@@ -1395,8 +1396,7 @@ should only be used with files that have periods of largly unchanged amplitude."
         help=f"""The float step increment to use when showing ranges from 0.0 to 1.0. This value determines the size
 of each range. It defaults to 0.1 when --inc-type is '{INC_TYPE_NAMES[IncrementType.FLOAT.value]}', which makes each range
 approximately 0.1 (1/10th of 1.0) in size. It defaults to 1.0 when --inc-type is '{INC_TYPE_NAMES[IncrementType.EXP.value]}',
-which makes each range exactly the size of one expoonent's range.
-""",
+which makes each range exactly the size of one expoonent's range.""",
         default=None,
         type=float,
     )
@@ -1405,8 +1405,7 @@ which makes each range exactly the size of one expoonent's range.
         help=f"""The type of increment to use when walking through the ranges. This can be one of {INC_TYPE_NAMES}.
 This switch's meaning is tied to the value of --inc. If --inc-type is '{INC_TYPE_NAMES[IncrementType.FLOAT.value]}', the next
 range is range_num*inc. If --inc-type is '{INC_TYPE_NAMES[IncrementType.EXP.value]}', the next range is the biased exponent
-plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)
-""",
+plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)""",
         choices=INC_TYPE_NAMES,
         default=INC_TYPE_NAMES[0],
         type=str,
@@ -1432,6 +1431,7 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)
         "dump",
         help="Dump audio file samples.",
         description="Dumps the audio file names.",
+        formatter_class=argparse.RawTextHelpFormatter,
         parents=[
             parser_common_filenames,
             parser_common_output,
@@ -1445,7 +1445,23 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)
     subparser_info = subparsers.add_parser(
         "stats",
         help="Show audio file information/stats.",
-        description="Show audio file information/stats.",
+        description=f"""Show audio file information/stats. This command only supports 24-bit and
+32-bit floating point .wav files. The following information is output:
+
+    • Filename: The .wav filename.
+    • Target samples duration: The duration in seconds of audio data selected.
+        By default, this will be the duration of the entire .wav file.
+    • Target samples start: The time in seconds where the selected audio data begins.
+    • Minimum sample: The positive or negative sample closest to zero.
+    • Maximum sample: The positive or negative sample furthest away from zero.
+    • Mean of highest: This value is reported several times, each time for a different
+        percentage of unique highest valued samples found in the selected audio data.
+        The average of all samples within the selected audio data having values
+        within each set of unique highest valued samples is reported as the mean.
+        Highest values are values furthest away from zero.
+    • Mean of lowest: This is the same as 'Mean of highest' described above but
+        applies to the lowest valued samples. Lowest values are values closest to zero.""",
+        formatter_class=argparse.RawTextHelpFormatter,
         parents=[
             parser_common_filenames,
             parser_common_output,
@@ -1470,13 +1486,16 @@ def main(argv=None):
             0.1 if args.inc_type == INC_TYPE_NAMES[IncrementType.FLOAT.value] else 1.0
         )
 
-    try:
-        args.func(args)
-    except AudioUtilException as e:
-        print(e)
-        exit_code = 1 if len(e.args) == 1 else int(e.args[1])
-        exit(exit_code)
-
+    if hasattr(args, "func"):
+        try:
+            args.func(args)
+        except AudioUtilException as e:
+            print(e)
+            exit_code = 1 if len(e.args) == 1 else int(e.args[1])
+            exit(exit_code)
+    else:
+        print(f"I have nothing to do. Try audioutil -h for help.")
+        return 1
 
 if __name__ == "__main__":
     main()
