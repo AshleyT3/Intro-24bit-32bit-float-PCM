@@ -1097,20 +1097,6 @@ def handle_stats(args):
             print(f" {flt_log_str}", end="")
         print()
 
-    @dataclass
-    class AverageInfo:
-        portion: float
-        portion_size: int = None
-        mean_highest: np.floating = np.nan
-        mean_lowest: np.floating = np.nan
-
-    averages_to_calc = [
-        AverageInfo(0.01),
-        AverageInfo(0.02),
-        AverageInfo(0.05),
-        AverageInfo(0.10),
-    ]
-
     csv_writer = None
     if args.csv:
         csvfile = sys.stdout
@@ -1136,22 +1122,14 @@ def handle_stats(args):
             "PeakSample",
             "PeakSampleHex",
             "PeakSampleFloatDetails",
+            #
+            "RmsSamples",
+            #
+            "SampleRate",
+            "BitDepth",
+            "Channels",
+            "Filename",
         ]
-        for avg_info in averages_to_calc:
-            csv_fields.append(
-                f"Lowest{avg_info.portion*100:.0f}Percent"
-            )
-            csv_fields.append(
-                f"Highest{avg_info.portion*100:.0f}Percent"
-            )
-        csv_fields.extend(
-            [
-                "SampleRate",
-                "BitDepth",
-                "Channels",
-                "Filename",
-            ]
-        )
         csv_writer.writerow(csv_fields)
 
     verbosity = args.verbose
@@ -1184,21 +1162,7 @@ def handle_stats(args):
         peak_sample_secs = peak_sample_idx / ai.sr
         peak_sample = audio[peak_sample_idx]
 
-        for avg_info in averages_to_calc:
-
-            avg_info.portion_size = int(avg_info.portion * len(audio))
-
-            avg_info.mean_lowest = mean_of_n_values(
-                arr=audio,
-                n=avg_info.portion_size,
-                is_top_n=False,
-            )
-
-            avg_info.mean_highest = mean_of_n_values(
-                arr=audio,
-                n=avg_info.portion_size,
-                is_top_n=True,
-            )
+        rms_samples = np.sqrt(np.mean(np.square(audio)))
 
         if args.csv:
 
@@ -1221,20 +1185,14 @@ def handle_stats(args):
                 peak_sample,
                 get_24bit_int_sample_hex_str(peak_sample, empty_str_on_error=True),
                 get_flt_log_str(sample=peak_sample, verbosity=verbosity),
+                #
+                rms_samples,
+                #
+                ai.sr,
+                ai.bitdepth,
+                ai.channels,
+                os.path.basename(ai.fn),
             ]
-
-            for avg_info in averages_to_calc:
-                csv_row.append(avg_info.mean_lowest)
-                csv_row.append(avg_info.mean_highest)
-
-            csv_row.extend(
-                [
-                    ai.sr,
-                    ai.bitdepth,
-                    ai.channels,
-                    os.path.basename(ai.fn),
-                ]                
-            )
 
             csv_writer.writerow(csv_row)
 
@@ -1247,9 +1205,9 @@ def handle_stats(args):
                 "Scaling factor applied: "
                 f"{'None' if args.scaling_factor == 1.0 else args.scaling_factor}"
             )
-
+            print(f"RMS all samples: {rms_samples:.9e} ({rms_samples:.9f})")
             show_sample_info(
-                name="Minimum sample: ",
+                name="Minimum sample:    ",
                 sample_secs=min_sample_secs,
                 sample=min_sample,
             )
@@ -1258,23 +1216,6 @@ def handle_stats(args):
                 sample_secs=peak_sample_secs,
                 sample=peak_sample,
             )
-            for avg_info in averages_to_calc:
-                show_sample_info(
-                    name=(
-                        f"Mean of highest {avg_info.portion_size:>6} "
-                        f"({avg_info.portion*100:4.1f}%) values: "
-                    ),
-                    sample_secs=None,
-                    sample=avg_info.mean_highest,
-                )
-                show_sample_info(
-                    name=(
-                        f"Mean of lowest  {avg_info.portion_size:>6} "
-                        f"({avg_info.portion*100:4.1f}%) values: "
-                    ),
-                    sample_secs=None,
-                    sample=avg_info.mean_lowest,
-                )
 
 
 def create_args_parser() -> argparse.ArgumentParser:
