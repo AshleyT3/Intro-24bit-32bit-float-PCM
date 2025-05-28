@@ -999,7 +999,7 @@ def get_24bit_int_sample_hex_str(sample: np.intc, empty_str_on_error: bool = Fal
     if np.little_endian:
         raw_bytes = raw_bytes[::-1]
     raw_bytes = raw_bytes[1:]
-    return "".join(f"{byte:02x}" for byte in raw_bytes)
+    return "0x" + "".join(f"{byte:02x}" for byte in raw_bytes)
 
 
 def get_float_sample(sample):
@@ -1050,7 +1050,7 @@ def handle_dump(args):
             if ai.bitdepth == 32:
                 sample_str = f"sample={sample:.9e} ({sample:.9f})"
             else:
-                sample_str = f"sample=0x{get_24bit_int_sample_hex_str(sample)}"
+                sample_str = f"sample={get_24bit_int_sample_hex_str(sample)}"
             print(sample_str, end="")
             flt_log_str = get_flt_log_str(sample=sample, verbosity=verbosity)
             if flt_log_str:
@@ -1087,7 +1087,7 @@ def handle_stats(args):
         if not isinstance(sample, (np.floating, np.intc)):
             raise ValueError()
         if isinstance(sample, np.intc):
-            sample_str = f"{int(sample):>7} (0x{get_24bit_int_sample_hex_str(sample)})"
+            sample_str = f"{int(sample):>7} ({get_24bit_int_sample_hex_str(sample)})"
         else:
             sample_str = f"{sample:.9e} ({sample:.9f})"
         seconds_str = "" if sample_secs is None else f" at {sample_secs: >7.3f} seconds"
