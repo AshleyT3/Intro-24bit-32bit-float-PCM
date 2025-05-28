@@ -411,17 +411,17 @@ def create_audio_figure_subplots(
         ax.plot(target_seconds, audio, color=plot_color)
 
         min_sample_idx = np.argmin(np.abs(audio))
-        max_sample_idx = np.argmax(np.abs(audio))
+        peak_sample_idx = np.argmax(np.abs(audio))
         min_sample = audio[min_sample_idx]
-        max_sample = audio[max_sample_idx]
+        peak_sample = audio[peak_sample_idx]
 
         ymin = -1.0
         ymax = 1.0
         if auto_adjust_y_axis:
             auto_adjust_factor = 2
-            if max_sample*auto_adjust_factor > ymax:
-                ymin = -max_sample * auto_adjust_factor
-                ymax = max_sample * auto_adjust_factor
+            if peak_sample*auto_adjust_factor > ymax:
+                ymin = -peak_sample * auto_adjust_factor
+                ymax = peak_sample * auto_adjust_factor
         ax.set_ylim(ymin=ymin, ymax=ymax)
 
         x_maj_multiple = 10
@@ -550,20 +550,20 @@ def create_audio_figure_subplots(
                 xytext=(tx, ty),
             )
 
-            max_sample_secs = max_sample_idx / ai.sr
-            if max_sample >= 0.0:
+            max_sample_secs = peak_sample_idx / ai.sr
+            if peak_sample >= 0.0:
                 tx = max_sample_secs + 2
-                ty = min(ymax - 0.3, max_sample + 0.4)
+                ty = min(ymax - 0.3, peak_sample + 0.4)
                 rot = 65
             else:
                 tx = max_sample_secs - 1
-                ty = max(ymin + 0.3, -(max_sample + 0.3))
+                ty = max(ymin + 0.3, -(peak_sample + 0.3))
                 rot = 45
             add_annotation(
                 ax=ax,
-                text=f"Max Sample ({max_sample:.3f})",
+                text=f"Peak Sample ({peak_sample:.3f})",
                 color=hot_color,
-                xy=(max_sample_secs, max_sample),
+                xy=(max_sample_secs, peak_sample),
                 xytext=(tx, ty),
             )
 
@@ -1131,11 +1131,11 @@ def handle_stats(args):
             "MinSampleHex",
             "MinSampleFloatDetails",
             #
-            "MaxSampleIndex",
-            "MaxSampleSec",
-            "MaxSample",
-            "MaxSampleHex",
-            "MaxSampleFloatDetails",
+            "PeakSampleIndex",
+            "PeakSampleSec",
+            "PeakSample",
+            "PeakSampleHex",
+            "PeakSampleFloatDetails",
         ]
         for avg_info in averages_to_calc:
             csv_fields.append(
@@ -1180,9 +1180,9 @@ def handle_stats(args):
         min_sample_secs = min_sample_idx / ai.sr
         min_sample = audio[min_sample_idx]
 
-        max_sample_idx = np.argmax(np.abs(audio))
-        max_sample_secs = max_sample_idx / ai.sr
-        max_sample = audio[max_sample_idx]
+        peak_sample_idx = np.argmax(np.abs(audio))
+        peak_sample_secs = peak_sample_idx / ai.sr
+        peak_sample = audio[peak_sample_idx]
 
         for avg_info in averages_to_calc:
 
@@ -1216,11 +1216,11 @@ def handle_stats(args):
                 get_24bit_int_sample_hex_str(min_sample, empty_str_on_error=True),
                 get_flt_log_str(sample=min_sample, verbosity=verbosity),
                 #
-                max_sample_idx,
-                max_sample_secs,
-                max_sample,
-                get_24bit_int_sample_hex_str(max_sample, empty_str_on_error=True),
-                get_flt_log_str(sample=max_sample, verbosity=verbosity),
+                peak_sample_idx,
+                peak_sample_secs,
+                peak_sample,
+                get_24bit_int_sample_hex_str(peak_sample, empty_str_on_error=True),
+                get_flt_log_str(sample=peak_sample, verbosity=verbosity),
             ]
 
             for avg_info in averages_to_calc:
@@ -1254,9 +1254,9 @@ def handle_stats(args):
                 sample=min_sample,
             )
             show_sample_info(
-                name="Maximum sample: ",
-                sample_secs=max_sample_secs,
-                sample=max_sample,
+                name="Peak (Max) Sample: ",
+                sample_secs=peak_sample_secs,
+                sample=peak_sample,
             )
             for avg_info in averages_to_calc:
                 show_sample_info(
@@ -1390,7 +1390,7 @@ before the end of the "file.")""",
     parser_common_plot.add_argument(
         "--show-minmax",
         help=(
-            "Annotate the location of the minimum and maximum sample values."
+            "Annotate the location of the minimum and peak sample values."
         ),
         action=argparse.BooleanOptionalAction,
         default=False,
