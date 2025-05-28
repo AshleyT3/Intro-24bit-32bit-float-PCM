@@ -1058,19 +1058,22 @@ def handle_dump(args):
             print()
 
 
-def mean_of_n_values(arr, n, top_n_unique: bool):
+def mean_of_n_values(arr, n, is_top_n):
     if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer.")
     if arr.size == 0:
         return np.nan
     sorted_unique = np.sort(np.unique(np.abs(arr)))
-    if top_n_unique:
-        sorted_unique = sorted_unique[::-1]
     n = min(n, sorted_unique.size)
     if n == 0:
         return np.nan
-    threshold_values = sorted_unique[n - 1]
-    values_to_avergage = arr[arr >= threshold_values]
+    if is_top_n:
+        sorted_unique = sorted_unique[::-1]
+        threshold_value = sorted_unique[n - 1]
+        values_to_avergage = arr[arr >= threshold_value]
+    else:
+        threshold_value = sorted_unique[n - 1]
+        values_to_avergage = arr[arr <= threshold_value]
     return np.mean(values_to_avergage)
 
 
@@ -1081,7 +1084,7 @@ def handle_stats(args):
         sample_secs,
         sample,
     ):
-        if not isinstance(sample, (np.float32, np.intc)):
+        if not isinstance(sample, (np.floating, np.intc)):
             raise ValueError()
         if isinstance(sample, np.intc):
             sample_str = f"{int(sample):>7} (0x{get_24bit_int_sample_hex_str(sample)})"
@@ -1188,13 +1191,13 @@ def handle_stats(args):
             avg_info.mean_lowest = mean_of_n_values(
                 arr=audio,
                 n=avg_info.portion_size,
-                top_n_unique=False,
+                is_top_n=False,
             )
 
             avg_info.mean_highest = mean_of_n_values(
                 arr=audio,
                 n=avg_info.portion_size,
-                top_n_unique=True,
+                is_top_n=True,
             )
 
         if args.csv:
