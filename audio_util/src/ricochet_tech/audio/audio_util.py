@@ -1070,10 +1070,10 @@ def mean_of_n_values(arr, n, is_top_n):
     if is_top_n:
         sorted_unique = sorted_unique[::-1]
         threshold_value = sorted_unique[n - 1]
-        values_to_avergage = arr[arr >= threshold_value]
+        values_to_avergage = arr[np.abs(arr) >= threshold_value]
     else:
         threshold_value = sorted_unique[n - 1]
-        values_to_avergage = arr[arr <= threshold_value]
+        values_to_avergage = arr[np.abs(arr) <= threshold_value]
     return np.mean(values_to_avergage)
 
 
