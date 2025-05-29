@@ -1125,6 +1125,9 @@ def handle_stats(args):
             #
             "RmsSamples",
             "dBuSamples",
+            "RmsNoiseFloor",
+            "RmsDerivedPure",
+            "SNRdB",
             #
             "SampleRate",
             "BitDepth",
@@ -1132,6 +1135,22 @@ def handle_stats(args):
             "Filename",
         ]
         csv_writer.writerow(csv_fields)
+
+    rms_nf_audio = None
+    if args.nf_path is not None:
+        nf_audio_info = load_audio_files(filenames=[args.nf_path])
+        if len(nf_audio_info) > 1:
+            print(
+                f"More than one noise floor reference found, "
+                f"using first file only: {nf_audio_info[0].fn}"
+            )
+        nf_audio_info = nf_audio_info[0]
+        nf_audio, nf_start_trim_count, nf_end_trim_count = get_target_samples(
+            audio_info=nf_audio_info,
+            start_at_seconds=args.nf_start,
+            stop_at_seconds=args.nf_stop,
+        )
+        rms_nf_audio = np.sqrt(np.mean(np.square(nf_audio)))
 
     verbosity = args.verbose
     verbosity = min(verbosity, FloatLogLevel.DETAILED2.value)
@@ -1165,6 +1184,20 @@ def handle_stats(args):
 
         rms_samples = np.sqrt(np.mean(np.square(audio)))
         dbu_samples = 20 * np.log10(rms_samples / 0.775)
+        rms_derived_pure = None
+        snr_db = None
+        if rms_nf_audio is not None:
+            if rms_samples >= rms_nf_audio:
+                rms_derived_pure = np.sqrt(rms_samples**2 - rms_nf_audio**2)
+                snr_db = 20 * np.log10(rms_derived_pure / rms_nf_audio)
+            else:
+                print(
+                    f"ERROR: Noise floor basis is higher than audio file, "
+                    f"skipping SNR calculations: {ai.fn}"
+                )
+                rms_derived_pure = "<nf_basis_too_high_error>"
+                snr_db = "<nf_basis_too_high_error>"
+
 
         if args.csv:
 
@@ -1190,6 +1223,9 @@ def handle_stats(args):
                 #
                 rms_samples,
                 dbu_samples,
+                rms_nf_audio,
+                rms_derived_pure,
+                snr_db,
                 #
                 ai.sr,
                 ai.bitdepth,
@@ -1210,6 +1246,18 @@ def handle_stats(args):
             )
             print(f"RMS all samples: {rms_samples:.9e} ({rms_samples:.9f})")
             print(f"dBu all samples: {dbu_samples:.9e} ({dbu_samples:.9f})")
+            if rms_nf_audio is not None:
+                print(f"RMS noise floor: {rms_nf_audio:.9e} ({rms_nf_audio:.9f})")
+            if rms_derived_pure is not None:
+                msg = rms_derived_pure
+                if not isinstance(rms_derived_pure, str):
+                    msg = f"{rms_derived_pure:.9e} ({rms_derived_pure:.9f})"
+                print(f"RMS derived pure: {msg}")
+            if snr_db is not None:
+                msg = snr_db
+                if not isinstance(snr_db, str):
+                    msg = f"{snr_db:.6f} dB"
+                print(f"SNR dB: {msg}")
             show_sample_info(
                 name="Minimum sample:    ",
                 sample_secs=min_sample_secs,
@@ -1231,10 +1279,12 @@ def create_args_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
+
     parser_common_filenames = argparse.ArgumentParser(add_help=False)
     parser_common_filenames.add_argument(
         "filename", nargs="+", help="One or more audio filenames."
     )
+
 
     parser_common_samples = argparse.ArgumentParser(add_help=False)
     parser_common_samples.add_argument(
@@ -1273,6 +1323,7 @@ disable that shift normalizing effect. Generally, you can ignore this option."""
         help="",
     )
 
+
     parser_common_start_stop = argparse.ArgumentParser(add_help=False)
     parser_common_start_stop.add_argument(
         "--start-at",
@@ -1294,6 +1345,7 @@ before the end of the "file.")""",
         type=float,
         default=None,
     )
+
 
     parser_common_plot = argparse.ArgumentParser(add_help=False)
     parser_common_plot.add_argument(
@@ -1341,6 +1393,7 @@ before the end of the "file.")""",
         default=False,
     )
 
+
     parser_common_find_levels = argparse.ArgumentParser(add_help=False)
     parser_common_find_levels.add_argument(
         "-m",
@@ -1368,6 +1421,7 @@ in order for a segment to be observed (default=2.0 seconds).
         type=float,
     )
 
+
     parser_common_output = argparse.ArgumentParser(add_help=False)
     parser_common_output.add_argument(
         "--multi-line",
@@ -1390,6 +1444,32 @@ in order for a segment to be observed (default=2.0 seconds).
         help="Output CSV file name.",
     )
 
+
+    parser_common_noise_floor = argparse.ArgumentParser(add_help=False)
+    parser_common_noise_floor.add_argument(
+        "--nf-path",
+        help="""Path to .wav file to use as a noise floor reference for calculating
+Signal-to-Noise-Ratio (SNR).""",
+        nargs='?',
+        type=str,
+        default=None,
+    )
+    parser_common_noise_floor.add_argument(
+        "--nf-start",
+        help="""Point in time (in seconds) where the noise floor begins. The syntax of
+this switch is identical to --start-at.""",
+        type=float,
+        default=None,
+    )
+    parser_common_noise_floor.add_argument(
+        "--nf-stop",
+        help="""Point in time (in seconds) where the noise floor ends. The syntax of
+this switch is identical to --stop-at.""",
+        type=float,
+        default=None,
+    )
+
+
     subparser_plot = subparsers.add_parser(
         "plot",
         help="Peform graph plots on audio files.",
@@ -1410,6 +1490,7 @@ in order for a segment to be observed (default=2.0 seconds).
         ],
     )
     plot_samples.set_defaults(func=plot_audio_files)
+
 
     plot_levels = plot_subcmd.add_parser(
         name="steadylevels",
@@ -1452,11 +1533,13 @@ should only be used with files that have periods of largly unchanged amplitude."
     )
     subparser_levels.set_defaults(func=handle_steadylevels)
 
+
     subparser_range = subparsers.add_parser(
         "range",
         formatter_class=argparse.RawTextHelpFormatter,
         help="Show ranges.",
     )
+
 
     range_subcmd = subparser_range.add_subparsers(
         dest="range_subcmd",
@@ -1490,6 +1573,7 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)""",
     )
     range_simple.set_defaults(func=show_ranges_simple)
 
+
     range_detailed = range_subcmd.add_parser(
         name="detailed",
         help=f"Display each exponent's range with detail.",
@@ -1499,11 +1583,13 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)""",
     )
     range_detailed.set_defaults(func=show_ranges_detailed)
 
+
     subparser_interactive = subparsers.add_parser(
         "interactive",
         help="Interactive prompt to show float details on-demand.",
     )
     subparser_interactive.set_defaults(func=interactive_prompt)
+
 
     subparser_dump = subparsers.add_parser(
         "dump",
@@ -1520,7 +1606,8 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)""",
     )
     subparser_dump.set_defaults(func=handle_dump)
 
-    subparser_info = subparsers.add_parser(
+
+    subparser_stats = subparsers.add_parser(
         "stats",
         help="Show audio file information/stats.",
         description=f"""Show audio file information/stats. This command only supports 24-bit and
@@ -1546,10 +1633,12 @@ plus <inc>. (The default is {INC_TYPE_NAMES[0]}.)""",
             parser_common_csv,
             parser_common_samples,
             parser_common_start_stop,
+            parser_common_noise_floor,
             parser_common_verbosity,
         ],
     )
-    subparser_info.set_defaults(func=handle_stats)
+
+    subparser_stats.set_defaults(func=handle_stats)
 
     return parser
 
