@@ -1124,6 +1124,7 @@ def handle_stats(args):
             "PeakSampleFloatDetails",
             #
             "RmsSamples",
+            "dBuSamples",
             #
             "SampleRate",
             "BitDepth",
@@ -1163,6 +1164,7 @@ def handle_stats(args):
         peak_sample = audio[peak_sample_idx]
 
         rms_samples = np.sqrt(np.mean(np.square(audio)))
+        dbu_samples = 20 * np.log10(rms_samples / 0.775)
 
         if args.csv:
 
@@ -1187,6 +1189,7 @@ def handle_stats(args):
                 get_flt_log_str(sample=peak_sample, verbosity=verbosity),
                 #
                 rms_samples,
+                dbu_samples,
                 #
                 ai.sr,
                 ai.bitdepth,
@@ -1206,6 +1209,7 @@ def handle_stats(args):
                 f"{'None' if args.scaling_factor == 1.0 else args.scaling_factor}"
             )
             print(f"RMS all samples: {rms_samples:.9e} ({rms_samples:.9f})")
+            print(f"dBu all samples: {dbu_samples:.9e} ({dbu_samples:.9f})")
             show_sample_info(
                 name="Minimum sample:    ",
                 sample_secs=min_sample_secs,
