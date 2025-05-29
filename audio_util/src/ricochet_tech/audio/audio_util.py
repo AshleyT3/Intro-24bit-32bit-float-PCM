@@ -1189,7 +1189,11 @@ def handle_stats(args):
         if rms_nf_audio is not None:
             if rms_samples >= rms_nf_audio:
                 rms_derived_pure = np.sqrt(rms_samples**2 - rms_nf_audio**2)
-                snr_db = 20 * np.log10(rms_derived_pure / rms_nf_audio)
+                amp_ratio = rms_derived_pure / rms_nf_audio
+                if amp_ratio > 0:
+                    snr_db = 20 * np.log10(amp_ratio)
+                else:
+                    snr_db = np.inf
             else:
                 print(
                     f"ERROR: Noise floor basis is higher than audio file, "
