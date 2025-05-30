@@ -986,15 +986,11 @@ Display the IEEE-754 Binary32 details for a value entered in one of the followin
             print("Invalid value, try again.")
 
 
-def get_24bit_int_sample_hex_str(sample: np.intc, empty_str_on_error: bool = False):
+def get_24bit_int_sample_hex_str(sample: np.intc):
     if not isinstance(sample, np.intc):
-        if empty_str_on_error:
-            return ""
-        raise ValueError()
+        sample = np.intc(sample)
     raw_bytes = sample.tobytes()
     if not len(raw_bytes) == 4:
-        if empty_str_on_error:
-            return ""
         raise ValueError()
     if np.little_endian:
         raw_bytes = raw_bytes[::-1]
@@ -1114,14 +1110,20 @@ def handle_stats(args):
             "MinSampleIndex",
             "MinSampleSec",
             "MinSample",
-            "MinSampleHex",
+            "Min24bit",
+            "Min24bitHex",
             "MinSampleFloatDetails",
             #
             "PeakSampleIndex",
             "PeakSampleSec",
             "PeakSample",
-            "PeakSampleHex",
+            "Peak24bit",
+            "Peak24bitHex",
             "PeakSampleFloatDetails",
+            #
+            "AvgSamples",
+            "Avg24bitSamples",
+            "Avg24bitHex",
             #
             "RmsSamples",
             "dBuSamples",
@@ -1170,6 +1172,10 @@ def handle_stats(args):
         if len(audio) == 0:
             raise ValueError("No audio to process.")
 
+        if ai.bitdepth == 24:
+            audio24 = audio
+            audio = audio24.astype(np.float32) / 2**23
+
         total_seconds = len(audio) / ai.sr
         start_second = start_trim_count / ai.sr
         end_trim_seconds = end_trim_count / ai.sr
@@ -1181,6 +1187,8 @@ def handle_stats(args):
         peak_sample_idx = np.argmax(np.abs(audio))
         peak_sample_secs = peak_sample_idx / ai.sr
         peak_sample = audio[peak_sample_idx]
+
+        avg_samples = np.mean(np.abs(audio))
 
         rms_samples = np.sqrt(np.mean(np.square(audio)))
         dbu_samples = 20 * np.log10(rms_samples / 0.775)
@@ -1216,14 +1224,20 @@ def handle_stats(args):
                 min_sample_idx,
                 min_sample_secs,
                 min_sample,
-                get_24bit_int_sample_hex_str(min_sample, empty_str_on_error=True),
+                float_to_24bit(f=min_sample),
+                get_24bit_int_sample_hex_str(float_to_24bit(f=min_sample)),
                 get_flt_log_str(sample=min_sample, verbosity=verbosity),
                 #
                 peak_sample_idx,
                 peak_sample_secs,
                 peak_sample,
-                get_24bit_int_sample_hex_str(peak_sample, empty_str_on_error=True),
+                float_to_24bit(f=peak_sample),
+                get_24bit_int_sample_hex_str(float_to_24bit(f=peak_sample)),
                 get_flt_log_str(sample=peak_sample, verbosity=verbosity),
+                #
+                avg_samples,
+                float_to_24bit(f=avg_samples),
+                get_24bit_int_sample_hex_str(float_to_24bit(f=avg_samples)),
                 #
                 rms_samples,
                 dbu_samples,
