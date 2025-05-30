@@ -1114,29 +1114,32 @@ def handle_stats(args):
             "TotalTrimSec",
             "AppliedScaling",
             #
-            "MinSampleIndex",
-            "MinSampleSec",
             "MinSample",
-            "Min24bit",
-            "Min24bitHex",
-            "MinSampleFloatDetails",
-            #
-            "PeakSampleIndex",
-            "PeakSampleSec",
             "PeakSample",
-            "Peak24bit",
-            "Peak24bitHex",
-            "PeakSampleFloatDetails",
-            #
             "AvgSamples",
-            "Avg24bitSamples",
-            "Avg24bitHex",
             #
             "RmsSamples",
             "dBuSamples",
             "RmsNoiseFloor",
             "RmsDerivedPure",
             "SNRdB",
+            #
+            "MinSampleFloatDetails",
+            "PeakSampleFloatDetails",
+            #
+            "Min24bit",
+            "Peak24bit",
+            "Avg24bit",
+            #
+            "Min24bitHex",
+            "Peak24bitHex",
+            "Avg24bitHex",
+            #
+            "MinSampleIndex",
+            "PeakSampleIndex",
+            #
+            "MinSampleSec",
+            "PeakSampleSec",
             #
             "SampleRate",
             "BitDepth",
@@ -1220,6 +1223,10 @@ def handle_stats(args):
 
         if args.csv:
 
+            rms_derived_pure_csv_val = rms_derived_pure
+            if isinstance(rms_derived_pure, (float, np.floating)):
+                rms_derived_pure_csv_val = f"{rms_derived_pure:.9e}"
+
             csv_row = [
                 file_num + 1,
                 total_seconds,
@@ -1228,29 +1235,32 @@ def handle_stats(args):
                 start_second + end_trim_seconds,
                 args.scaling_factor,
                 #
-                min_sample_idx,
-                min_sample_secs,
-                min_sample,
-                float_to_24bit(f=min_sample),
-                get_24bit_int_sample_hex_str(float_to_24bit(f=min_sample)),
-                get_flt_log_str(sample=min_sample, verbosity=verbosity),
+                f"{min_sample:.9e}",
+                f"{peak_sample:.9e}",
+                f"{avg_samples:.9e}",
                 #
-                peak_sample_idx,
-                peak_sample_secs,
-                peak_sample,
-                float_to_24bit(f=peak_sample),
-                get_24bit_int_sample_hex_str(float_to_24bit(f=peak_sample)),
+                f"{rms_samples:.9e}",
+                dbu_samples,
+                f"{rms_nf_audio:.9e}",
+                rms_derived_pure_csv_val,
+                snr_db,
+                #
+                get_flt_log_str(sample=min_sample, verbosity=verbosity),
                 get_flt_log_str(sample=peak_sample, verbosity=verbosity),
                 #
-                avg_samples,
+                float_to_24bit(f=min_sample),
+                float_to_24bit(f=peak_sample),
                 float_to_24bit(f=avg_samples),
+                #
+                get_24bit_int_sample_hex_str(float_to_24bit(f=min_sample)),
+                get_24bit_int_sample_hex_str(float_to_24bit(f=peak_sample)),
                 get_24bit_int_sample_hex_str(float_to_24bit(f=avg_samples)),
                 #
-                rms_samples,
-                dbu_samples,
-                rms_nf_audio,
-                rms_derived_pure,
-                snr_db,
+                min_sample_idx,
+                peak_sample_idx,
+                #
+                min_sample_secs,
+                peak_sample_secs,
                 #
                 ai.sr,
                 ai.bitdepth,
