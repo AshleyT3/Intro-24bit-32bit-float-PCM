@@ -1097,7 +1097,14 @@ def handle_stats(args):
     if args.csv:
         csvfile = sys.stdout
         if args.o is not None:
-            csvfile = open(args.o, "wt", newline="", encoding="utf-8")
+            try:
+                csvfile = open(args.o, "wt", newline="", encoding="utf-8")
+            except PermissionError as ex:
+                raise AudioUtilException(
+                    f"The CSV cannot be opened. "
+                    f"Check to ensure a file of the same name is not already open in an application. "
+                    f"error={ex}"
+                ).with_traceback(ex.__traceback__)
         csv_writer = csv.writer(csvfile)
         csv_fields = [
             "FileNum",
