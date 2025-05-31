@@ -1076,7 +1076,8 @@ def mean_of_n_values(arr, n, is_top_n):
 def handle_stats(args):
 
     def show_sample_info(
-        name,
+        label,
+        label_padding,
         sample_secs,
         sample,
     ):
@@ -1085,9 +1086,9 @@ def handle_stats(args):
         if isinstance(sample, np.intc):
             sample_str = f"{int(sample):>7} ({get_24bit_int_sample_hex_str(sample)})"
         else:
-            sample_str = f"{sample:.9e} ({sample:.9f})"
+            sample_str = f"{sample: .9e} ({sample:.9f})"
         seconds_str = "" if sample_secs is None else f" at {sample_secs: >7.3f} seconds"
-        print(f"{name}{sample_str}{seconds_str}", end="")
+        print(f"{label:.<{label_padding}} {sample_str}{seconds_str}", end="")
         flt_log_str = get_flt_log_str(sample=sample, verbosity=verbosity)
         if flt_log_str:
             print(f" {flt_log_str}", end="")
@@ -1116,7 +1117,8 @@ def handle_stats(args):
             #
             "MinSample",
             "PeakSample",
-            "AvgSamples",
+            "AvgAbsAmplitude",
+            "DC_Offset",
             #
             "RmsSamples",
             "dBuSamples",
@@ -1198,7 +1200,8 @@ def handle_stats(args):
         peak_sample_secs = peak_sample_idx / ai.sr
         peak_sample = audio[peak_sample_idx]
 
-        avg_samples = np.mean(np.abs(audio))
+        avg_abs_amp = np.mean(np.abs(audio))
+        avg_dc_offset = np.mean(audio)
 
         rms_samples = np.sqrt(np.mean(np.square(audio)))
         dbu_samples = 20 * np.log10(rms_samples / 0.775)
@@ -1237,7 +1240,8 @@ def handle_stats(args):
                 #
                 f"{min_sample:.9e}",
                 f"{peak_sample:.9e}",
-                f"{avg_samples:.9e}",
+                f"{avg_abs_amp:.9e}",
+                f"{avg_dc_offset:.9e}",
                 #
                 f"{rms_samples:.9e}",
                 dbu_samples,
@@ -1250,11 +1254,11 @@ def handle_stats(args):
                 #
                 float_to_24bit(f=min_sample),
                 float_to_24bit(f=peak_sample),
-                float_to_24bit(f=avg_samples),
+                float_to_24bit(f=avg_abs_amp),
                 #
                 get_24bit_int_sample_hex_str(float_to_24bit(f=min_sample)),
                 get_24bit_int_sample_hex_str(float_to_24bit(f=peak_sample)),
-                get_24bit_int_sample_hex_str(float_to_24bit(f=avg_samples)),
+                get_24bit_int_sample_hex_str(float_to_24bit(f=avg_abs_amp)),
                 #
                 min_sample_idx,
                 peak_sample_idx,
@@ -1271,35 +1275,42 @@ def handle_stats(args):
             csv_writer.writerow(csv_row)
 
         else:
+            lbl_padding = 27
             print("-"*80)
-            print(f"Filename={ai.fn}")
-            print(f"Target samples duration: {total_seconds}s")
-            print(f"Target samples start: {start_second}s")
+            print(f"{'Filename ':.<{lbl_padding}} {ai.fn}")
+            if rms_nf_audio:
+                print(f"{'Noise floor basis ':.<{lbl_padding}} {args.nf_path}")
+            print(f"{'Target samples duration ':.<{lbl_padding}} {total_seconds}s")
+            print(f"{'Target samples start ':.<{lbl_padding}} {start_second}s")
             print(
-                "Scaling factor applied: "
+                f"{'Scaling factor applied ':.<{lbl_padding}} "
                 f"{'None' if args.scaling_factor == 1.0 else args.scaling_factor}"
             )
-            print(f"RMS all samples: {rms_samples:.9e} ({rms_samples:.9f})")
-            print(f"dBu all samples: {dbu_samples:.9e} ({dbu_samples:.9f})")
+            print(f"{'RMS all samples ':.<{lbl_padding}} {rms_samples: .9e} ({rms_samples:.9f})")
+            print(f"{'dBu all samples ':.<{lbl_padding}} {dbu_samples: .9e} ({dbu_samples:.9f})")
             if rms_nf_audio is not None:
-                print(f"RMS noise floor: {rms_nf_audio:.9e} ({rms_nf_audio:.9f})")
+                print(f"{'RMS noise floor ':.<{lbl_padding}} {rms_nf_audio: .9e} ({rms_nf_audio:.9f})")
             if rms_derived_pure is not None:
                 msg = rms_derived_pure
                 if not isinstance(rms_derived_pure, str):
-                    msg = f"{rms_derived_pure:.9e} ({rms_derived_pure:.9f})"
-                print(f"RMS derived pure: {msg}")
+                    msg = f"{rms_derived_pure: .9e} ({rms_derived_pure:.9f})"
+                print(f"{'RMS derived pure ':.<{lbl_padding}} {msg}")
             if snr_db is not None:
                 msg = snr_db
                 if not isinstance(snr_db, str):
-                    msg = f"{snr_db:.6f} dB"
-                print(f"SNR dB: {msg}")
+                    msg = f"{snr_db: .6f} dB"
+                print(f"{'SNR dB ':.<{lbl_padding}} {msg}")
+            print(f"{'Avg Abs Amplitude ':.<{lbl_padding}} {avg_abs_amp: .9e}")
+            print(f"{'DC Offset ':.<{lbl_padding}} {avg_dc_offset: .9e}")
             show_sample_info(
-                name="Minimum sample:    ",
+                label="Minimum sample ",
+                label_padding=lbl_padding,
                 sample_secs=min_sample_secs,
                 sample=min_sample,
             )
             show_sample_info(
-                name="Peak (Max) Sample: ",
+                label="Peak (Max) Sample ",
+                label_padding=lbl_padding,
                 sample_secs=peak_sample_secs,
                 sample=peak_sample,
             )
