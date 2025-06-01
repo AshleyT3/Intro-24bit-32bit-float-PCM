@@ -1245,7 +1245,7 @@ def handle_stats(args):
                 #
                 f"{rms_samples:.9e}",
                 dbu_samples,
-                f"{rms_nf_audio:.9e}",
+                f"{rms_nf_audio:.9e}" if rms_nf_audio is not None else "",
                 rms_derived_pure_csv_val,
                 snr_db,
                 #
