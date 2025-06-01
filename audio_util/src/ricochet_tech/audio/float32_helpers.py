@@ -33,8 +33,10 @@ def round_float_to_int(f: float) -> int:
 
 def float_to_24bit(f: float) -> int:
     r = round_float_to_int(f * F_TO_I24BIT)
-    if f >= 0 and r == I24BIT_MAX:
-        return I24BIT_MAX - 1
+    if f >= 0:
+        r = min(r, I24BIT_MAX - 1)
+    else:
+        r = max(r, -I24BIT_MAX)
     return r
 
 
