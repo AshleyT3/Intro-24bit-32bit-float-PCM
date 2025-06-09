@@ -1121,7 +1121,7 @@ def handle_stats(args):
             "DC_Offset",
             #
             "RmsSamples",
-            "dBuSamples",
+            "dBFS_RMS",
             "RmsNoiseFloor",
             "RmsDerivedPure",
             "SNRdB",
@@ -1204,17 +1204,14 @@ def handle_stats(args):
         avg_dc_offset = np.mean(audio)
 
         rms_samples = np.sqrt(np.mean(np.square(audio)))
-        dbu_samples = 20 * np.log10(rms_samples / 0.775)
+        dbfs_rms_samples = 20 * np.log10(rms_samples / 1.0)
         rms_derived_pure = None
         snr_db = None
         if rms_nf_audio is not None:
             if rms_samples >= rms_nf_audio:
                 rms_derived_pure = np.sqrt(rms_samples**2 - rms_nf_audio**2)
                 amp_ratio = rms_derived_pure / rms_nf_audio
-                if amp_ratio > 0:
-                    snr_db = 20 * np.log10(amp_ratio)
-                else:
-                    snr_db = np.inf
+                snr_db = snr_db = 20 * np.log10(amp_ratio) if amp_ratio > 0 else np.inf
             else:
                 print(
                     f"ERROR: Noise floor basis is higher than audio file, "
@@ -1244,7 +1241,7 @@ def handle_stats(args):
                 f"{avg_dc_offset:.9e}",
                 #
                 f"{rms_samples:.9e}",
-                dbu_samples,
+                dbfs_rms_samples,
                 f"{rms_nf_audio:.9e}" if rms_nf_audio is not None else "",
                 rms_derived_pure_csv_val,
                 snr_db,
@@ -1287,7 +1284,7 @@ def handle_stats(args):
                 f"{'None' if args.scaling_factor == 1.0 else args.scaling_factor}"
             )
             print(f"{'RMS all samples ':.<{lbl_padding}} {rms_samples: .9e} ({rms_samples:.9f})")
-            print(f"{'dBu all samples ':.<{lbl_padding}} {dbu_samples: .9e} ({dbu_samples:.9f})")
+            print(f"{'dBFS RMS all samples ':.<{lbl_padding}} {dbfs_rms_samples: .9e} ({dbfs_rms_samples:.9f})")
             if rms_nf_audio is not None:
                 print(f"{'RMS noise floor ':.<{lbl_padding}} {rms_nf_audio: .9e} ({rms_nf_audio:.9f})")
             if rms_derived_pure is not None:
