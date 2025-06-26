@@ -1206,6 +1206,8 @@ def handle_stats(args):
         rms_samples = np.sqrt(np.mean(np.square(audio)))
         dbfs_rms_samples = 20 * np.log10(rms_samples / 1.0)
         rms_derived_pure = None
+        # For cases where noise floor is compared to noise floor, snr_db is
+        # really a noise-to-noise ratio, though uses the same calculation as SNR.
         snr_db = None
         if rms_nf_audio is not None:
             if rms_samples >= rms_nf_audio:
