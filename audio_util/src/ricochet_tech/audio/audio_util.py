@@ -1213,7 +1213,11 @@ def handle_stats(args):
             if rms_samples >= rms_nf_audio:
                 rms_derived_pure = np.sqrt(rms_samples**2 - rms_nf_audio**2)
                 amp_ratio = rms_derived_pure / rms_nf_audio
-                snr_db = snr_db = 20 * np.log10(amp_ratio) if amp_ratio > 0 else np.inf
+                # 'neg_inf' instead of '-inf' to avoid csv import interpretation issues.
+                if amp_ratio > 0:
+                    snr_db = snr_db = 20 * np.log10(amp_ratio)
+                else:
+                    snr_db = "neg_inf" if args.csv else "-inf"
             else:
                 print(
                     f"ERROR: Noise floor basis is higher than audio file, "
