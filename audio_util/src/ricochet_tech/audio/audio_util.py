@@ -301,8 +301,14 @@ def get_target_samples(
         audio = audio[:stop_at_sample]
 
     if start_at_seconds is not None:
-        if start_at_seconds < 0 or start_at_seconds > duration_seconds:
+        if start_at_seconds < 0:
+            start_at_seconds = duration_seconds - abs(start_at_seconds)
+        if start_at_seconds > duration_seconds or start_at_seconds < 0:
             raise ValueError(f"--start-at {start_at_seconds} is invalid.")
+        if start_at_seconds > stop_at_seconds:
+            raise ValueError(
+                f"--start-at {start_at_seconds} is greater than --stop-at {stop_at_seconds}"
+            )
         start_at_sample = int(start_at_seconds * sr)
         start_trim_count = min(len(audio), start_at_sample)
         audio = audio[start_at_sample:]
@@ -1380,7 +1386,9 @@ disable that shift normalizing effect. Generally, you can ignore this option."""
 example, you can eliminate consideration of samples before one second
 from the start of the channel's stream, and one second before the last
 sample of the same stream by using '--start-at 1 --stop-at -1' (see 
---stop-at).""",
+--stop-at). A negative value indicates the number of seconds from the end.
+For example, '--start-at=-5' indicates to start at 5 seconds from the end
+of the channel's stream.""",
         type=float,
         default=None,
     )
