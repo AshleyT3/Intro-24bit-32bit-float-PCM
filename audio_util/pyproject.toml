@@ -1,7 +1,10 @@
 [project]
 name = "at-audioutil-pkg"
 version = "0.0.01"
-description = "An audio utility. TBD."
+description = "A utility to examine 24-bit integer and 32-bit floating point audio samples/ranges."
+authors = [
+  {name = "Ashley R. Thomas", email = "ashley.r.thomas.701@gmail.com"},
+]
 readme = "README.md"
 requires-python = ">= 3.12"
 dependencies = [
@@ -34,4 +37,3 @@ audioutil = "ricochet_tech.audio.audio_util:main"
 
 [tool.setuptools.packages.find]
 where = ["src/"]
-
