@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Helper classes, unions, functions to examine/manipulate the 32-bit float format.
-This file was created for the "Intro to Audio Samples" tutorial.
+This file was created for the "Intro to Audio Samples" tutorial at the following link...
+https://www.youtube.com/watch?v=8WXKIfXnAfw
 """
 
 # pylint: disable=unsupported-binary-operation

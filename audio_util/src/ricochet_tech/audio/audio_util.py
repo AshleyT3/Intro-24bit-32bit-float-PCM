@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """audioutil, a utility to access/examine audio 24-bit and 32-bit float audio samples.
-This file was created for the "Intro to Audio Samples" tutorial.
+This file was created for the "Intro to Audio Samples" tutorial at the following link...
+https://www.youtube.com/watch?v=8WXKIfXnAfw
 """
 
 # pylint: disable=unsupported-binary-operation
