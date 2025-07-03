@@ -1,6 +1,6 @@
 [project]
 name = "at-audioutil-pkg"
-version = "0.0.04"
+version = "0.0.05"
 description = "A utility to examine 24-bit integer and 32-bit floating point audio samples/ranges."
 authors = [
   {name = "Ashley R. Thomas", email = "ashley.r.thomas.701@gmail.com"},

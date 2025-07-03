@@ -1346,7 +1346,7 @@ def create_args_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
         prog="audio_util",
-        description="Audio Utility v0.04",
+        description="Audio Utility v0.05",
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
