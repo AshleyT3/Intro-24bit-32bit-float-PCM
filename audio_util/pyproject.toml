@@ -25,8 +25,8 @@ classifiers = [
 ]
 
 [project.urls]
-homepage = "https://example.local/SomeGDev/example123"
-issues = "https://example.local/SomeGDev/example123/issues"
+homepage = "https://github.com/AshleyT3/Intro-24bit-32bit-float-PCM"
+issues = "https://github.com/AshleyT3/Intro-24bit-32bit-float-PCM/issues"
 
 [build-system]
 requires = ["setuptools"]
