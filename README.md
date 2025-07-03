@@ -38,6 +38,20 @@ The C++ version of [ShowFloatRanges](cpp/ShowFloatRanges) is from initial drafts
 
 ---
 
+If you wish to install audioutil directly from PyPi, you can use the following command:
+
+```pip install at-audioutil-pkg```
+
+After installing audioutil, you can use `audioutil -h` to verify it is installed.
+
+⚠️ Installing audioutil directly won't replace cloning the source code for the tutorial. To follow along with the tutorial video and walkthroughs, you'll need to clone the source code as instructed in the tutorial steps.
+
+⚠️ FFmpeg Not Found? If you encounter an error that ffmpeg is not found, it means you likely don't have it installed. The tutorial [demonstrates](https://www.youtube.com/watch?v=8WXKIfXnAfw&t=18552s) resolving this for a Windows demo environment by using `winget install Gyan.FFmpeg`. 
+
+**Important:** I don't endorse or vouch for the security of any FFmpeg builds, including the one shown. Please exercise caution when installing. For more information on available FFmpeg Windows builds, check the Windows download section at https://ffmpeg.org. As of July 2025, their site links to Gyan.FFmpeg builds, and I myself have had no issues with Gyan.FFmpeg to date.
+
+---
+
 ### 👋 Happy Sample'ing!
 
 May your audio samples be pristine, your noise floors silent!
